@@ -12,8 +12,9 @@
 
 ## 핵심 관계 요약
 
-- 하나의 `Program`은 여러 `ProgramVersion`, `ClassificationSchema`, `MonitoringCycle`, `Period`, `StatusSet`, `DataSource`, `ItemTemplate`, `ProgramRoleBinding`, `ProgramFormLayout`을 가진다.
+- 하나의 `Program`은 여러 `ProgramVersion`, `ClassificationSchema`, `MonitoringCycle`, `StatusSet`, `DataSource`, `ItemTemplate`, `ProgramRoleBinding`, `ProgramFormLayout`을 가진다.
 - 하나의 `ProgramVersion`은 여러 `ProgramVersionItem`, `ItemGroup`, `ItemGroupSnapshot`을 가진다.
+- 하나의 `ProgramVersion`은 여러 `Period`, `ImportBatch`, `ProgramFormLayout`을 가질 수 있다.
 - 하나의 `ClassificationSchema`는 여러 `ClassificationNode`를 가진다.
 - 하나의 `ClassificationNode`는 자기 자신을 부모로 참조하는 트리 구조를 가진다.
 - 하나의 `ManagedItem`은 재사용 기준 항목이며, 여러 `ProgramVersionItem`의 원형이 될 수 있다.
@@ -39,11 +40,11 @@ erDiagram
     Program ||--o{ ProgramRoleBinding : has
     Program ||--o{ ProgramFieldBinding : has
     Program ||--o{ ProgramFormLayout : has
-    Program ||--o{ ImportBatch : has
     Program ||--o{ ManagedItem : has
 
     ProgramVersion ||--o{ ProgramVersionItem : has
     ProgramVersion ||--o{ Period : has
+    ProgramVersion ||--o{ ImportBatch : has
     ProgramVersion ||--o{ ItemGroup : has
     ProgramVersion ||--o{ ItemGroupSnapshot : has
 
@@ -278,9 +279,11 @@ erDiagram
 ### 17. ImportBatch / ImportedSnapshot
 - `ImportBatch`
   - 의미: 엑셀 업로드 또는 일괄 적재 작업
+  - 권장 연결 키: `programVersionId`
 - `ImportedSnapshot`
   - 의미: 엑셀 적재 당시 원본값 보존
   - 목적: 운영 중 값이 바뀌어도 최초 업로드 기준값 비교 가능
+  - 권장 연결 키: `programVersionItemId`
 
 ### 18. ProgramRoleBinding
 - 의미: 프로그램 단위 권한 바인딩
