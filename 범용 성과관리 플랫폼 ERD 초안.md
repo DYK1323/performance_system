@@ -246,7 +246,7 @@ erDiagram
 ### 14. EvidenceBundle / EvidenceLink / Attachment
 - `EvidenceBundle`
   - 의미: 실적 1건에 대한 증빙 묶음
-  - 원칙: 초기 버전에서는 증빙 이력 테이블 없이 현재본만 관리
+  - 원칙: 증빙 이력 테이블 없이 현재본만 관리
 - `EvidenceLink`
   - 의미: URL 기반 증빙
 - `Attachment`
@@ -288,14 +288,16 @@ erDiagram
 ### 18. ProgramRoleBinding
 - 의미: 프로그램 단위 권한 바인딩
 - 권한 부여 원칙
-  - 권한은 부서 단위로만 부여
-  - 개인 단위 권한 부여는 하지 않음
-  - 개인은 입력/수정/상태 변경 로그에서만 기록
+  - 기본 권한은 부서 단위로 부여
+  - 예외적으로 `external_reviewer`는 개인 단위 읽기 권한 허용
+  - `external_reviewer`의 범위는 `program` 전체 조회로 고정
   - 권한 범위는 `program` 또는 `classification_node`까지만 허용
 - 핵심 키
   - `id`
   - `programId`
+  - `principalType`
   - `organizationId`
+  - `userId`
   - `role`
   - `scopeType`
   - `scopeId`
@@ -329,7 +331,7 @@ erDiagram
 - `MetricMapping`
   - `(dataSourceId, programVersionItemId, sourceFieldPath)`
 - `ProgramRoleBinding`
-  - `(programId, organizationId, role, scopeType, scopeId)`
+  - `(programId, principalType, organizationId, userId, role, scopeType, scopeId)`
 
 ## 논리 모델 보완 메모
 
@@ -343,7 +345,7 @@ erDiagram
 - `StatusSet` 내부 `statuses` 배열은 실제 DB에서는 `StatusCode` 테이블로 분리하는 편이 좋다.
 - `StatusRecord`는 현재값 저장, `StatusHistory`는 변경 이력 저장으로 분리하는 편이 좋다.
 - `EvidenceBundle.attachments`, `EvidenceBundle.evidenceLinks`도 각각 별도 테이블로 두는 것이 정규화에 맞다.
-- 증빙은 현재본만 관리하고, 초기 버전에서는 별도 이력 테이블을 두지 않는다.
+- 증빙은 현재본만 관리하고, 별도 이력 테이블을 두지 않는다.
 
 ## 물리 테이블 전개 권장안
 
@@ -398,7 +400,9 @@ erDiagram
 - `ManagedItem`은 기본 담당 부서를 가질 수 있으며, 연도별 실제 담당 부서는 `ProgramVersionItem.ownerOrgId`로 관리한다.
 - 계획/실적/상태/증빙의 입력 및 수정 로그는 사용자 개인 단위로 기록한다.
 - `ProgramRoleBinding`은 부서 단위 권한만 관리한다.
+- `ProgramRoleBinding`은 기본적으로 부서 단위 권한을 관리하되, `external_reviewer`는 개인 단위 예외로 허용한다.
 - `ProgramRoleBinding.scopeType`은 `program` 또는 `classification_node`까지만 사용한다.
+- `external_reviewer`는 `scopeType=program`만 허용한다.
 - `ItemGroupSnapshot`은 해당 사업의 관리자가 설정한 기준일 기준으로 생성한다.
 - `ItemGroupSnapshot`은 기준일 도달 시 초안 생성 후 관리자가 확정한다.
 - 증빙은 현재본만 관리하고, 별도 증빙 이력 테이블은 두지 않는다.
