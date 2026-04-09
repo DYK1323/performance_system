@@ -2,7 +2,7 @@
 
 ## 개요
 
-이 문서는 [범용 성과관리 플랫폼 기획안 v2.md](c:/Users/DAYOUNG/performance_system/범용%20성과관리%20플랫폼%20기획안%20v2.md)를 기준으로 정리한 ERD 초안이다.
+이 문서는 [기획안_v2.md](c:/Users/DAYOUNG/performance_system/기획안_v2.md)를 기준으로 정리한 ERD 초안이다.
 
 - 최상위 구조는 `Program > ProgramVersion > ProgramVersionItem`이다.
 - `ManagedItem`은 재사용 가능한 기준 항목 풀이고, 실제 연도 운영 단위는 `ProgramVersionItem`이다.
