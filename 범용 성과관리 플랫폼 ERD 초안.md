@@ -12,7 +12,7 @@
 
 ## 핵심 관계 요약
 
-- 하나의 `Program`은 여러 `ProgramVersion`, `ClassificationSchema`, `MonitoringCycle`, `Period`, `StatusSet`, `DataSource`, `ItemTemplate`, `ProgramRoleBinding`을 가진다.
+- 하나의 `Program`은 여러 `ProgramVersion`, `ClassificationSchema`, `MonitoringCycle`, `Period`, `StatusSet`, `DataSource`, `ItemTemplate`, `ProgramRoleBinding`, `ProgramFormLayout`을 가진다.
 - 하나의 `ProgramVersion`은 여러 `ProgramVersionItem`, `ItemGroup`, `ItemGroupSnapshot`을 가진다.
 - 하나의 `ClassificationSchema`는 여러 `ClassificationNode`를 가진다.
 - 하나의 `ClassificationNode`는 자기 자신을 부모로 참조하는 트리 구조를 가진다.
@@ -38,6 +38,7 @@ erDiagram
     Program ||--o{ ItemTemplate : has
     Program ||--o{ ProgramRoleBinding : has
     Program ||--o{ ProgramFieldBinding : has
+    Program ||--o{ ProgramFormLayout : has
     Program ||--o{ ImportBatch : has
     Program ||--o{ ManagedItem : has
 
@@ -61,6 +62,9 @@ erDiagram
     ProgramVersionItem ||--o{ MetricMapping : mapped_from
     ProgramVersionItem }o--o{ ItemGroup : grouped_in
     ManagedItem }o--o{ ProgramFieldBinding : uses_fields
+    ProgramFormLayout ||--o{ ProgramFormLayoutBlock : arranges
+    FormBlockDefinition ||--o{ ProgramFormLayoutBlock : placed_as
+    FieldDefinition ||--o{ FormBlockDefinition : referenced_by
 
     ItemGroup ||--o{ ItemGroupSnapshot : snapshotted_as
 
@@ -247,11 +251,18 @@ erDiagram
 - `Attachment`
   - 의미: 파일형 증빙 메타데이터
 
-### 15. FieldDefinition / ProgramFieldBinding / ItemTemplate
+### 15. FieldDefinition / ProgramFieldBinding / FormBlockDefinition / ProgramFormLayout / ItemTemplate
 - `FieldDefinition`
   - 의미: 공통 필드 라이브러리
 - `ProgramFieldBinding`
   - 의미: 사업/유형별 필드 배치 규칙
+- `FormBlockDefinition`
+  - 의미: 입력폼을 구성하는 블록 정의
+  - 타입 예: `field`, `info_card`, `warning_card`, `plain_text`, `section_title`, `divider`
+- `ProgramFormLayout`
+  - 의미: 사업/운영본별 입력 화면 레이아웃 정의
+- `ProgramFormLayoutBlock`
+  - 의미: 개별 블록의 순서, 위치, 적용 범위 정의
 - `ItemTemplate`
   - 의미: 반복 생성용 최소 관리 단위 템플릿
 
@@ -310,6 +321,8 @@ erDiagram
   - `(id)`
 - `ProgramFieldBinding`
   - `(programId, fieldId, schemaLevelId, itemTypeFilter)`
+- `ProgramFormLayoutBlock`
+  - `(layoutId, displayOrder)`
 - `MetricMapping`
   - `(dataSourceId, programVersionItemId, sourceFieldPath)`
 - `ProgramRoleBinding`
@@ -323,6 +336,7 @@ erDiagram
 - `ItemGroupSnapshot`은 조회용 캐시가 아니라 기준일 판단용 공식 스냅샷 테이블로 두는 것이 적절하다.
 - `ProgramVersion`과 `ProgramVersionItem`은 연도별 과제/지표/산식 변경을 보존하기 위한 공식 운영 스냅샷 구조다.
 - `ItemTemplate`와 `FieldDefinition` 관계 역시 `ItemTemplateField` 조인 테이블이 적절하다.
+- 입력폼 구성은 `FieldDefinition`과 별도로 `FormBlockDefinition`, `ProgramFormLayout`, `ProgramFormLayoutBlock`으로 분리하는 것이 적절하다.
 - `StatusSet` 내부 `statuses` 배열은 실제 DB에서는 `StatusCode` 테이블로 분리하는 편이 좋다.
 - `StatusRecord`는 현재값 저장, `StatusHistory`는 변경 이력 저장으로 분리하는 편이 좋다.
 - `EvidenceBundle.attachments`, `EvidenceBundle.evidenceLinks`도 각각 별도 테이블로 두는 것이 정규화에 맞다.
@@ -345,6 +359,9 @@ erDiagram
 - `period_monitoring_cycles`
 - `field_definitions`
 - `program_field_bindings`
+- `form_block_definitions`
+- `program_form_layouts`
+- `program_form_layout_blocks`
 - `item_templates`
 - `item_template_fields`
 - `metric_formulas`
