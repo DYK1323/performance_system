@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>입력폼 레이아웃 구성 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .builder-wrap { display: flex; gap: 20px; align-items: flex-start; }
+  .builder-canvas { flex: 1; }
+  .builder-palette { width: 200px; flex-shrink: 0; }
+  .palette-section-title { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+  .palette-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border: 1px solid #e0e0e0; border-radius: 3px;
+    font-size: 12px; color: #555; margin-bottom: 6px; cursor: grab;
+    background: #fff;
+  }
+  .palette-item:hover { border-color: #888; color: #111; background: #fafafa; }
+  .palette-icon { font-size: 14px; width: 18px; flex-shrink: 0; }
+  .drop-zone {
+    min-height: 48px; border: 1px dashed #d0d0d0; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: #bbb; margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">대시보드</a>
+      <a href="program.html" class="active">사업 관리</a>
+      <a href="upload.html">업로드 이력</a>
+      <a href="periods.html">기간 관리</a>
+      <a href="permissions.html">권한 배당</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge admin">관리자</span>
+    </div>
+  </div>
+  <div class="ctx-banner">
+    <a href="program.html" style="color:#888">2026 중장기발전계획</a>
+    <span class="sep">›</span>
+    <span>2026 운영본</span>
+    <span class="sep">›</span>
+    <span class="ctx-current">입력폼 레이아웃 구성</span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sidebar-section-label">사업 설정</div>
+      <a href="program.html">기본 정보</a>
+      <a href="version.html">운영본 관리</a>
+      <a href="schema.html">분류 체계</a>
+      <a href="statusset.html">상태 코드셋</a>
+      <a href="items.html">지표 관리</a>
+      <a href="formbuilder.html" class="active">입력폼 구성</a>
+      <a href="periods.html">기간 관리</a>
+      <a href="permissions.html">권한 배당</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">기간 선택</div>
+      <a href="#" class="active" style="font-weight:600">2026년 1차 점검</a>
+      <a href="#">2026년 2차 점검</a>
+      <a href="#">+ 기간 추가</a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>입력폼 레이아웃 구성</h2>
+        <span class="page-sub">2026년 1차 점검 · 정량 항목</span>
+        <div class="header-actions">
+          <select style="font-size:12px;padding:5px 9px;border:1px solid #d0d0d0;border-radius:3px">
+            <option>대상: 정량 항목 (공통)</option>
+            <option>대상: 정성 항목 (공통)</option>
+            <option>대상: 특정 지표 (01-01)</option>
+          </select>
+          <button class="btn btn-sm">담당자 뷰 미리보기</button>
+          <button class="btn btn-sm btn-dark">저장</button>
+        </div>
+      </div>
+
+      <div class="builder-wrap">
+        <!-- 캔버스 -->
+        <div class="builder-canvas">
+          <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">폼 구성 (드래그로 순서 변경)</div>
+
+          <!-- 섹션 제목 블록 -->
+          <div class="form-block">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">section_title</span>
+            <div class="block-content">
+              <input type="text" value="계획" style="border:none;outline:none;font:inherit;font-size:13px;font-weight:600;background:transparent;width:100%">
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <!-- 필드 블록 -->
+          <div class="form-block">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">field</span>
+            <div class="block-content">
+              <div style="font-weight:500">계획값 <span style="color:#B71C1C">*</span></div>
+              <div style="font-size:11px;color:#888;margin-top:2px">number · 단위: % · 필수</div>
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">field</span>
+            <div class="block-content">
+              <div style="font-weight:500">목표 근거</div>
+              <div style="font-size:11px;color:#888;margin-top:2px">text · 선택</div>
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <!-- 구분선 -->
+          <div class="form-block" style="padding:8px 12px">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">divider</span>
+            <div class="block-content" style="border-top:1px solid #e0e0e0;height:1px;margin:6px 0"></div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <!-- 섹션 제목 -->
+          <div class="form-block">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">section_title</span>
+            <div class="block-content">
+              <input type="text" value="실적" style="border:none;outline:none;font:inherit;font-size:13px;font-weight:600;background:transparent;width:100%">
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <!-- 안내 카드 -->
+          <div class="form-block" style="background:#E3F2FD;border-color:#BBDEFB">
+            <span class="drag-handle" style="color:#1565C0">⠿</span>
+            <span class="block-type" style="color:#1565C0">info_card</span>
+            <div class="block-content">
+              <input type="text" value="실적값은 소수점 첫째 자리까지 입력하세요." style="border:none;outline:none;font:inherit;font-size:12px;color:#1565C0;background:transparent;width:100%">
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <span class="drag-handle">⠿</span>
+            <span class="block-type">field</span>
+            <div class="block-content">
+              <div style="font-weight:500">실적값 <span style="color:#B71C1C">*</span></div>
+              <div style="font-size:11px;color:#888;margin-top:2px">number · 단위: % · 필수 · 자동 달성률 계산</div>
+            </div>
+            <div class="block-actions">
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
+            </div>
+          </div>
+
+          <!-- 드롭 존 -->
+          <div class="drop-zone">+ 블록 추가</div>
+
+          <div style="margin-top:12px">
+            <button class="btn btn-sm" onclick="document.getElementById('modal-block').classList.add('open')">+ 블록 추가</button>
+          </div>
+        </div>
+
+        <!-- 블록 팔레트 -->
+        <div class="builder-palette">
+          <div class="palette-section-title">블록 유형</div>
+          <div class="palette-item"><span class="palette-icon">T</span>섹션 제목</div>
+          <div class="palette-item"><span class="palette-icon">—</span>구분선</div>
+          <div class="palette-item"><span class="palette-icon">☐</span>필드 (텍스트)</div>
+          <div class="palette-item"><span class="palette-icon">#</span>필드 (수치)</div>
+          <div class="palette-item"><span class="palette-icon">▾</span>필드 (선택)</div>
+          <div class="palette-item"><span class="palette-icon">📎</span>필드 (첨부파일)</div>
+          <div class="palette-item" style="background:#E3F2FD;border-color:#BBDEFB;color:#1565C0"><span class="palette-icon">ℹ</span>안내 카드</div>
+          <div class="palette-item" style="background:#FFF3E0;border-color:#FFCC80;color:#E65100"><span class="palette-icon">⚠</span>경고 카드</div>
+          <div class="palette-item"><span class="palette-icon">¶</span>일반 텍스트</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL-08: 블록 추가 모달 -->
+<div class="modal-overlay" id="modal-block">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>블록 추가</h3>
+      <button class="modal-close" onclick="document.getElementById('modal-block').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px">☐</div>
+          <div style="font-weight:600">필드 (field)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">텍스트, 수치, 선택, 첨부 필드</div>
+        </div>
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px;color:#1565C0">ℹ</div>
+          <div style="font-weight:600">안내 카드 (info_card)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">파란 배경 안내 메시지</div>
+        </div>
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px;color:#E65100">⚠</div>
+          <div style="font-weight:600">경고 카드 (warning_card)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">주황 배경 주의 메시지</div>
+        </div>
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px">T</div>
+          <div style="font-weight:600">섹션 제목 (section_title)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">굵은 제목 텍스트</div>
+        </div>
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px">¶</div>
+          <div style="font-weight:600">일반 텍스트 (plain_text)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">일반 설명 텍스트</div>
+        </div>
+        <div style="padding:12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;font-size:12px" onclick="document.getElementById('modal-block').classList.remove('open')">
+          <div style="font-size:16px;margin-bottom:6px">—</div>
+          <div style="font-weight:600">구분선 (divider)</div>
+          <div style="color:#888;margin-top:2px;font-size:11px">섹션 구분용 수평선</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="document.getElementById('modal-block').classList.remove('open')">취소</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

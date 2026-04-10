@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>저장 완료 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .body { justify-content: center; align-items: center; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">내 현황</a>
+      <a href="programs.html" class="active">담당 사업</a>
+      <a href="pending.html">미입력 항목</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge">담당자</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="feedback-box">
+      <div class="fb-icon">✓</div>
+      <div class="fb-title">저장 완료</div>
+      <div class="fb-sub">교육과정 개선 추진 현황 · 2026년 1차 점검</div>
+
+      <div class="feedback-judgment">
+        <div class="fj-label">판정 결과</div>
+        <div class="fj-row">
+          <span class="fj-key">자동 판정</span>
+          <span style="color:#aaa;font-size:12px">정성 항목 (해당 없음)</span>
+        </div>
+        <div class="fj-row">
+          <span class="fj-key">수기 판정</span>
+          <span class="sb s-going"><span class="dot"></span>진행중</span>
+        </div>
+        <div class="fj-row">
+          <span class="fj-key">최종 판정</span>
+          <span class="sb s-going"><span class="dot"></span>진행중 (수기)</span>
+        </div>
+        <div class="fj-row">
+          <span class="fj-key">저장 시각</span>
+          <span style="color:#888;font-size:11px">2026-04-10 14:33</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:center">
+        <a href="items.html"><button class="btn">목록으로</button></a>
+        <a href="input-quant.html"><button class="btn btn-dark">다음 항목 입력</button></a>
+      </div>
+      <div style="margin-top:14px;font-size:11px;color:#aaa">남은 미입력 항목: 5건</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

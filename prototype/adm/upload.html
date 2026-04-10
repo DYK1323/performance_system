@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엑셀 대량 업로드 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">대시보드</a>
+      <a href="program.html">사업 관리</a>
+      <a href="upload.html" class="active">업로드 이력</a>
+      <a href="periods.html">기간 관리</a>
+      <a href="permissions.html">권한 배당</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge admin">관리자</span>
+    </div>
+  </div>
+  <div class="ctx-banner">
+    <span class="ctx-current">엑셀 대량 업로드</span>
+    <span class="sep">·</span>
+    <span>2026 중장기발전계획 · 2026년 1차 점검</span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sidebar-section-label">업로드 유형</div>
+      <a href="#" class="active">실적 업로드</a>
+      <a href="#">계획 업로드</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">업로드 이력</div>
+      <a href="#">전체 이력 보기</a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>엑셀 대량 업로드</h2>
+        <span class="page-sub">ImportBatch — 실적 일괄 입력 (P1)</span>
+      </div>
+
+      <!-- Step 1: 기간/사업 선택 -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">1. 업로드 대상 선택</div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <select style="padding:7px 10px;border:1px solid #d0d0d0;border-radius:3px;font:inherit;font-size:12px">
+            <option>사업: 2026 중장기발전계획</option>
+          </select>
+          <select style="padding:7px 10px;border:1px solid #d0d0d0;border-radius:3px;font:inherit;font-size:12px">
+            <option>운영본: 2026 운영본</option>
+          </select>
+          <select style="padding:7px 10px;border:1px solid #d0d0d0;border-radius:3px;font:inherit;font-size:12px">
+            <option>기간: 2026년 1차 점검</option>
+          </select>
+          <button class="btn btn-sm" onclick="alert('현재 기간 입력 가능 항목 기준 템플릿 다운로드 (.xlsx)')">📥 템플릿 다운로드</button>
+        </div>
+        <div style="font-size:11px;color:#aaa;margin-top:6px">템플릿에는 입력 가능 항목 목록과 유효값 드롭다운이 포함됩니다.</div>
+      </div>
+
+      <!-- Step 2: 업로드 -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">2. 파일 업로드</div>
+        <div class="upload-zone" onclick="document.getElementById('modal-result').classList.add('open')">
+          <div class="uz-icon">📎</div>
+          <div>클릭 또는 파일을 드래그해 업로드</div>
+          <div class="uz-hint">.xlsx 파일만 허용 · 최대 10MB</div>
+        </div>
+      </div>
+
+      <!-- 업로드 이력 -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">업로드 이력 (최근 7일)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>파일명</th>
+              <th>업로더</th>
+              <th>업로드 일시</th>
+              <th class="td-r">전체</th>
+              <th class="td-r" style="color:#2E7D32">성공</th>
+              <th class="td-r" style="color:#E65100">오류</th>
+              <th>결과</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">실적입력_2026_1차_교무처_v2.xlsx</td>
+              <td style="font-size:11px;color:#555">김교무 (kim.edu)</td>
+              <td style="font-size:11px;color:#888">2026-04-09 16:45</td>
+              <td class="td-r">38</td>
+              <td class="td-r" style="color:#2E7D32;font-weight:600">36</td>
+              <td class="td-r" style="color:#E65100;font-weight:700">2</td>
+              <td><span class="sb s-warn"><span class="dot"></span>부분 성공</span></td>
+              <td><button class="btn btn-sm" onclick="document.getElementById('modal-result').classList.add('open')">오류 확인</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">실적입력_2026_1차_교무처_v1.xlsx</td>
+              <td style="font-size:11px;color:#555">김교무 (kim.edu)</td>
+              <td style="font-size:11px;color:#888">2026-04-09 14:12</td>
+              <td class="td-r">38</td>
+              <td class="td-r" style="color:#2E7D32;font-weight:600">0</td>
+              <td class="td-r" style="color:#E65100;font-weight:700">38</td>
+              <td><span class="sb s-issue"><span class="dot"></span>전체 오류</span></td>
+              <td><button class="btn btn-sm" onclick="document.getElementById('modal-result').classList.add('open')">오류 확인</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">실적입력_2026_1차_기획처.xlsx</td>
+              <td style="font-size:11px;color:#555">홍길동 (hong.gildong)</td>
+              <td style="font-size:11px;color:#888">2026-04-08 10:30</td>
+              <td class="td-r">18</td>
+              <td class="td-r" style="color:#2E7D32;font-weight:600">18</td>
+              <td class="td-r" style="color:#aaa">0</td>
+              <td><span class="sb s-done"><span class="dot"></span>전체 성공</span></td>
+              <td><button class="btn btn-sm btn-ghost">결과 보기</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL-03: 업로드 결과 모달 -->
+<div class="modal-overlay" id="modal-result">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>업로드 결과 — 실적입력_2026_1차_교무처_v2.xlsx</h3>
+      <button class="modal-close" onclick="document.getElementById('modal-result').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- 요약 -->
+      <div style="display:flex;gap:0;border:1px solid #e8e8e8;border-radius:3px;overflow:hidden;margin-bottom:16px">
+        <div style="flex:1;padding:12px 16px;border-right:1px solid #e8e8e8">
+          <div style="font-size:11px;color:#888">전체 행</div>
+          <div style="font-size:22px;font-weight:700">38</div>
+        </div>
+        <div style="flex:1;padding:12px 16px;border-right:1px solid #e8e8e8">
+          <div style="font-size:11px;color:#888">성공</div>
+          <div style="font-size:22px;font-weight:700;color:#2E7D32">36</div>
+        </div>
+        <div style="flex:1;padding:12px 16px">
+          <div style="font-size:11px;color:#888">오류</div>
+          <div style="font-size:22px;font-weight:700;color:#E65100">2</div>
+        </div>
+      </div>
+
+      <div class="info-banner" style="margin-bottom:12px">오류가 있는 행은 건너뛰고 나머지 36행을 저장했습니다. 오류 행만 수정 후 재업로드 하세요.</div>
+
+      <!-- 오류 로그 -->
+      <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px">오류 상세 (행 번호 기준)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:60px">행 번호</th>
+            <th style="width:80px">열</th>
+            <th>항목명</th>
+            <th>입력값</th>
+            <th>오류 사유</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5">
+            <td style="color:#B71C1C;font-weight:700">3행</td>
+            <td style="font-size:11px;font-family:monospace">D열</td>
+            <td style="font-size:12px">재학생 충원율</td>
+            <td style="font-size:12px;font-family:monospace">달성완료</td>
+            <td style="font-size:11px;color:#B71C1C">'달성완료'는 중간 점검 기간에 유효하지 않은 상태값입니다. 유효값: 달성예상, 미달성예상, 이슈, 진행중</td>
+          </tr>
+          <tr style="background:#FFF5F5">
+            <td style="color:#B71C1C;font-weight:700">17행</td>
+            <td style="font-size:11px;font-family:monospace">C열</td>
+            <td style="font-size:12px">취업률</td>
+            <td style="font-size:12px;font-family:monospace">115.3</td>
+            <td style="font-size:11px;color:#B71C1C">ratio 유형의 최대값(110%)을 초과했습니다. 값을 확인하세요.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="document.getElementById('modal-result').classList.remove('open')">닫기</button>
+      <button class="btn btn-sm" onclick="alert('오류 행만 포함된 재업로드용 템플릿 다운로드')">오류 행 템플릿 다운로드</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

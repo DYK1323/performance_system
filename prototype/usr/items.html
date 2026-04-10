@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지표 목록 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">내 현황</a>
+      <a href="programs.html" class="active">담당 사업</a>
+      <a href="pending.html">미입력 항목</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge">담당자</span>
+    </div>
+  </div>
+
+  <!-- 컨텍스트 배너 (P6) -->
+  <div class="ctx-banner">
+    <a href="programs.html" style="color:#888">담당 사업</a>
+    <span class="sep">›</span>
+    <span class="ctx-current">2026 중장기발전계획</span>
+    <span class="sep">·</span>
+    <span>2026년 1차 점검</span>
+    <span class="ctx-due">마감 D-2 (04/12 18:00)</span>
+  </div>
+
+  <div class="body">
+    <!-- 분류체계 트리 사이드바 (P3) -->
+    <nav class="sidebar">
+      <div class="sidebar-section-label">분류체계</div>
+      <div class="tree-node active">전체 <span class="tbadge">6</span></div>
+      <div class="tree-node">영역 1. 교육혁신 <span class="tbadge">3</span></div>
+      <div class="tree-node l2">전략 1-1. 교육과정 <span class="tbadge">2</span></div>
+      <div class="tree-node l2">전략 1-2. 학생지원</div>
+      <div class="tree-node">영역 2. 연구역량</div>
+      <div class="tree-node l2">전략 2-1. 연구지원 <span class="tbadge">1</span></div>
+      <div class="tree-node l2">전략 2-2. 산학협력</div>
+      <div class="tree-node">영역 3. 대외협력</div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">보기</div>
+      <a href="#" class="active">내 담당만</a>
+      <a href="#" style="color:#888">전체 (읽기 전용)</a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>지표 목록</h2>
+        <span class="page-sub">내 담당 · 미입력 우선</span>
+        <div class="header-actions">
+          <button class="btn btn-sm" onclick="alert('템플릿 다운로드 (P1)')">템플릿 다운로드</button>
+          <button class="btn btn-sm" onclick="alert('엑셀 업로드 (P1)')">엑셀 업로드</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" placeholder="항목명 또는 코드" style="width:180px">
+        <select>
+          <option>기간: 2026년 1차 점검</option>
+          <option>기간: 2026년 2차 점검</option>
+        </select>
+        <select>
+          <option>유형: 전체</option>
+          <option>정량</option>
+          <option>정성</option>
+        </select>
+        <div class="filter-sep"></div>
+        <label class="filter-toggle">
+          <input type="checkbox" checked> 미입력만
+        </label>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:56px">코드</th>
+            <th style="width:240px">항목명</th>
+            <th>유형</th>
+            <th>계획값</th>
+            <th>실적값</th>
+            <th>달성률</th>
+            <th>상태</th>
+            <th>마감</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 미입력 항목 (P3 강조) -->
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-01</td>
+            <td class="td-name">학부 정원 충원율 <span class="due-label">D-2</span></td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td>98%</td>
+            <td style="color:#bbb">—</td>
+            <td style="color:#bbb">—</td>
+            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-02</td>
+            <td class="td-name">신입생 충원율</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td>100%</td>
+            <td style="color:#bbb">—</td>
+            <td style="color:#bbb">—</td>
+            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-04</td>
+            <td class="td-name">교육과정 개선 추진 현황</td>
+            <td><span class="chip chip-qual">정성</span></td>
+            <td style="color:#bbb">—</td>
+            <td style="color:#bbb">—</td>
+            <td style="color:#bbb">—</td>
+            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-qual.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <!-- 완료 항목 -->
+          <tr class="row-done">
+            <td style="color:#ccc;font-size:11px">01-03</td>
+            <td class="td-name">재학생 충원율</td>
+            <td><span class="chip" style="background:#f5f5f5;color:#ccc">정량</span></td>
+            <td>95%</td>
+            <td>96.2%</td>
+            <td>101.3%</td>
+            <td><span class="sb s-done"><span class="dot"></span>달성완료</span></td>
+            <td style="color:#aaa;font-size:11px">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-ghost">수정</button></a></td>
+          </tr>
+          <tr class="row-done">
+            <td style="color:#ccc;font-size:11px">02-01</td>
+            <td class="td-name">취업률</td>
+            <td><span class="chip" style="background:#f5f5f5;color:#ccc">정량</span></td>
+            <td>72%</td>
+            <td>68.5%</td>
+            <td>95.1%</td>
+            <td><span class="sb s-warn"><span class="dot"></span>미달성예상</span></td>
+            <td style="color:#aaa;font-size:11px">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-ghost">수정</button></a></td>
+          </tr>
+          <tr class="row-done">
+            <td style="color:#ccc;font-size:11px">02-02</td>
+            <td class="td-name">논문 게재 실적 보고</td>
+            <td><span class="chip" style="background:#f5f5f5;color:#ccc">정성</span></td>
+            <td style="color:#aaa">—</td>
+            <td style="color:#aaa">입력됨</td>
+            <td style="color:#aaa">—</td>
+            <td><span class="sb s-going"><span class="dot"></span>진행중</span></td>
+            <td style="color:#aaa;font-size:11px">04/12</td>
+            <td><a href="input-qual.html"><button class="btn btn-sm btn-ghost">수정</button></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미입력 항목 목록 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">내 현황</a>
+      <a href="programs.html">담당 사업</a>
+      <a href="pending.html" class="active">미입력 항목</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge">담당자</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sidebar-section-label">빠른 접근</div>
+      <a href="home.html">홈 대시보드</a>
+      <a href="pending.html" class="active">미입력 항목 <span class="badge">7</span></a>
+      <a href="programs.html">담당 사업 목록</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">사업별</div>
+      <a href="#" class="active">전체 (7)</a>
+      <a href="#">2026 중장기발전계획 (6)</a>
+      <a href="#">2026 자체평가 (1)</a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>미입력 항목</h2>
+        <span class="page-sub">7건 · 마감 임박 우선</span>
+      </div>
+
+      <!-- 마감 임박 배너 -->
+      <div class="inline-banner">
+        <span>⚠</span>
+        <strong>마감 D-2</strong> — 04/12 오후 6시까지 입력을 완료해 주세요. 현재 미입력 7건이 남아있습니다.
+      </div>
+
+      <div class="filter-bar">
+        <input type="text" placeholder="항목명 또는 코드 검색" style="width:200px">
+        <select>
+          <option>사업: 전체</option>
+          <option>2026 중장기발전계획</option>
+          <option>2026 자체평가</option>
+        </select>
+        <select>
+          <option>기간: 2026년 1차 점검</option>
+        </select>
+        <select>
+          <option>유형: 전체</option>
+          <option>정량</option>
+          <option>정성</option>
+        </select>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:60px">코드</th>
+            <th style="width:260px">항목명</th>
+            <th>사업</th>
+            <th>유형</th>
+            <th>계획값</th>
+            <th>마감일</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 마감 임박 먼저 -->
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-01</td>
+            <td class="td-name">학부 정원 충원율 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td style="font-size:12px">98%</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-02</td>
+            <td class="td-name">신입생 충원율 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td style="font-size:12px">100%</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">01-04</td>
+            <td class="td-name">교육과정 개선 추진 현황 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-qual">정성</span></td>
+            <td style="color:#aaa;font-size:12px">—</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-qual.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">02-01</td>
+            <td class="td-name">취업률 현황 보고 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td style="font-size:12px">72%</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">03-01</td>
+            <td class="td-name">산학협력 협약 건수</td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td style="font-size:12px">15건</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">03-02</td>
+            <td class="td-name">대외협력 성과 요약</td>
+            <td style="font-size:11px;color:#555">2026 중장기발전계획</td>
+            <td><span class="chip chip-qual">정성</span></td>
+            <td style="color:#aaa;font-size:12px">—</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-qual.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td style="color:#999;font-size:11px">A-03</td>
+            <td class="td-name">자체평가 정량 지표 B</td>
+            <td style="font-size:11px;color:#555">2026 자체평가</td>
+            <td><span class="chip chip-quant">정량</span></td>
+            <td style="font-size:12px">85점</td>
+            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
+            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

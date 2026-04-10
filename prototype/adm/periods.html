@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기간 관리 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">대시보드</a>
+      <a href="program.html">사업 관리</a>
+      <a href="upload.html">업로드 이력</a>
+      <a href="periods.html" class="active">기간 관리</a>
+      <a href="permissions.html">권한 배당</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge admin">관리자</span>
+    </div>
+  </div>
+  <div class="ctx-banner">
+    <a href="program.html" style="color:#888">2026 중장기발전계획</a>
+    <span class="sep">›</span>
+    <span>2026 운영본</span>
+    <span class="sep">›</span>
+    <span class="ctx-current">기간 관리</span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sidebar-section-label">사업 설정</div>
+      <a href="program.html">기본 정보</a>
+      <a href="version.html">운영본 관리</a>
+      <a href="schema.html">분류 체계</a>
+      <a href="statusset.html">상태 코드셋</a>
+      <a href="items.html">지표 관리</a>
+      <a href="formbuilder.html">입력폼 구성</a>
+      <a href="periods.html" class="active">기간 관리</a>
+      <a href="permissions.html">권한 배당</a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>기간 관리</h2>
+        <span class="page-sub">Period — 2026 운영본</span>
+        <div class="header-actions">
+          <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-period').classList.add('open')">+ 기간 추가</button>
+        </div>
+      </div>
+
+      <div class="info-banner">기간(Period)은 관리자가 자유롭게 정의합니다. typeCode는 임의로 설정하며, StatusSet과 연결해 기간 유형별 상태 체계를 적용할 수 있습니다.</div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:180px">기간명</th>
+            <th>typeCode</th>
+            <th>시작일</th>
+            <th>종료일</th>
+            <th>마감일</th>
+            <th>StatusSet</th>
+            <th>상태</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-name">2026년 1차 점검 <span class="due-label">진행 중</span></td>
+            <td style="font-size:11px;font-family:monospace">interim</td>
+            <td style="font-size:11px">2026-04-01</td>
+            <td style="font-size:11px">2026-04-30</td>
+            <td style="font-size:11px;color:#E65100;font-weight:600">2026-04-12</td>
+            <td style="font-size:11px;color:#555">중간 점검용 (4개 상태)</td>
+            <td><span class="sb s-going"><span class="dot"></span>활성</span></td>
+            <td>
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" onclick="location.href='formbuilder.html'">폼 구성</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="td-name">2026년 2차 점검</td>
+            <td style="font-size:11px;font-family:monospace">interim</td>
+            <td style="font-size:11px">2026-07-01</td>
+            <td style="font-size:11px">2026-07-31</td>
+            <td style="font-size:11px;color:#888">2026-07-15</td>
+            <td style="font-size:11px;color:#555">중간 점검용 (4개 상태)</td>
+            <td><span class="sb s-draft"><span class="dot"></span>예정</span></td>
+            <td>
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost" onclick="location.href='formbuilder.html'">폼 구성</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="td-name">2026년 최종 점검</td>
+            <td style="font-size:11px;font-family:monospace">final</td>
+            <td style="font-size:11px">2026-11-01</td>
+            <td style="font-size:11px">2026-11-30</td>
+            <td style="font-size:11px;color:#888">2026-11-20</td>
+            <td style="font-size:11px;color:#555">최종 점검용 (3개 상태)</td>
+            <td><span class="sb s-draft"><span class="dot"></span>예정</span></td>
+            <td>
+              <button class="btn btn-sm btn-ghost">편집</button>
+              <button class="btn btn-sm btn-ghost">폼 구성</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 기간 생성 모달 -->
+<div class="modal-overlay" id="modal-period">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>기간 추가</h3>
+      <button class="modal-close" onclick="document.getElementById('modal-period').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg-label">기간명 <span class="req">*</span></div>
+        <div class="fg-input"><input type="text" placeholder="예: 2026년 3차 점검"></div>
+        <div class="fg-label">typeCode <span class="req">*</span></div>
+        <div class="fg-input">
+          <input type="text" placeholder="예: interim, final, special">
+          <div class="hint">자유롭게 정의합니다. StatusSet 연결 시 이 코드로 매핑됩니다.</div>
+        </div>
+        <div class="fg-label">시작일 <span class="req">*</span></div>
+        <div class="fg-input"><input type="date"></div>
+        <div class="fg-label">종료일 <span class="req">*</span></div>
+        <div class="fg-input"><input type="date"></div>
+        <div class="fg-label">마감일 (dueDate)</div>
+        <div class="fg-input">
+          <input type="date">
+          <div class="hint">담당자에게 표시되는 입력 마감일입니다.</div>
+        </div>
+        <div class="fg-label">StatusSet 연결</div>
+        <div class="fg-input">
+          <select>
+            <option>— 선택 —</option>
+            <option>중간 점검용 (4개 상태)</option>
+            <option>최종 점검용 (3개 상태)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="document.getElementById('modal-period').classList.remove('open')">취소</button>
+      <button class="btn btn-dark">저장</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

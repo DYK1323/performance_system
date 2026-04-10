@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홈 대시보드 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <!-- GNB (USR) -->
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html" class="active">내 현황</a>
+      <a href="programs.html">담당 사업</a>
+      <a href="pending.html">미입력 항목</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge">담당자</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- 사이드바 -->
+    <nav class="sidebar">
+      <div class="sidebar-section-label">빠른 접근</div>
+      <a href="home.html" class="active">홈 대시보드</a>
+      <a href="pending.html">미입력 항목 <span class="badge">7</span></a>
+      <a href="programs.html">담당 사업 목록</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">현재 기간</div>
+      <a href="#" style="color:#E65100; font-weight:600">2026년 1차 점검 <span class="badge">D-2</span></a>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>내 현황</h2>
+        <span class="page-sub">2026-04-10 기준 · 기획처 기획조정팀</span>
+      </div>
+
+      <!-- 요약 통계 (P3 - 미입력 우선) -->
+      <div class="usr-stat-row">
+        <div class="usr-stat urgent">
+          <div class="stat-label">미입력 항목</div>
+          <div class="stat-value">7</div>
+          <div class="stat-sub"><a href="pending.html" style="color:#E65100; text-decoration:underline">바로가기 →</a></div>
+        </div>
+        <div class="usr-stat">
+          <div class="stat-label">배당 항목</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">이번 기간 총계</div>
+        </div>
+        <div class="usr-stat">
+          <div class="stat-label">입력 완료</div>
+          <div class="stat-value">17</div>
+          <div class="stat-sub">입력률 70.8%</div>
+        </div>
+        <div class="usr-stat">
+          <div class="stat-label">마감 기한</div>
+          <div class="stat-value" style="font-size:18px;padding-top:4px">04/12</div>
+          <div class="stat-sub" style="color:#E65100;font-weight:600">D-2 (오후 6시)</div>
+        </div>
+      </div>
+
+      <!-- 담당 사업 (사업 단위 행) -->
+      <div class="page-header" style="margin-top:4px;margin-bottom:12px">
+        <h2 style="font-size:14px;font-weight:600;color:#555">담당 사업</h2>
+        <div class="header-actions">
+          <a href="programs.html" style="font-size:12px;color:#1565C0">전체 보기 →</a>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:260px">사업명</th>
+            <th>운영본</th>
+            <th>기간</th>
+            <th class="td-r">배당</th>
+            <th class="td-r">완료</th>
+            <th class="td-r" style="color:#E65100">미입력</th>
+            <th style="width:140px">입력률</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-pend">
+            <td class="td-name">2026 중장기발전계획</td>
+            <td style="font-size:11px;color:#666">2026 운영본</td>
+            <td>2026년 1차 점검 <span class="due-label">D-2</span></td>
+            <td class="td-r">14</td>
+            <td class="td-r">8</td>
+            <td class="td-r" style="color:#E65100;font-weight:700">6</td>
+            <td>57%<div class="pbar"><div class="pbar-fill" style="width:57%"></div></div></td>
+            <td><a href="items.html?prog=roadmap"><button class="btn btn-sm btn-dark">입력하기</button></a></td>
+          </tr>
+          <tr class="row-pend">
+            <td class="td-name">2026 자체평가</td>
+            <td style="font-size:11px;color:#666">2026 운영본</td>
+            <td>2026년 1차 점검 <span class="due-label">D-2</span></td>
+            <td class="td-r">10</td>
+            <td class="td-r">9</td>
+            <td class="td-r" style="color:#E65100;font-weight:700">1</td>
+            <td>90%<div class="pbar"><div class="pbar-fill" style="width:90%"></div></div></td>
+            <td><a href="items.html"><button class="btn btn-sm">입력하기</button></a></td>
+          </tr>
+          <tr class="row-done">
+            <td class="td-name">2025 중장기발전계획</td>
+            <td style="font-size:11px;color:#ccc">2025 운영본</td>
+            <td style="color:#ccc">2025년 최종 점검</td>
+            <td class="td-r">—</td>
+            <td class="td-r">—</td>
+            <td class="td-r">—</td>
+            <td style="color:#2E7D32;font-size:12px;font-weight:600">완료</td>
+            <td><button class="btn btn-sm btn-ghost">조회</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정량 입력 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">내 현황</a>
+      <a href="programs.html" class="active">담당 사업</a>
+      <a href="pending.html">미입력 항목</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge">담당자</span>
+    </div>
+  </div>
+  <div class="ctx-banner">
+    <a href="items.html" style="color:#888">지표 목록</a>
+    <span class="sep">›</span>
+    <span class="ctx-current">학부 정원 충원율</span>
+    <span class="sep">·</span>
+    <span>2026년 1차 점검</span>
+    <span class="ctx-due">마감 D-2 (04/12 18:00)</span>
+  </div>
+
+  <div class="body">
+    <div class="content">
+      <div class="input-form">
+        <!-- 항목 메타 -->
+        <div class="input-meta">
+          <div class="meta-type">
+            <span class="chip chip-quant">정량</span>
+            <span style="color:#ddd">·</span>
+            <span>ratio · higher_better</span>
+            <span style="color:#ddd">·</span>
+            <span>수기 입력 (manual)</span>
+          </div>
+          <div class="meta-title">학부 정원 충원율</div>
+          <div class="meta-desc">학부 전체 정원 대비 재학생 수의 비율. 매 1차 점검 기간에 직접 입력.</div>
+          <div class="meta-detail">
+            <span><strong>담당</strong> 기획처 기획조정팀</span>
+            <span><strong>주기</strong> 분기별</span>
+            <span><strong>단위</strong> %</span>
+            <span><strong>이전 실적</strong> 2025년 최종: 96.8%</span>
+          </div>
+        </div>
+
+        <!-- 계획 -->
+        <div class="input-section">
+          <div class="input-section-title">계획</div>
+          <div class="field-row">
+            <label>계획값 <span class="req">*</span></label>
+            <div class="field-wrap">
+              <div class="num-wrap">
+                <input type="number" value="98" min="0" max="200" step="0.1">
+                <span class="num-unit">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <label>목표 근거</label>
+            <div class="field-wrap">
+              <input type="text" placeholder="계획값 설정 근거 (선택)">
+            </div>
+          </div>
+        </div>
+
+        <!-- 실적 -->
+        <div class="input-section">
+          <div class="input-section-title">실적</div>
+          <div class="field-row">
+            <label>실적값 <span class="req">*</span></label>
+            <div class="field-wrap">
+              <div class="num-wrap">
+                <input type="number" id="actual-val" placeholder="입력" min="0" max="200" step="0.1" oninput="calcRate(this.value)">
+                <span class="num-unit">%</span>
+                <div class="num-calc" id="auto-rate">달성률: —</div>
+              </div>
+              <div class="field-hint">입력 즉시 달성률 자동 계산 (실적 ÷ 계획 × 100)</div>
+            </div>
+          </div>
+          <div class="field-row">
+            <label>입력 사유</label>
+            <div class="field-wrap">
+              <input type="text" placeholder="값 변동 또는 특이사항 (선택)">
+            </div>
+          </div>
+        </div>
+
+        <!-- 판정 (P4) -->
+        <div class="input-section">
+          <div class="input-section-title">판정</div>
+          <div class="judgment-row">
+            <div class="jcol">
+              <div class="jlabel">자동 판정</div>
+              <div id="auto-judgment"><span class="sb s-empty"><span class="dot"></span>실적값 입력 전</span></div>
+            </div>
+            <div class="jarrow">→</div>
+            <div class="jcol">
+              <div class="jlabel">수기 판정 (선택)</div>
+              <select style="width:160px;padding:6px 10px;border:1px solid #d0d0d0;border-radius:3px;font:inherit;font-size:12px">
+                <option value="">— 자동 판정 사용 —</option>
+                <option>달성완료</option>
+                <option>달성예상</option>
+                <option>미달성예상</option>
+                <option>이슈</option>
+              </select>
+            </div>
+            <div class="jarrow">→</div>
+            <div class="jcol">
+              <div class="jlabel">최종 판정</div>
+              <div id="final-judgment"><span class="sb s-empty"><span class="dot"></span>—</span></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#999">판정 기준: 100% 이상 = 달성완료, 80% 이상 = 달성예상, 60% 이상 = 미달성예상, 미만 = 이슈</div>
+        </div>
+
+        <!-- 증빙 -->
+        <div class="input-section">
+          <div class="input-section-title">증빙</div>
+          <div class="evidence-item">
+            <span>📄</span>
+            <span class="ev-name">충원현황_2026_1차.xlsx</span>
+            <span class="ev-size">128 KB</span>
+            <span class="ev-remove">×</span>
+          </div>
+          <div class="evidence-zone">+ 파일 추가 또는 링크 입력</div>
+        </div>
+
+        <!-- 액션바 -->
+        <div class="form-actions">
+          <span class="save-state" id="save-state" style="display:none"><span>✓</span> 임시 저장됨</span>
+          <button class="btn" onclick="tmpSave()">임시 저장</button>
+          <button class="btn btn-dark" onclick="location.href='saved.html'">최종 저장</button>
+          <span class="action-note">저장 후 자동 판정 결과를 확인할 수 있습니다.</span>
+          <button class="btn btn-ghost" style="margin-left:auto" onclick="history.back()">← 목록으로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function calcRate(val) {
+  const goal = 98, actual = parseFloat(val);
+  const rateEl = document.getElementById('auto-rate');
+  const judgEl = document.getElementById('auto-judgment');
+  const finalEl = document.getElementById('final-judgment');
+  if (isNaN(actual) || val === '') {
+    rateEl.textContent = '달성률: —';
+    judgEl.innerHTML = '<span class="sb s-empty"><span class="dot"></span>실적값 입력 전</span>';
+    finalEl.innerHTML = '<span class="sb s-empty"><span class="dot"></span>—</span>';
+    return;
+  }
+  const rate = (actual / goal) * 100;
+  rateEl.textContent = `달성률: ${rate.toFixed(1)}%`;
+  let cls, label;
+  if (rate >= 100)      { cls = 's-done';  label = '달성완료'; }
+  else if (rate >= 80)  { cls = 's-going'; label = '달성예상'; }
+  else if (rate >= 60)  { cls = 's-warn';  label = '미달성예상'; }
+  else                  { cls = 's-issue'; label = '이슈'; }
+  const badge = `<span class="sb ${cls}"><span class="dot"></span>${label}</span>`;
+  judgEl.innerHTML = badge;
+  finalEl.innerHTML = `<span class="sb ${cls}"><span class="dot"></span>${label} (자동)</span>`;
+}
+function tmpSave() {
+  const el = document.getElementById('save-state');
+  el.style.display = 'flex';
+  el.className = 'save-state saving';
+  el.innerHTML = '<span>↻</span> 저장 중...';
+  setTimeout(() => {
+    el.className = 'save-state';
+    el.innerHTML = '<span>✓</span> 임시 저장됨 (' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'}) + ')';
+  }, 600);
+}
+</script>
+</body>
+</html>

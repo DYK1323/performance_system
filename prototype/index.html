@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 — 성과관리 플랫폼</title>
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: auto; }
+  .login-wrap { width: 360px; padding: 48px 40px; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; }
+  .sys-name { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 30px; }
+  .form-field { margin-bottom: 14px; }
+  .form-field label { display: block; font-size: 12px; color: #555; font-weight: 500; margin-bottom: 5px; }
+  .form-field input {
+    width: 100%; padding: 9px 12px;
+    border: 1px solid #d0d0d0; border-radius: 3px;
+    font: inherit; font-size: 13px; outline: none;
+  }
+  .form-field input:focus { border-color: #111; }
+  .btn-login {
+    width: 100%; padding: 10px;
+    background: #111; color: #fff; border: none; border-radius: 3px;
+    font-size: 13px; font-weight: 600; margin-top: 6px; cursor: pointer;
+  }
+  .btn-login:hover { background: #333; }
+  .login-divider { height: 1px; background: #f0f0f0; margin: 20px 0; }
+  .role-select { display: flex; gap: 8px; }
+  .role-btn {
+    flex: 1; padding: 8px; border: 1px solid #d0d0d0; border-radius: 3px;
+    font: inherit; font-size: 12px; background: #fff; color: #555; cursor: pointer; text-align: center;
+  }
+  .role-btn:hover { border-color: #888; color: #111; }
+  .role-btn.active { border-color: #111; background: #111; color: #fff; font-weight: 600; }
+  .login-footer { margin-top: 20px; font-size: 11px; color: #bbb; text-align: center; }
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="sys-name">성과관리 플랫폼</div>
+  <h1>로그인</h1>
+
+  <div class="form-field">
+    <label>아이디</label>
+    <input type="text" value="hong.gildong" placeholder="SSO 아이디">
+  </div>
+  <div class="form-field">
+    <label>비밀번호</label>
+    <input type="password" value="password" placeholder="비밀번호">
+  </div>
+
+  <!-- 프로토타입용 역할 선택 -->
+  <div style="font-size:11px; color:#aaa; margin-bottom:6px; margin-top:14px;">프로토타입 — 역할 선택 후 진입</div>
+  <div class="role-select">
+    <button class="role-btn" onclick="location.href='usr/home.html'">담당자로 진입</button>
+    <button class="role-btn" onclick="location.href='adm/home.html'">관리자로 진입</button>
+  </div>
+
+  <div class="login-footer">SSO 인증 사용 시 계정 관리자에게 문의하세요.</div>
+</div>
+</body>
+</html>
