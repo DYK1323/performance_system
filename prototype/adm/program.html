@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -41,7 +41,56 @@
 .dept-chip .rm:hover { color:#e00; }
 .perm-section { margin-bottom:20px; }
 .perm-section h4 { font-size:12px; font-weight:600; color:#555; margin-bottom:8px; }
-</style>
+.fb-layout { display:flex; gap:16px; align-items:flex-start; }
+.fb-type-list { border:1px solid #e0e0e0; border-radius:4px; overflow:hidden; background:#fff; }
+.fb-type-btn {
+  width:100%;
+  padding:10px 14px;
+  border:0;
+  border-top:1px solid #e0e0e0;
+  background:#fff;
+  text-align:left;
+  font-size:13px;
+  cursor:pointer;
+}
+.fb-type-btn:first-child { border-top:0; }
+.fb-type-btn.active { background:#111; color:#fff; }
+.fb-panel { border:1px solid #e8e8e8; border-radius:6px; background:#fff; padding:16px; }
+.fb-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+.fb-toolbar-left { display:flex; flex-wrap:wrap; gap:8px; }
+.fb-toolbar-right { font-size:12px; color:#888; }
+.fb-empty { border:1px dashed #d0d0d0; border-radius:6px; padding:28px 20px; text-align:center; color:#888; font-size:12px; background:#fafafa; }
+.fb-meta { font-size:11px; color:#999; margin-top:4px; }
+.fb-drop-target { min-height:120px; }
+.fb-preview { margin-top:14px; border-top:1px solid #f0f0f0; padding-top:14px; }
+.fb-preview-card { border:1px solid #e8e8e8; border-radius:6px; padding:14px; background:#fafafa; }
+.fb-preview-title { font-size:12px; font-weight:700; margin-bottom:10px; color:#555; }
+.fb-preview-block + .fb-preview-block { margin-top:10px; }
+.fb-preview-label { font-size:12px; font-weight:600; margin-bottom:6px; color:#333; }
+.fb-preview-help { font-size:11px; color:#888; margin-top:4px; }
+.fb-preview-input,
+.fb-preview-select,
+.fb-preview-textarea { width:100%; border:1px solid #d0d0d0; border-radius:3px; padding:8px 10px; background:#fff; font-size:12px; }
+.fb-preview-textarea { min-height:76px; resize:vertical; }
+.fb-preview-note { border-radius:6px; padding:12px; font-size:12px; line-height:1.55; }
+.fb-preview-note.info { background:#f4f8ff; border:1px solid #d7e6ff; color:#224a87; }
+.fb-preview-note.warning { background:#fff7ec; border:1px solid #ffe0b2; color:#8a4b00; }
+.fb-preview-section { font-size:13px; font-weight:700; padding-bottom:6px; border-bottom:1px solid #e8e8e8; }
+.fb-preview-divider { height:1px; background:#e8e8e8; }
+.fb-modal-grid { display:grid; grid-template-columns:120px 1fr; gap:10px 14px; align-items:start; }
+.fb-modal-grid label { font-size:12px; color:#555; padding-top:8px; }
+.fb-modal-grid input,
+.fb-modal-grid select,
+.fb-modal-grid textarea { width:100%; border:1px solid #d0d0d0; border-radius:3px; padding:8px 10px; font:inherit; font-size:13px; }
+.fb-modal-grid textarea { min-height:84px; resize:vertical; }
+.fb-inline-check { display:flex; align-items:center; gap:8px; font-size:12px; color:#555; padding-top:8px; }
+.fb-inline-check input { width:auto; }
+@media (max-width: 980px) {
+  .fb-layout { flex-direction:column; }
+  .fb-type-list { display:flex; width:100%; }
+  .fb-type-btn { border-top:0; border-left:1px solid #e0e0e0; }
+  .fb-type-btn:first-child { border-left:0; }
+}</style>
 </head>
 <body>
 <div class="shell">
@@ -444,15 +493,97 @@
   </div><!-- /body -->
 </div><!-- /shell -->
 
+<div class="modal-backdrop" id="formbuilder-modal" style="display:none">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="formbuilder-modal-title">블록 수정</h3>
+      <button class="modal-close" type="button" onclick="closeFormbuilderModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="fb-modal-grid">
+        <label for="fb-block-label">제목</label>
+        <div><input id="fb-block-label" type="text"></div>
+        <label for="fb-block-type">필드 유형</label>
+        <div id="fb-field-type-row"><select id="fb-block-type"></select></div>
+        <label for="fb-block-description">설명</label>
+        <div><textarea id="fb-block-description"></textarea></div>
+        <label for="fb-block-options">선택 옵션</label>
+        <div id="fb-block-options-row"><input id="fb-block-options" type="text" placeholder="쉼표로 구분"></div>
+        <label>필수 여부</label>
+        <div class="fb-inline-check" id="fb-required-row">
+          <input id="fb-block-required" type="checkbox">
+          <span>담당자 입력 시 필수로 표시</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" type="button" onclick="closeFormbuilderModal()">취소</button>
+      <button class="btn btn-dark" type="button" onclick="saveFormbuilderBlock()">저장</button>
+    </div>
+  </div>
+</div>
 <script src="../shared/data.js"></script>
 <script src="../shared/layout.js"></script>
 <script>
 const TAB = new URLSearchParams(location.search).get('tab') || 'info';
 const TAB_LABELS = {
-  info: '기본 정보', version: '운영본 관리', schema: '분류 체계',
-  statusset: '상태 코드셋', items: '지표 관리', formbuilder: '입력폼 구성',
-  periods: '기간 관리', permissions: '권한 배당'
+  info: '기본 정보',
+  version: '운영본 관리',
+  schema: '분류 체계',
+  statusset: '상태 코드셋',
+  items: '지표 관리',
+  formbuilder: '입력폼 구성',
+  periods: '기간 관리',
+  permissions: '권한 배당'
 };
+
+const FORM_BLOCK_LABELS = {
+  field: 'FIELD',
+  info_card: 'INFO',
+  warning_card: 'WARN',
+  section_title: 'SECTION',
+  plain_text: 'TEXT',
+  divider: 'DIVIDER'
+};
+
+const FIELD_TYPE_LABELS = {
+  number: '숫자 입력',
+  text: '텍스트 입력',
+  textarea: '긴 텍스트',
+  select: '코드셋 선택',
+  calculated: '자동 계산'
+};
+
+const FORM_LAYOUTS = {
+  quant: {
+    label: '정량 지표 (quant)',
+    description: '계획값, 실적값, 상태 등을 함께 입력하는 기본 레이아웃',
+    blocks: [
+      { id: 'quant-field-plan', type: 'field', label: '계획값', fieldType: 'number', required: true, description: '해당 기간의 목표값을 입력합니다.' },
+      { id: 'quant-field-actual', type: 'field', label: '실적값', fieldType: 'number', required: true, description: '확정된 실적 수치를 입력합니다.' },
+      { id: 'quant-info-guide', type: 'info_card', label: '입력 안내', description: '실적값은 증빙 자료와 동일한 기준으로 작성합니다.' },
+      { id: 'quant-field-rate', type: 'field', label: '달성률', fieldType: 'calculated', required: false, description: '계획값과 실적값으로 자동 계산됩니다.' },
+      { id: 'quant-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, options: ['정상', '지연', '보완 필요'], description: '상태 코드셋을 선택합니다.' },
+      { id: 'quant-field-note', type: 'field', label: '비고', fieldType: 'textarea', required: false, description: '특이사항을 필요 시 입력합니다.' }
+    ]
+  },
+  qual: {
+    label: '정성 지표 (qual)',
+    description: '서술형 설명과 근거 중심의 입력 레이아웃',
+    blocks: [
+      { id: 'qual-section-overview', type: 'section_title', label: '실적 요약' },
+      { id: 'qual-text-summary', type: 'field', label: '주요 실적', fieldType: 'textarea', required: true, description: '핵심 성과와 추진 내용을 서술합니다.' },
+      { id: 'qual-warning-lock', type: 'warning_card', label: '확정 전 점검', description: '최종 확정 후에는 수정이 제한되므로 제출 전에 근거 자료를 확인해 주세요.' },
+      { id: 'qual-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, options: ['계획', '진행 중', '완료', '보류'], description: '진행 단계를 선택합니다.' },
+      { id: 'qual-divider-1', type: 'divider', label: '' },
+      { id: 'qual-field-evidence', type: 'field', label: '증빙 링크', fieldType: 'text', required: false, description: '공유 문서 또는 첨부 위치를 적습니다.' }
+    ]
+  }
+};
+
+let activeFormType = 'quant';
+let editingBlockRef = null;
+let draggingBlockId = null;
 
 window.PAGE_CONFIG = {
   role: 'adm',
@@ -462,32 +593,324 @@ window.PAGE_CONFIG = {
 };
 initLayout();
 
-// ctx-banner
 document.getElementById('ctx-progname').textContent = APP.currentProgram.name;
 document.getElementById('ctx-tabname').textContent = TAB_LABELS[TAB] || TAB;
-
-// page title
 document.getElementById('page-title').textContent = TAB_LABELS[TAB] || '사업 설정';
 document.getElementById('page-sub').textContent = APP.currentProgram.name + ' · ' + APP.currentProgram.version;
-
-// activate tab panel
 document.getElementById('panel-' + TAB)?.classList.add('active');
 
-// fill org field
 const orgField = document.getElementById('info-orgfield');
 if (orgField) orgField.value = APP.user.org;
 
-// schema level card selection
 function selectLevel(n, el) {
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.level-card').forEach(card => card.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('schema-names').style.display = n === 0 ? 'none' : '';
 }
 
-// dept chip removal
 function removeChip(el) {
   el.closest('.dept-chip').remove();
 }
+
+function initFormbuilder() {
+  const panel = document.getElementById('panel-formbuilder');
+  if (!panel) return;
+
+  panel.innerHTML = `
+    <div class="info-banner" style="margin-bottom:16px">지표 유형별 입력 필드를 구성합니다. 담당자가 실적을 입력할 때 실제로 보게 되는 입력폼입니다.</div>
+    <div class="fb-layout">
+      <div style="flex:0 0 220px">
+        <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">지표 유형</div>
+        <div class="fb-type-list" id="formbuilder-type-list"></div>
+      </div>
+      <div style="flex:1">
+        <div class="fb-panel">
+          <div class="fb-toolbar">
+            <div class="fb-toolbar-left">
+              <button class="btn btn-sm btn-dark" type="button" onclick="addFieldBlock()">+ 필드 추가</button>
+              <button class="btn btn-sm" type="button" onclick="addContentBlock('info_card')">안내 카드</button>
+              <button class="btn btn-sm" type="button" onclick="addContentBlock('warning_card')">경고 카드</button>
+              <button class="btn btn-sm" type="button" onclick="addContentBlock('section_title')">구획 제목</button>
+              <button class="btn btn-sm" type="button" onclick="addContentBlock('plain_text')">설명문</button>
+              <button class="btn btn-sm btn-ghost" type="button" onclick="addContentBlock('divider')">구분선</button>
+            </div>
+            <div class="fb-toolbar-right" id="formbuilder-summary"></div>
+          </div>
+          <div id="formbuilder-list" class="fb-drop-target"></div>
+          <div class="fb-preview">
+            <div class="fb-preview-title">미리보기</div>
+            <div class="fb-preview-card" id="formbuilder-preview"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  renderFormbuilder();
+
+  document.getElementById('fb-block-type')?.addEventListener('change', event => {
+    const showOptions = event.target.value === 'select';
+    const optionLabel = document.querySelector('label[for="fb-block-options"]');
+    document.getElementById('fb-block-options-row').style.display = showOptions ? '' : 'none';
+    if (optionLabel) optionLabel.style.display = showOptions ? '' : 'none';
+  });
+}
+
+function renderFormbuilderTypes() {
+  const el = document.getElementById('formbuilder-type-list');
+  if (!el) return;
+  el.innerHTML = Object.entries(FORM_LAYOUTS).map(([key, layout]) => `
+    <button type="button" class="fb-type-btn${key === activeFormType ? ' active' : ''}" onclick="setFormType('${key}')">${layout.label}</button>
+  `).join('');
+}
+
+function setFormType(type) {
+  activeFormType = type;
+  renderFormbuilder();
+}
+
+function renderFormbuilder() {
+  renderFormbuilderTypes();
+  renderFormbuilderList();
+  renderFormbuilderPreview();
+}
+
+function renderFormbuilderList() {
+  const listEl = document.getElementById('formbuilder-list');
+  const summaryEl = document.getElementById('formbuilder-summary');
+  if (!listEl || !summaryEl) return;
+
+  const layout = FORM_LAYOUTS[activeFormType];
+  const blocks = layout.blocks;
+  summaryEl.textContent = `${layout.label} · 블록 ${blocks.length}개`;
+
+  if (!blocks.length) {
+    listEl.innerHTML = '<div class="fb-empty">아직 배치된 블록이 없습니다. 위 버튼으로 필드나 안내 블록을 추가해 주세요.</div>';
+    return;
+  }
+
+  listEl.innerHTML = blocks.map((block, index) => `
+    <div class="form-block" draggable="true" data-block-id="${block.id}" ondragstart="handleBlockDragStart(event)" ondragover="handleBlockDragOver(event)" ondrop="handleBlockDrop(event)">
+      <span class="drag-handle">⋮⋮</span>
+      <div class="block-type">${FORM_BLOCK_LABELS[block.type] || block.type}</div>
+      <div class="block-content">
+        <div><strong>${escapeHtml(block.label || getBlockTitle(block))}</strong></div>
+        <div>${escapeHtml(getBlockSummary(block))}</div>
+        <div class="fb-meta">표시 순서 ${index + 1}</div>
+      </div>
+      <div class="block-actions">
+        <button class="btn btn-sm" type="button" onclick="openEditBlock('${block.id}')">수정</button>
+        <button class="btn btn-sm btn-ghost" type="button" onclick="removeFormbuilderBlock('${block.id}')">삭제</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFormbuilderPreview() {
+  const previewEl = document.getElementById('formbuilder-preview');
+  if (!previewEl) return;
+  const layout = FORM_LAYOUTS[activeFormType];
+  previewEl.innerHTML = `
+    <div style="font-size:12px;color:#666;margin-bottom:12px">${layout.description}</div>
+    ${layout.blocks.map(renderPreviewBlock).join('')}
+  `;
+}
+
+function renderPreviewBlock(block) {
+  if (block.type === 'divider') return '<div class="fb-preview-block"><div class="fb-preview-divider"></div></div>';
+  if (block.type === 'section_title') return `<div class="fb-preview-block"><div class="fb-preview-section">${escapeHtml(block.label || '구획 제목')}</div></div>`;
+  if (block.type === 'info_card' || block.type === 'warning_card') {
+    const noteClass = block.type === 'info_card' ? 'info' : 'warning';
+    return `<div class="fb-preview-block"><div class="fb-preview-note ${noteClass}"><strong>${escapeHtml(block.label || getBlockTitle(block))}</strong><div style="margin-top:4px">${escapeHtml(block.description || '')}</div></div></div>`;
+  }
+  if (block.type === 'plain_text') {
+    return `<div class="fb-preview-block"><div style="font-size:12px;line-height:1.6;color:#555">${escapeHtml(block.description || '')}</div></div>`;
+  }
+
+  return `
+    <div class="fb-preview-block">
+      <div class="fb-preview-label">${escapeHtml(block.label || '필드')} ${block.required ? '<span style="color:#B71C1C">*</span>' : ''}</div>
+      ${renderFieldPreviewInput(block)}
+      ${block.description ? `<div class="fb-preview-help">${escapeHtml(block.description)}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderFieldPreviewInput(block) {
+  switch (block.fieldType) {
+    case 'textarea':
+      return '<textarea class="fb-preview-textarea" placeholder="입력 예시"></textarea>';
+    case 'select':
+      return `<select class="fb-preview-select"><option>선택하세요</option>${(block.options || []).map(option => `<option>${escapeHtml(option)}</option>`).join('')}</select>`;
+    case 'calculated':
+      return '<input class="fb-preview-input" type="text" value="자동 계산" readonly>';
+    case 'number':
+      return '<input class="fb-preview-input" type="number" placeholder="숫자 입력">';
+    default:
+      return '<input class="fb-preview-input" type="text" placeholder="텍스트 입력">';
+  }
+}
+
+function addFieldBlock() {
+  const id = createBlockId('field');
+  FORM_LAYOUTS[activeFormType].blocks.push({
+    id,
+    type: 'field',
+    label: '새 필드',
+    fieldType: 'text',
+    required: false,
+    description: ''
+  });
+  renderFormbuilder();
+  openEditBlock(id);
+}
+
+function addContentBlock(type) {
+  const block = {
+    id: createBlockId(type),
+    type,
+    label: getDefaultLabel(type),
+    description: ''
+  };
+  FORM_LAYOUTS[activeFormType].blocks.push(block);
+  renderFormbuilder();
+  if (type !== 'divider') openEditBlock(block.id);
+}
+
+function openEditBlock(blockId) {
+  const block = FORM_LAYOUTS[activeFormType].blocks.find(item => item.id === blockId);
+  if (!block) return;
+  editingBlockRef = { type: activeFormType, id: blockId };
+
+  document.getElementById('formbuilder-modal-title').textContent = `${getBlockTitle(block)} 수정`;
+  document.getElementById('fb-block-label').value = block.label || '';
+  document.getElementById('fb-block-description').value = block.description || '';
+  document.getElementById('fb-block-required').checked = Boolean(block.required);
+  document.getElementById('fb-block-type').innerHTML = Object.entries(FIELD_TYPE_LABELS).map(([value, label]) => `
+    <option value="${value}"${block.fieldType === value ? ' selected' : ''}>${label}</option>
+  `).join('');
+  document.getElementById('fb-block-options').value = (block.options || []).join(', ');
+
+  const typeLabel = document.querySelector('label[for="fb-block-type"]');
+  const optionLabel = document.querySelector('label[for="fb-block-options"]');
+  const isField = block.type === 'field';
+  const showOptions = isField && block.fieldType === 'select';
+
+  document.getElementById('fb-field-type-row').style.display = isField ? '' : 'none';
+  document.getElementById('fb-required-row').style.display = isField ? 'flex' : 'none';
+  document.getElementById('fb-block-options-row').style.display = showOptions ? '' : 'none';
+  if (typeLabel) typeLabel.style.display = isField ? '' : 'none';
+  if (optionLabel) optionLabel.style.display = showOptions ? '' : 'none';
+
+  document.getElementById('formbuilder-modal').style.display = 'flex';
+}
+
+function closeFormbuilderModal() {
+  document.getElementById('formbuilder-modal').style.display = 'none';
+  editingBlockRef = null;
+}
+
+function saveFormbuilderBlock() {
+  if (!editingBlockRef) return;
+  const block = FORM_LAYOUTS[editingBlockRef.type].blocks.find(item => item.id === editingBlockRef.id);
+  if (!block) return;
+
+  block.label = document.getElementById('fb-block-label').value.trim();
+  block.description = document.getElementById('fb-block-description').value.trim();
+
+  if (block.type === 'field') {
+    block.fieldType = document.getElementById('fb-block-type').value;
+    block.required = document.getElementById('fb-block-required').checked;
+    block.options = block.fieldType === 'select'
+      ? document.getElementById('fb-block-options').value.split(',').map(item => item.trim()).filter(Boolean)
+      : [];
+  }
+
+  closeFormbuilderModal();
+  renderFormbuilder();
+}
+
+function removeFormbuilderBlock(blockId) {
+  FORM_LAYOUTS[activeFormType].blocks = FORM_LAYOUTS[activeFormType].blocks.filter(block => block.id !== blockId);
+  renderFormbuilder();
+}
+
+function handleBlockDragStart(event) {
+  draggingBlockId = event.currentTarget.dataset.blockId;
+  event.dataTransfer.effectAllowed = 'move';
+}
+
+function handleBlockDragOver(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+}
+
+function handleBlockDrop(event) {
+  event.preventDefault();
+  const targetId = event.currentTarget.dataset.blockId;
+  if (!draggingBlockId || draggingBlockId === targetId) return;
+
+  const blocks = FORM_LAYOUTS[activeFormType].blocks;
+  const fromIndex = blocks.findIndex(block => block.id === draggingBlockId);
+  const toIndex = blocks.findIndex(block => block.id === targetId);
+  if (fromIndex < 0 || toIndex < 0) return;
+
+  const moved = blocks.splice(fromIndex, 1)[0];
+  blocks.splice(toIndex, 0, moved);
+  draggingBlockId = null;
+  renderFormbuilder();
+}
+
+function createBlockId(type) {
+  return `${activeFormType}-${type}-${Date.now()}`;
+}
+
+function getDefaultLabel(type) {
+  switch (type) {
+    case 'info_card': return '안내 카드';
+    case 'warning_card': return '경고 카드';
+    case 'section_title': return '구획 제목';
+    case 'plain_text': return '설명문';
+    default: return '';
+  }
+}
+
+function getBlockTitle(block) {
+  switch (block.type) {
+    case 'field': return '필드';
+    case 'info_card': return '안내 카드';
+    case 'warning_card': return '경고 카드';
+    case 'section_title': return '구획 제목';
+    case 'plain_text': return '설명문';
+    case 'divider': return '구분선';
+    default: return '블록';
+  }
+}
+
+function getBlockSummary(block) {
+  if (block.type === 'field') {
+    const parts = [FIELD_TYPE_LABELS[block.fieldType] || block.fieldType];
+    parts.push(block.required ? '필수' : '선택');
+    if (block.description) parts.push(block.description);
+    return parts.join(' · ');
+  }
+  if (block.type === 'divider') return '폼 구간을 시각적으로 구분합니다.';
+  return block.description || `${getBlockTitle(block)} 블록입니다.`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+initFormbuilder();
 </script>
 </body>
 </html>
+
+
+
