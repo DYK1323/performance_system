@@ -89,10 +89,14 @@ function renderAdmSidebar(cfg) {
         { id: 'info',        label: '기본 정보'    },
         { id: 'version',     label: '운영본 관리'  },
         { id: 'schema',      label: '분류 체계'    },
+        { id: 'cycles',      label: '점검 주기'    },
         { id: 'statusset',   label: '상태 코드셋'  },
-        { id: 'items',       label: '지표 관리'    },
+        { id: 'managed',     label: '기준 항목 풀' },
+        { id: 'items',       label: '운영 항목'    },
+        { id: 'groups',      label: '항목 묶음'    },
         { id: 'formbuilder', label: '입력폼 구성'  },
         { id: 'periods',     label: '기간 관리'    },
+        { id: 'integrations', label: '연계 · 산식' },
         { id: 'permissions', label: '권한 배당'    },
       ];
       return `

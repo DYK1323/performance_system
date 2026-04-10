@@ -293,31 +293,73 @@
         </div>
       </div>
 
+      <!-- ── 점검 주기 ── -->
+      <div class="tab-panel" id="panel-cycles">
+        <div class="info-banner" style="margin-bottom:16px">MonitoringCycle은 항목 속성입니다. 같은 기간이라도 항목마다 다른 주기를 가질 수 있고, Period에는 어떤 주기를 열어둘지 연결합니다.</div>
+        <div style="margin-bottom:12px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 점검 주기 추가 (프로토타입)')">+ 점검 주기 추가</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>주기명</th><th>유형</th><th>설명</th><th>연결 기간</th><th>사용 항목 수</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">분기별 점검</td>
+              <td style="font-size:12px">quarterly</td>
+              <td style="font-size:12px">학기 중간/말에 분기 단위 실적 확인</td>
+              <td style="font-size:12px">2026년 1차 점검, 2026년 2차 점검</td>
+              <td>31</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">연도말 확정</td>
+              <td style="font-size:12px">annual</td>
+              <td style="font-size:12px">최종 평가용 연간 확정치 입력</td>
+              <td style="font-size:12px">2026 최종 점검</td>
+              <td>19</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">수시 입력</td>
+              <td style="font-size:12px">adhoc</td>
+              <td style="font-size:12px">이슈 발생 시 별도 기간에만 입력 허용</td>
+              <td style="font-size:12px">현장실사 대응 기간</td>
+              <td>8</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <!-- ── 상태 코드셋 ── -->
       <div class="tab-panel" id="panel-statusset">
-        <div class="info-banner" style="margin-bottom:16px">지표 실적 입력 시 사용할 상태 코드를 정의합니다. 코드는 지표별로 선택 적용합니다.</div>
+        <div class="info-banner" style="margin-bottom:16px">StatusSet은 프로그램 기본값 또는 기간 유형(typeCode)별로 둘 수 있습니다. 운영 항목은 자신이 참조할 코드셋을 별도로 선택합니다.</div>
         <div style="margin-bottom:12px">
           <button class="btn btn-sm btn-dark" onclick="alert('새 코드셋 추가 (프로토타입)')">+ 코드셋 추가</button>
         </div>
         <table class="data-table">
           <thead>
-            <tr><th>코드셋 명</th><th>코드 목록</th><th>사용 지표 수</th><th></th></tr>
+            <tr><th>코드셋 명</th><th>적용 범위</th><th>코드 목록</th><th>사용 항목 수</th><th></th></tr>
           </thead>
           <tbody>
             <tr>
               <td class="td-name">기본 달성 상태</td>
+              <td style="font-size:12px">Program 기본값</td>
               <td style="font-size:12px">달성 · 부분달성 · 미달성 · 해당없음</td>
               <td>24</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
               <td class="td-name">추진 단계</td>
+              <td style="font-size:12px">typeCode = interim</td>
               <td style="font-size:12px">계획 · 진행중 · 완료 · 보류</td>
               <td>18</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
               <td class="td-name">정성 등급</td>
+              <td style="font-size:12px">typeCode = final</td>
               <td style="font-size:12px">우수 · 보통 · 미흡</td>
               <td>16</td>
               <td><button class="btn btn-sm">수정</button></td>
@@ -326,24 +368,81 @@
         </table>
       </div>
 
-      <!-- ── 지표 관리 ── -->
-      <div class="tab-panel" id="panel-items">
+      <!-- ── 기준 항목 풀 ── -->
+      <div class="tab-panel" id="panel-managed">
+        <div class="info-banner" style="margin-bottom:16px">ManagedItem은 재사용 가능한 기준 항목 풀입니다. 실제 운영본에 반영되면 ProgramVersionItem으로 고정됩니다.</div>
         <div class="items-toolbar">
-          <input type="text" placeholder="지표명 · 코드 검색">
+          <input type="text" placeholder="기준 항목명 · 코드 검색">
+          <select><option>전체 유형</option><option>정량</option><option>정성</option></select>
+          <select><option>전체 수집 방식</option><option>manual</option><option>api</option><option>hybrid</option></select>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 기준 항목 추가 (프로토타입)')">+ 기준 항목 추가</button>
+          <button class="btn btn-sm btn-ghost" onclick="alert('템플릿 기반 생성 (프로토타입)')">템플릿 적용</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:90px">원형 코드</th>
+              <th>기준 항목명</th>
+              <th>유형</th>
+              <th>주기</th>
+              <th>수집 방식</th>
+              <th>재사용 운영본</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;color:#888">MI-001</td>
+              <td class="td-name">학부 정원 충원율</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td style="font-size:12px">분기별 점검</td>
+              <td style="font-size:12px">manual</td>
+              <td style="font-size:12px">2024, 2025, 2026</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">MI-014</td>
+              <td class="td-name">취업률</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td style="font-size:12px">연도말 확정</td>
+              <td style="font-size:12px">hybrid</td>
+              <td style="font-size:12px">2025, 2026</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">MI-021</td>
+              <td class="td-name">교육과정 개선 추진 현황</td>
+              <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
+              <td style="font-size:12px">분기별 점검</td>
+              <td style="font-size:12px">manual</td>
+              <td style="font-size:12px">2026</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── 운영 항목 ── -->
+      <div class="tab-panel" id="panel-items">
+        <div class="info-banner" style="margin-bottom:16px">ProgramVersionItem은 선택한 운영본에서 실제로 사용하는 항목 스냅샷입니다. 소속 분류, 담당 부서, 상태셋, 산식은 연도별로 달라질 수 있습니다.</div>
+        <div class="items-toolbar">
+          <input type="text" placeholder="운영 항목명 · 코드 검색">
           <select><option>전체 유형</option><option>정량</option><option>정성</option></select>
           <select><option>전체 영역</option><option>영역 1. 교육혁신</option><option>영역 2. 연구역량</option><option>영역 3. 대외협력</option></select>
-          <button class="btn btn-sm btn-dark" onclick="alert('새 지표 추가 (프로토타입)')">+ 지표 추가</button>
-          <button class="btn btn-sm btn-ghost" onclick="alert('Excel 업로드 (프로토타입)')">Excel 업로드</button>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 운영 항목 추가 (프로토타입)')">+ 운영 항목 추가</button>
+          <button class="btn btn-sm btn-ghost" onclick="alert('기준 항목에서 불러오기 (프로토타입)')">기준 항목 불러오기</button>
         </div>
         <table class="data-table">
           <thead>
             <tr>
               <th style="width:80px">코드</th>
-              <th>지표명</th>
+              <th>운영 항목명</th>
               <th>유형</th>
               <th>분류</th>
-              <th>코드셋</th>
-              <th>가중치</th>
+              <th>기준 항목</th>
+              <th>담당 부서</th>
+              <th>주기</th>
+              <th>수집 방식</th>
               <th></th>
             </tr>
           </thead>
@@ -353,8 +452,10 @@
               <td class="td-name">학부 정원 충원율</td>
               <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">기본 달성 상태</td>
-              <td style="font-size:12px">5%</td>
+              <td style="font-size:12px">MI-001</td>
+              <td style="font-size:12px">교무처</td>
+              <td style="font-size:12px">분기별 점검</td>
+              <td style="font-size:12px">manual</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
@@ -362,8 +463,10 @@
               <td class="td-name">신입생 충원율</td>
               <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">기본 달성 상태</td>
-              <td style="font-size:12px">5%</td>
+              <td style="font-size:12px">MI-002</td>
+              <td style="font-size:12px">입학처</td>
+              <td style="font-size:12px">분기별 점검</td>
+              <td style="font-size:12px">manual</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
@@ -371,8 +474,10 @@
               <td class="td-name">교육과정 개선 추진 현황</td>
               <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">추진 단계</td>
-              <td style="font-size:12px">3%</td>
+              <td style="font-size:12px">MI-021</td>
+              <td style="font-size:12px">교무처</td>
+              <td style="font-size:12px">분기별 점검</td>
+              <td style="font-size:12px">manual</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
@@ -380,13 +485,46 @@
               <td class="td-name">취업률</td>
               <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-2</td>
-              <td style="font-size:12px">기본 달성 상태</td>
-              <td style="font-size:12px">8%</td>
+              <td style="font-size:12px">MI-014</td>
+              <td style="font-size:12px">학생처</td>
+              <td style="font-size:12px">연도말 확정</td>
+              <td style="font-size:12px">hybrid</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
           </tbody>
         </table>
-        <div style="margin-top:8px;font-size:12px;color:#999">전체 58개 지표 중 4개 표시</div>
+        <div style="margin-top:8px;font-size:12px;color:#999">전체 58개 운영 항목 중 4개 표시 · 현재 운영본: 2026 운영본</div>
+      </div>
+
+      <!-- ── 항목 묶음 ── -->
+      <div class="tab-panel" id="panel-groups">
+        <div class="info-banner" style="margin-bottom:16px">복수 지표형은 별도 타입을 만들지 않고 ItemGroup으로 묶습니다. 묶음은 기준일 스냅샷과 집계 로직의 기준이 됩니다.</div>
+        <div style="margin-bottom:12px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 항목 묶음 추가 (프로토타입)')">+ 항목 묶음 추가</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>묶음명</th><th>소속 분류</th><th>집계 방식</th><th>구성 항목</th><th>기준일 스냅샷</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">취업률 세부지표</td>
+              <td style="font-size:12px">영역 1 › 전략 1-2</td>
+              <td style="font-size:12px">weighted_avg</td>
+              <td style="font-size:12px">전체 · 남 · 여 · 학과별</td>
+              <td style="font-size:12px">2건</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">교육혁신 핵심성과</td>
+              <td style="font-size:12px">영역 1</td>
+              <td style="font-size:12px">status_rollup</td>
+              <td style="font-size:12px">12개 항목</td>
+              <td style="font-size:12px">1건</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- ── 입력폼 구성 ── -->
@@ -419,19 +557,21 @@
 
       <!-- ── 기간 관리 ── -->
       <div class="tab-panel" id="panel-periods">
-        <div class="info-banner" style="margin-bottom:16px">점검 기간을 설정합니다. 기간별로 담당자 배당과 실적 입력이 독립적으로 운영됩니다.</div>
+        <div class="info-banner" style="margin-bottom:16px">Period는 입력·집계 기준 기간입니다. 기간 유형(typeCode)과 연결된 점검 주기 조합에 따라 실제 입력 가능 범위가 정해집니다.</div>
         <div style="margin-bottom:12px">
           <button class="btn btn-sm btn-dark" onclick="alert('새 기간 추가 (프로토타입)')">+ 기간 추가</button>
         </div>
         <table class="data-table">
           <thead>
-            <tr><th>기간명</th><th>시작일</th><th>마감일</th><th>상태</th><th>입력률</th><th></th></tr>
+            <tr><th>기간명</th><th>typeCode</th><th>시작일</th><th>마감일</th><th>연결 주기</th><th>상태</th><th>입력률</th><th></th></tr>
           </thead>
           <tbody>
             <tr>
               <td class="td-name">2026년 1차 점검</td>
+              <td style="font-size:12px">interim</td>
               <td style="font-size:12px">2026-03-01</td>
               <td style="font-size:12px">2026-04-12</td>
+              <td style="font-size:12px">분기별 점검, 수시 입력</td>
               <td><span class="sb s-going"><span class="dot"></span>진행 중</span></td>
               <td>
                 83.8%
@@ -441,8 +581,10 @@
             </tr>
             <tr>
               <td class="td-name">2026년 2차 점검</td>
+              <td style="font-size:12px">interim</td>
               <td style="font-size:12px">2026-09-01</td>
               <td style="font-size:12px">2026-10-15</td>
+              <td style="font-size:12px">분기별 점검</td>
               <td><span class="sb s-empty"><span class="dot"></span>예정</span></td>
               <td style="color:#bbb">-</td>
               <td><button class="btn btn-sm">설정</button></td>
@@ -451,9 +593,55 @@
         </table>
       </div>
 
+      <!-- ── 연계 · 산식 ── -->
+      <div class="tab-panel" id="panel-integrations">
+        <div class="info-banner" style="margin-bottom:16px">v1은 manual 중심이지만, v2 확장을 위해 DataSource, MetricMapping, MetricFormula, finalValue 결정 구조를 미리 분리합니다.</div>
+        <div class="perm-section">
+          <h4>데이터 소스</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>시스템명</th><th>상태</th><th>연결 항목</th><th>최근 동기화</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-name">학생정보시스템</td>
+                <td><span class="sb s-empty"><span class="dot"></span>준비 중</span></td>
+                <td style="font-size:12px">취업률, 재학생 충원율</td>
+                <td style="font-size:12px">미연결</td>
+                <td><button class="btn btn-sm">설정</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="perm-section">
+          <h4>산식 · 최종값 결정</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>운영 항목</th><th>collectionMode</th><th>산식</th><th>최종 반영값</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-name">학부 정원 충원율</td>
+                <td style="font-size:12px">manual</td>
+                <td style="font-size:12px">(actual / goal) * 100</td>
+                <td style="font-size:12px">manualValue → finalValue</td>
+                <td><button class="btn btn-sm">수정</button></td>
+              </tr>
+              <tr>
+                <td class="td-name">취업률</td>
+                <td style="font-size:12px">hybrid</td>
+                <td style="font-size:12px">apiValue와 manualValue 비교 후 선택</td>
+                <td style="font-size:12px">관리자 확인 후 finalValue 확정</td>
+                <td><button class="btn btn-sm">수정</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- ── 권한 배당 ── -->
       <div class="tab-panel" id="panel-permissions">
-        <div class="info-banner" style="margin-bottom:16px">부서·사용자별로 사업 접근 권한을 배당합니다. program_admin은 설정 전체에 접근 가능합니다.</div>
+        <div class="info-banner" style="margin-bottom:16px">ProgramRoleBinding은 역할뿐 아니라 범위(scopeType)까지 함께 관리합니다. 부서 권한은 Program 전체 또는 분류 노드 단위로, external_reviewer는 개인 단위 Program 전체 조회만 허용합니다.</div>
         <div class="perm-section">
           <h4>program_admin (설정 관리)</h4>
           <div id="perm-admin-chips">
@@ -465,7 +653,7 @@
           </div>
         </div>
         <div class="perm-section">
-          <h4>data_entry (실적 입력)</h4>
+          <h4>department_editor (실적 입력)</h4>
           <div id="perm-entry-chips">
             <span class="dept-chip">교무처 <span class="rm" onclick="removeChip(this)">×</span></span>
             <span class="dept-chip">학생처 <span class="rm" onclick="removeChip(this)">×</span></span>
@@ -478,7 +666,7 @@
           </div>
         </div>
         <div class="perm-section">
-          <h4>viewer (조회 전용)</h4>
+          <h4>department_viewer (조회 전용)</h4>
           <div id="perm-view-chips">
             <span class="dept-chip">총장실 <span class="rm" onclick="removeChip(this)">×</span></span>
           </div>
@@ -486,6 +674,37 @@
             <input type="text" placeholder="부서명 검색" style="font-size:12px;padding:6px 10px;border:1px solid #d0d0d0;border-radius:3px;width:180px">
             <button class="btn btn-sm btn-dark" onclick="alert('추가 (프로토타입)')">추가</button>
           </div>
+        </div>
+        <div class="perm-section">
+          <h4>범위별 권한 미리보기</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>대상</th><th>역할</th><th>scopeType</th><th>scopeId / 범위</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-name">교무처</td>
+                <td style="font-size:12px">department_editor</td>
+                <td style="font-size:12px">classification_node</td>
+                <td style="font-size:12px">영역 1. 교육혁신</td>
+                <td><button class="btn btn-sm">수정</button></td>
+              </tr>
+              <tr>
+                <td class="td-name">총장실</td>
+                <td style="font-size:12px">department_viewer</td>
+                <td style="font-size:12px">program</td>
+                <td style="font-size:12px">전체 사업</td>
+                <td><button class="btn btn-sm btn-ghost">조회</button></td>
+              </tr>
+              <tr>
+                <td class="td-name">외부 평가위원 박OO</td>
+                <td style="font-size:12px">external_reviewer</td>
+                <td style="font-size:12px">program</td>
+                <td style="font-size:12px">전체 사업 읽기 전용</td>
+                <td><button class="btn btn-sm">설정</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -530,10 +749,14 @@ const TAB_LABELS = {
   info: '기본 정보',
   version: '운영본 관리',
   schema: '분류 체계',
+  cycles: '점검 주기',
   statusset: '상태 코드셋',
-  items: '지표 관리',
+  managed: '기준 항목 풀',
+  items: '운영 항목',
+  groups: '항목 묶음',
   formbuilder: '입력폼 구성',
   periods: '기간 관리',
+  integrations: '연계 · 산식',
   permissions: '권한 배당'
 };
 
