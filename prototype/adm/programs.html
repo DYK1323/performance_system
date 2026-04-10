@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사업 목록 - 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div class="gnb">
+    <span class="brand">성과관리</span>
+    <nav>
+      <a href="home.html">대시보드</a>
+      <a href="programs.html" class="active">사업 관리</a>
+      <a href="home.html">입력 현황</a>
+      <a href="upload.html">업로드 이력</a>
+      <a href="confirm.html">활동 로그</a>
+    </nav>
+    <div class="gnb-right">
+      <span class="org-label">기획처 기획조정팀</span>
+      <span class="user-label">홍길동</span>
+      <span class="role-badge admin">관리자</span>
+    </div>
+  </div>
+
+  <div class="ctx-banner">
+    <span class="ctx-current">사업 관리</span>
+    <span class="sep">›</span>
+    <span>전체 사업 목록</span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sidebar-section-label">사업 관리</div>
+      <a href="programs.html" class="active">전체 사업 목록</a>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">안내</div>
+      <div class="sidebar-note">사업을 선택하면 해당 사업의 기본 정보 설정으로 이동합니다. 새 사업 만들기는 우측 상단 버튼을 사용하세요.</div>
+    </nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>전체 사업 목록</h2>
+        <span class="page-sub">내가 주관 부서인 사업 · ownerOrgId 기준</span>
+        <div class="header-actions">
+          <a href="program-new.html"><button class="btn btn-sm btn-dark">+ 새 사업 만들기</button></a>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:240px">사업명</th>
+            <th>운영 주관 부서</th>
+            <th>상태</th>
+            <th class="td-r">운영본</th>
+            <th>현재 기간</th>
+            <th>최근 활동</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-name">2026 중장기발전계획</td>
+            <td style="font-size:12px">기획처 기획조정팀</td>
+            <td><span class="sb s-going"><span class="dot"></span>운영 중</span></td>
+            <td class="td-r">3</td>
+            <td style="font-size:12px">2026년 1차 점검 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#999">2026-04-10</td>
+            <td>
+              <a href="program.html"><button class="btn btn-sm btn-dark">설정</button></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="td-name">2026 자체평가</td>
+            <td style="font-size:12px">기획처 기획조정팀</td>
+            <td><span class="sb s-going"><span class="dot"></span>운영 중</span></td>
+            <td class="td-r">1</td>
+            <td style="font-size:12px">2026년 1차 점검 <span class="due-label">D-2</span></td>
+            <td style="font-size:11px;color:#999">2026-04-09</td>
+            <td>
+              <a href="program.html"><button class="btn btn-sm btn-dark">설정</button></a>
+            </td>
+          </tr>
+          <tr class="row-done">
+            <td class="td-name" style="color:#aaa">2025 중장기발전계획</td>
+            <td style="font-size:12px;color:#bbb">기획처 기획조정팀</td>
+            <td><span class="sb s-empty"><span class="dot"></span>완료</span></td>
+            <td class="td-r" style="color:#bbb">2</td>
+            <td style="font-size:12px;color:#bbb">2025년 최종 점검</td>
+            <td style="font-size:11px;color:#bbb">2025-12-20</td>
+            <td>
+              <button class="btn btn-sm btn-ghost">조회</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
