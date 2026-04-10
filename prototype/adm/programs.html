@@ -3,26 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>사업 목록 - 성과관리 플랫폼</title>
+<title>사업 관리 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
+<style>
+.new-form { max-width:600px; display:none; margin-top:24px; padding:20px; border:1px solid #e8e8e8; border-radius:6px; background:#fafafa; }
+.new-form.open { display:block; }
+</style>
 </head>
 <body>
 <div class="shell">
-  <div class="gnb">
-    <span class="brand">성과관리</span>
-    <nav>
-      <a href="home.html">대시보드</a>
-      <a href="programs.html" class="active">사업 관리</a>
-      <a href="home.html">입력 현황</a>
-      <a href="upload.html">업로드 이력</a>
-      <a href="confirm.html">활동 로그</a>
-    </nav>
-    <div class="gnb-right">
-      <span class="org-label">기획처 기획조정팀</span>
-      <span class="user-label">홍길동</span>
-      <span class="role-badge admin">관리자</span>
-    </div>
-  </div>
+  <div id="gnb"></div>
 
   <div class="ctx-banner">
     <span class="ctx-current">사업 관리</span>
@@ -31,25 +21,59 @@
   </div>
 
   <div class="body">
-    <nav class="sidebar">
-      <div class="sidebar-section-label">사업 관리</div>
-      <a href="programs.html" class="active">전체 사업 목록</a>
-
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">안내</div>
-      <div class="sidebar-note">사업을 선택하면 해당 사업의 기본 정보 설정으로 이동합니다. 새 사업 만들기는 우측 상단 버튼을 사용하세요.</div>
-    </nav>
+    <nav class="sidebar" id="sidebar"></nav>
 
     <div class="content">
       <div class="page-header">
         <h2>전체 사업 목록</h2>
-        <span class="page-sub">내가 주관 부서인 사업 · ownerOrgId 기준</span>
+        <span class="page-sub">ownerOrgId 기준 내 사업</span>
         <div class="header-actions">
-          <a href="program-new.html"><button class="btn btn-sm btn-dark">+ 새 사업 만들기</button></a>
+          <button class="btn btn-sm btn-dark" onclick="toggleNewForm()">+ 새 사업 만들기</button>
         </div>
       </div>
 
-      <table class="data-table">
+      <!-- 새 사업 생성 폼 (인라인) -->
+      <div class="new-form" id="new-form">
+        <div class="page-header" style="margin-bottom:14px">
+          <h2 style="font-size:14px">새 사업 만들기</h2>
+          <div class="header-actions">
+            <button class="btn btn-sm btn-ghost" onclick="toggleNewForm()">닫기</button>
+          </div>
+        </div>
+        <div class="info-banner" style="margin-bottom:14px">기본 정보 저장 후 운영본 → 분류 체계 → 지표 순으로 설정하세요.</div>
+        <div class="form-grid" style="max-width:100%">
+          <div class="fg-label">사업 ID</div>
+          <div class="fg-input">
+            <input type="text" placeholder="예: prog_2027_plan">
+            <div class="hint">영문·숫자·언더스코어만. 생성 후 변경 불가.</div>
+          </div>
+          <div class="fg-label">사업명 <span class="req">*</span></div>
+          <div class="fg-input"><input type="text" placeholder="예: 2027 중장기발전계획"></div>
+          <div class="fg-label">설명</div>
+          <div class="fg-input"><textarea placeholder="사업 목적 등을 간략히 기술"></textarea></div>
+          <div class="fg-label">생성 부서</div>
+          <div class="fg-input">
+            <input type="text" value="${APP ? APP.user.org : ''}" readonly style="background:#f5f5f5;color:#888">
+            <div class="hint">로그인 계정 소속 부서로 자동 설정</div>
+          </div>
+          <div class="fg-label">운영 주관 부서 <span class="req">*</span></div>
+          <div class="fg-input">
+            <input type="text" placeholder="부서명 검색">
+            <div class="hint">저장 시 이 부서에 program_admin 권한 자동 부여</div>
+          </div>
+          <div class="fg-label">상태 <span class="req">*</span></div>
+          <div class="fg-input">
+            <select><option>active - 운영 중</option><option>inactive - 비활성</option></select>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:16px">
+          <button class="btn btn-dark" onclick="createProgram()">저장하고 운영본 생성 →</button>
+          <button class="btn btn-ghost" onclick="toggleNewForm()">취소</button>
+        </div>
+      </div>
+
+      <!-- 사업 목록 테이블 -->
+      <table class="data-table" id="prog-table">
         <thead>
           <tr>
             <th style="width:240px">사업명</th>
@@ -61,44 +85,50 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td class="td-name">2026 중장기발전계획</td>
-            <td style="font-size:12px">기획처 기획조정팀</td>
-            <td><span class="sb s-going"><span class="dot"></span>운영 중</span></td>
-            <td class="td-r">3</td>
-            <td style="font-size:12px">2026년 1차 점검 <span class="due-label">D-2</span></td>
-            <td style="font-size:11px;color:#999">2026-04-10</td>
-            <td>
-              <a href="program.html"><button class="btn btn-sm btn-dark">설정</button></a>
-            </td>
-          </tr>
-          <tr>
-            <td class="td-name">2026 자체평가</td>
-            <td style="font-size:12px">기획처 기획조정팀</td>
-            <td><span class="sb s-going"><span class="dot"></span>운영 중</span></td>
-            <td class="td-r">1</td>
-            <td style="font-size:12px">2026년 1차 점검 <span class="due-label">D-2</span></td>
-            <td style="font-size:11px;color:#999">2026-04-09</td>
-            <td>
-              <a href="program.html"><button class="btn btn-sm btn-dark">설정</button></a>
-            </td>
-          </tr>
-          <tr class="row-done">
-            <td class="td-name" style="color:#aaa">2025 중장기발전계획</td>
-            <td style="font-size:12px;color:#bbb">기획처 기획조정팀</td>
-            <td><span class="sb s-empty"><span class="dot"></span>완료</span></td>
-            <td class="td-r" style="color:#bbb">2</td>
-            <td style="font-size:12px;color:#bbb">2025년 최종 점검</td>
-            <td style="font-size:11px;color:#bbb">2025-12-20</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">조회</button>
-            </td>
-          </tr>
-        </tbody>
+        <tbody id="prog-tbody"></tbody>
       </table>
     </div>
   </div>
 </div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+window.PAGE_CONFIG = { role: 'adm', gnbActive: 'programs', sidebar: 'programs' };
+initLayout();
+
+// 새 사업 폼의 생성 부서 채우기
+document.querySelector('.new-form input[readonly]').value = APP.user.org;
+
+// 사업 목록 렌더링
+document.getElementById('prog-tbody').innerHTML = APP.programs.map(p => {
+  const isDone = p.status === 'done';
+  const dDayBadge = p.dDay ? `<span class="due-label">${p.dDay}</span>` : '';
+  return `<tr class="${isDone ? 'row-done' : ''}">
+    <td class="td-name" style="${isDone ? 'color:#aaa' : ''}">${p.name}</td>
+    <td style="font-size:12px;${isDone ? 'color:#bbb' : ''}">${p.ownerOrg}</td>
+    <td>${isDone
+      ? '<span class="sb s-empty"><span class="dot"></span>완료</span>'
+      : '<span class="sb s-going"><span class="dot"></span>운영 중</span>'}</td>
+    <td class="td-r" style="${isDone ? 'color:#bbb' : ''}">${p.versions}</td>
+    <td style="font-size:12px;${isDone ? 'color:#bbb' : ''}">${p.period} ${dDayBadge}</td>
+    <td style="font-size:11px;color:#999">${p.lastActivity}</td>
+    <td>
+      <button class="btn btn-sm ${isDone ? 'btn-ghost' : 'btn-dark'}"
+        onclick="location.href='program.html?prog=${p.id}'">
+        ${isDone ? '조회' : '설정'}
+      </button>
+    </td>
+  </tr>`;
+}).join('');
+
+function toggleNewForm() {
+  document.getElementById('new-form').classList.toggle('open');
+}
+function createProgram() {
+  alert('저장되었습니다. (프로토타입: 실제 저장 미연결)\n\n다음 단계: 운영본을 생성하세요.');
+  location.href = 'program.html?tab=version';
+}
+</script>
 </body>
 </html>

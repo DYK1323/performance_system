@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>활동 로그 - 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div id="gnb"></div>
+
+  <div class="ctx-banner">
+    <span class="ctx-current">활동 로그</span>
+    <span class="sep">›</span>
+    <span id="ctx-tabname"></span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 id="page-title">활동 로그</h2>
+        <span class="page-sub" id="page-sub"></span>
+      </div>
+
+      <!-- ── 값 확정 · 상태 확인 ── -->
+      <div class="tab-panel" id="panel-confirm">
+        <div class="info-banner" style="margin-bottom:16px">자동판정 검토 중심으로 표현합니다. 수기판정과 hybrid 최종값 선택은 후속 단계에서 분리됩니다.</div>
+
+        <div class="filter-bar" style="margin-bottom:12px">
+          <select>
+            <option>부서: 전체</option>
+            <option>교무처</option>
+            <option>학생처</option>
+            <option>연구처</option>
+          </select>
+          <select>
+            <option>상태: 전체</option>
+            <option>달성완료</option>
+            <option>달성예상</option>
+            <option>미달성예상</option>
+            <option>이슈</option>
+          </select>
+          <select>
+            <option>유형: 전체</option>
+            <option>정량</option>
+            <option>정성</option>
+          </select>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:56px">코드</th>
+              <th style="width:220px">항목명</th>
+              <th>담당 부서</th>
+              <th>계획값</th>
+              <th>실적값</th>
+              <th>달성률</th>
+              <th>자동 판정</th>
+              <th>최종 판정</th>
+              <th>저장 시각</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#999;font-size:11px">01-03</td>
+              <td class="td-name">학부 충원율</td>
+              <td style="font-size:11px;color:#555">기획처</td>
+              <td>95%</td><td>96.2%</td>
+              <td style="color:#2E7D32;font-weight:600">101.3%</td>
+              <td><span class="sb s-done"><span class="dot"></span>달성완료</span></td>
+              <td><span class="sb s-done"><span class="dot"></span>달성완료</span></td>
+              <td style="font-size:11px;color:#888">04-08 14:33</td>
+            </tr>
+            <tr>
+              <td style="color:#999;font-size:11px">02-01</td>
+              <td class="td-name">취업률</td>
+              <td style="font-size:11px;color:#555">학생처</td>
+              <td>72%</td><td>68.5%</td>
+              <td style="color:#E65100;font-weight:600">95.1%</td>
+              <td><span class="sb s-warn"><span class="dot"></span>미달성예상</span></td>
+              <td><span class="sb s-warn"><span class="dot"></span>미달성예상</span></td>
+              <td style="font-size:11px;color:#888">04-09 11:20</td>
+            </tr>
+            <tr>
+              <td style="color:#999;font-size:11px">02-02</td>
+              <td class="td-name">논문 게재 수</td>
+              <td style="font-size:11px;color:#555">연구처</td>
+              <td>120건</td><td>97건</td>
+              <td style="color:#B71C1C;font-weight:600">80.8%</td>
+              <td><span class="sb s-issue"><span class="dot"></span>이슈</span></td>
+              <td><span class="sb s-issue"><span class="dot"></span>이슈</span></td>
+              <td style="font-size:11px;color:#888">04-10 09:18</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── 기준일 집계 확정 ── -->
+      <div class="tab-panel" id="panel-snapshot">
+        <div class="info-banner" style="margin-bottom:16px">ItemGroupSnapshot — 지표 묶음별 기준일 집계를 확정합니다.</div>
+        <div style="margin-bottom:12px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 집계 확정 생성 (프로토타입)')">+ 집계 확정 생성</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>묶음명</th>
+              <th>기준일</th>
+              <th>집계 상태</th>
+              <th>집계값</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">교육혁신 지표 묶음</td>
+              <td>2026-04-12</td>
+              <td><span class="sb s-warn"><span class="dot"></span>draft</span></td>
+              <td>달성률 92.4%</td>
+              <td><button class="btn btn-sm btn-dark" onclick="alert('집계 확정 (프로토타입)')">확정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">연구역량 지표 묶음</td>
+              <td>2026-04-12</td>
+              <td><span class="sb s-done"><span class="dot"></span>confirmed</span></td>
+              <td>달성률 88.1%</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">대외협력 지표 묶음</td>
+              <td>2026-04-12</td>
+              <td><span class="sb s-empty"><span class="dot"></span>pending</span></td>
+              <td>-</td>
+              <td><button class="btn btn-sm">집계 실행</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+const TAB = new URLSearchParams(location.search).get('tab') || 'confirm';
+const TAB_LABELS = { confirm: '값 확정 · 상태 확인', snapshot: '기준일 집계 확정' };
+
+window.PAGE_CONFIG = {
+  role: 'adm',
+  gnbActive: 'activity',
+  sidebar: 'activity',
+  tabActive: TAB === 'snapshot' ? 'snapshot' : undefined
+};
+initLayout();
+
+document.getElementById('ctx-tabname').textContent = TAB_LABELS[TAB] || TAB;
+document.getElementById('page-title').textContent = TAB_LABELS[TAB] || '활동 로그';
+document.getElementById('page-sub').textContent =
+  APP.currentProgram.name + ' · ' + APP.currentProgram.period;
+
+document.getElementById('panel-' + TAB)?.classList.add('active');
+</script>
+</body>
+</html>

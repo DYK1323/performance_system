@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리자 대시보드 - 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div id="gnb"></div>
+
+  <div class="ctx-banner">
+    <span class="ctx-current">전역 대시보드</span>
+    <span class="sep">›</span>
+    <span id="ctx-program"></span>
+    <span class="ctx-due" id="ctx-due"></span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>관리자 대시보드</h2>
+        <span class="page-sub" id="page-sub"></span>
+        <div class="header-actions">
+          <a href="programs.html"><button class="btn btn-sm">사업 목록</button></a>
+          <a href="programs.html"><button class="btn btn-sm btn-dark">+ 새 사업 만들기</button></a>
+        </div>
+      </div>
+
+      <div class="stat-row" id="stat-row"></div>
+
+      <div class="page-header" style="margin-top:4px;margin-bottom:12px">
+        <h2 style="font-size:14px;font-weight:600;color:#555">부서별 입력 현황</h2>
+        <div class="header-actions">
+          <select style="font-size:12px;padding:5px 9px;border:1px solid #d0d0d0;border-radius:3px">
+            <option>기간: 2026년 1차 점검</option>
+            <option>기간: 2026년 2차 점검</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="data-table" id="dept-table">
+        <thead>
+          <tr>
+            <th style="width:180px">부서</th>
+            <th class="td-r">배당</th>
+            <th class="td-r">완료</th>
+            <th class="td-r" style="color:#E65100">미입력</th>
+            <th style="width:160px">입력률</th>
+            <th>최근 입력</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="dept-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+window.PAGE_CONFIG = { role: 'adm', gnbActive: 'dashboard', sidebar: 'dashboard' };
+initLayout();
+
+// ctx-banner
+document.getElementById('ctx-program').textContent = APP.currentProgram.name;
+document.getElementById('ctx-due').textContent =
+  `현재 기간 ${APP.currentProgram.period} · ${APP.currentProgram.dDay}`;
+document.getElementById('page-sub').textContent =
+  `${new Date().toISOString().slice(0,10)} 기준 · ${APP.user.org}`;
+
+// 통계 카드
+const s = APP.admStats;
+document.getElementById('stat-row').innerHTML = `
+  <div class="stat-item"><div class="stat-label">전체 배당 항목</div><div class="stat-value">${s.totalItems}</div><div class="stat-sub">5개 부서 배당</div></div>
+  <div class="stat-item critical"><div class="stat-label">미입력 항목</div><div class="stat-value">${s.pendingItems}</div><div class="stat-sub">전체의 ${(s.pendingItems/s.totalItems*100).toFixed(1)}%</div></div>
+  <div class="stat-item"><div class="stat-label">전체 입력률</div><div class="stat-value">${s.completionRate}%</div><div class="pbar"><div class="pbar-fill" style="width:${s.completionRate}%"></div></div></div>
+  <div class="stat-item critical"><div class="stat-label">마감 기한</div><div class="stat-value" style="font-size:18px;padding-top:4px">${APP.currentProgram.dDay}</div><div class="stat-sub">${APP.currentProgram.dueDate} 오후 6시</div></div>`;
+
+// 부서별 테이블
+document.getElementById('dept-tbody').innerHTML = s.depts.map(d => `
+  <tr class="${d.pending > 0 ? 'row-pend' : 'row-done'}">
+    <td class="td-name">${d.name}</td>
+    <td class="td-r">${d.total}</td>
+    <td class="td-r">${d.done}</td>
+    <td class="td-r" style="${d.pending > 0 ? 'color:#E65100;font-weight:700' : 'color:#2E7D32;font-weight:700'}">${d.pending}</td>
+    <td>${d.pending > 0 ? d.rate + '%' : '<span style="color:#2E7D32;font-weight:600">100%</span>'}
+      <div class="pbar"><div class="pbar-fill" style="width:${d.rate}%"></div></div></td>
+    <td style="font-size:11px;color:#999">${d.lastAt}</td>
+    <td><button class="btn btn-sm ${d.pending === 0 ? 'btn-ghost' : ''}">상세</button></td>
+  </tr>`).join('');
+</script>
+</body>
+</html>

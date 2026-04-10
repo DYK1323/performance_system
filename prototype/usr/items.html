@@ -3,122 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>사업 내 지표 목록 - 성과관리 플랫폼</title>
+<title>담당 사업 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
+<style>
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+</style>
 </head>
 <body>
 <div class="shell">
-  <div class="gnb">
-    <span class="brand">성과관리</span>
-    <nav>
-      <a href="home.html">홈</a>
-      <a href="programs.html" class="active">담당 사업</a>
-      <a href="pending.html">미입력 항목</a>
-    </nav>
-    <div class="gnb-right">
-      <span class="org-label">기획처 기획조정팀</span>
-      <span class="user-label">홍길동</span>
-      <span class="role-badge">담당자</span>
-    </div>
-  </div>
+  <div id="gnb"></div>
 
   <div class="ctx-banner">
-    <a href="programs.html" style="color:#888">담당 사업</a>
+    <span class="ctx-current" id="ctx-section"></span>
     <span class="sep">›</span>
-    <span class="ctx-current">2026 중장기발전계획</span>
-    <span class="sep">›</span>
-    <span>2026년 1차 점검</span>
-    <span class="ctx-due">마감 D-2</span>
+    <span id="ctx-sub"></span>
+    <span class="ctx-due" id="ctx-due"></span>
   </div>
 
   <div class="body">
-    <nav class="sidebar">
-      <div class="sidebar-section-label">분류체계</div>
-      <div class="tree-node active">전체 <span class="tbadge">6</span></div>
-      <div class="tree-node">영역 1. 교육혁신 <span class="tbadge">3</span></div>
-      <div class="tree-node l2">전략 1-1. 교육과정 <span class="tbadge">2</span></div>
-      <div class="tree-node l2">전략 1-2. 학생지원</div>
-      <div class="tree-node">영역 2. 연구역량</div>
-      <div class="tree-node l2">전략 2-1. 연구지원 <span class="tbadge">1</span></div>
-      <div class="tree-node">영역 3. 대외협력</div>
-
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">보기 기준</div>
-      <div class="sidebar-current">내 담당만</div>
-      <span class="sidebar-static">전체 (읽기 전용) <span class="badge badge-muted">준비 중</span></span>
-    </nav>
+    <nav class="sidebar" id="sidebar"></nav>
 
     <div class="content">
       <div class="page-header">
-        <h2>지표 목록</h2>
-        <span class="page-sub">내 담당 · 미입력 우선</span>
+        <h2 id="page-title"></h2>
+        <span class="page-sub" id="page-sub"></span>
       </div>
 
-      <div class="neutral-banner">좌측 트리는 현재 위치를 보여주는 용도입니다. 보기 기준 중 동작하지 않는 항목은 비활성으로 바꿨습니다.</div>
+      <!-- ── 담당 사업 목록 ── -->
+      <div class="tab-panel" id="panel-programs">
+        <table class="data-table" id="prog-tbody-wrap">
+          <thead>
+            <tr>
+              <th style="width:260px">사업명</th>
+              <th>운영본</th>
+              <th>기간</th>
+              <th class="td-r">배당</th>
+              <th class="td-r">완료</th>
+              <th class="td-r" style="color:#E65100">미입력</th>
+              <th style="width:140px">입력률</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="prog-tbody"></tbody>
+        </table>
+      </div>
 
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th style="width:56px">코드</th>
-            <th style="width:240px">항목명</th>
-            <th>유형</th>
-            <th>계획값</th>
-            <th>실적값</th>
-            <th>달성률</th>
-            <th>상태</th>
-            <th>마감</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row-pend">
-            <td style="color:#999;font-size:11px">01-01</td>
-            <td class="td-name">학부 정원 충원율 <span class="due-label">D-2</span></td>
-            <td><span class="chip chip-quant">정량</span></td>
-            <td>98%</td>
-            <td style="color:#bbb">-</td>
-            <td style="color:#bbb">-</td>
-            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
-            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
-            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
-          </tr>
-          <tr class="row-pend">
-            <td style="color:#999;font-size:11px">01-02</td>
-            <td class="td-name">신입생 충원율</td>
-            <td><span class="chip chip-quant">정량</span></td>
-            <td>95%</td>
-            <td style="color:#bbb">-</td>
-            <td style="color:#bbb">-</td>
-            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
-            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
-            <td><a href="input-quant.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
-          </tr>
-          <tr class="row-pend">
-            <td style="color:#999;font-size:11px">01-03</td>
-            <td class="td-name">교육과정 개선 추진 현황</td>
-            <td><span class="chip chip-qual">정성</span></td>
-            <td>계획 서술</td>
-            <td style="color:#bbb">-</td>
-            <td style="color:#bbb">-</td>
-            <td><span class="sb s-empty"><span class="dot"></span>미입력</span></td>
-            <td style="color:#E65100;font-size:11px;font-weight:600">04/12</td>
-            <td><a href="input-qual.html"><button class="btn btn-sm btn-dark">입력</button></a></td>
-          </tr>
-          <tr>
-            <td style="color:#999;font-size:11px">02-01</td>
-            <td class="td-name">취업률</td>
-            <td><span class="chip chip-quant">정량</span></td>
-            <td>72%</td>
-            <td>68.5%</td>
-            <td>95.1%</td>
-            <td><span class="sb s-warn"><span class="dot"></span>미달성예상</span></td>
-            <td style="font-size:11px;color:#999">저장됨</td>
-            <td><a href="input-quant.html"><button class="btn btn-sm btn-ghost">수정</button></a></td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- ── 미입력 항목 ── -->
+      <div class="tab-panel" id="panel-pending">
+        <div class="inline-banner" style="margin-bottom:12px">
+          <span>!</span>
+          <strong id="pending-dday"></strong>
+          <span>오후 6시까지 입력을 완료해 주세요.</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:60px">코드</th>
+              <th style="width:260px">항목명</th>
+              <th>사업</th>
+              <th>유형</th>
+              <th>계획값</th>
+              <th>마감일</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="pending-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- ── 지표 목록 ── -->
+      <div class="tab-panel" id="panel-items">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:56px">코드</th>
+              <th style="width:240px">항목명</th>
+              <th>유형</th>
+              <th>계획값</th>
+              <th>실적값</th>
+              <th>달성률</th>
+              <th>상태</th>
+              <th>마감</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody"></tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+const TAB = new URLSearchParams(location.search).get('tab') || 'programs';
+
+window.PAGE_CONFIG = {
+  role: 'usr',
+  gnbActive: TAB === 'pending' ? 'pending' : 'programs',
+  sidebar: 'programs',
+  tabActive: TAB
+};
+initLayout();
+
+// ctx-banner
+const ctxMap = { programs: '담당 사업', pending: '미입력 항목', items: '지표 목록' };
+document.getElementById('ctx-section').textContent = ctxMap[TAB] || TAB;
+document.getElementById('ctx-sub').textContent = APP.currentProgram.period;
+document.getElementById('ctx-due').textContent = `마감 ${APP.usrStats.dDay}`;
+document.getElementById('page-title').textContent = ctxMap[TAB] || '담당 사업';
+document.getElementById('page-sub').textContent = `${APP.user.org} · ${APP.currentProgram.period}`;
+
+// activate panel
+document.getElementById('panel-' + TAB)?.classList.add('active');
+
+// ── 담당 사업 목록 렌더링
+document.getElementById('prog-tbody').innerHTML = APP.usrPrograms.map(p => {
+  const isDone = p.pending === 0 && p.dDay === null;
+  return `<tr class="${isDone ? 'row-done' : 'row-pend'}">
+    <td class="td-name">${p.name}</td>
+    <td style="font-size:11px;color:#666">${p.version}</td>
+    <td>${p.period}${p.dDay ? ` <span class="due-label">${p.dDay}</span>` : ''}</td>
+    <td class="td-r">${isDone ? '—' : p.total}</td>
+    <td class="td-r">${isDone ? '—' : p.done}</td>
+    <td class="td-r" style="${p.pending > 0 ? 'color:#E65100;font-weight:700' : 'color:#aaa'}">${isDone ? '—' : p.pending}</td>
+    <td>${isDone
+      ? '<span style="color:#2E7D32;font-size:12px;font-weight:600">완료</span>'
+      : `${p.rate}%<div class="pbar"><div class="pbar-fill" style="width:${p.rate}%"></div></div>`}</td>
+    <td><button class="btn btn-sm ${isDone ? 'btn-ghost' : 'btn-dark'}"
+      onclick="location.href='items.html?tab=items'">${isDone ? '조회' : '입력하기'}</button></td>
+  </tr>`;
+}).join('');
+
+// ── 미입력 항목 렌더링
+document.getElementById('pending-dday').textContent = `마감 ${APP.usrStats.dDay}`;
+document.getElementById('pending-tbody').innerHTML = APP.pendingItems.map(item => `
+  <tr class="row-pend">
+    <td style="color:#999;font-size:11px">${item.code}</td>
+    <td class="td-name">${item.name} <span class="due-label">${APP.usrStats.dDay}</span></td>
+    <td style="font-size:11px;color:#555">${item.program}</td>
+    <td><span class="chip chip-${item.type}">${item.type === 'quant' ? '정량' : '정성'}</span></td>
+    <td>${item.plan}</td>
+    <td style="color:#E65100;font-size:11px;font-weight:600">${item.dueDate}</td>
+    <td><button class="btn btn-sm btn-dark" onclick="location.href='input.html?type=${item.type}&code=${item.code}'">입력</button></td>
+  </tr>`).join('');
+
+// ── 지표 목록 렌더링
+const statusMap = {
+  empty: '<span class="sb s-empty"><span class="dot"></span>미입력</span>',
+  warn: '<span class="sb s-warn"><span class="dot"></span>미달성예상</span>',
+  done: '<span class="sb s-done"><span class="dot"></span>달성완료</span>'
+};
+document.getElementById('items-tbody').innerHTML = APP.items.map(item => `
+  <tr class="${item.status === 'empty' ? 'row-pend' : ''}">
+    <td style="color:#999;font-size:11px">${item.code}</td>
+    <td class="td-name">${item.name}${item.status === 'empty' ? ` <span class="due-label">${APP.usrStats.dDay}</span>` : ''}</td>
+    <td><span class="chip chip-${item.type}">${item.type === 'quant' ? '정량' : '정성'}</span></td>
+    <td>${item.plan}</td>
+    <td style="${!item.actual ? 'color:#bbb' : ''}">${item.actual || '-'}</td>
+    <td style="${!item.rate ? 'color:#bbb' : ''}">${item.rate || '-'}</td>
+    <td>${statusMap[item.status] || ''}</td>
+    <td style="${item.status === 'empty' ? 'color:#E65100;font-size:11px;font-weight:600' : 'font-size:11px;color:#999'}">${item.dueDate}</td>
+    <td><button class="btn btn-sm ${item.status !== 'empty' ? 'btn-ghost' : 'btn-dark'}"
+      onclick="location.href='input.html?type=${item.type}&code=${item.code}'">${item.status !== 'empty' ? '수정' : '입력'}</button></td>
+  </tr>`).join('');
+</script>
 </body>
 </html>

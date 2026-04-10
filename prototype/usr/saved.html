@@ -8,26 +8,14 @@
 </head>
 <body>
 <div class="shell">
-  <div class="gnb">
-    <span class="brand">성과관리</span>
-    <nav>
-      <a href="home.html">홈</a>
-      <a href="programs.html" class="active">담당 사업</a>
-      <a href="pending.html">미입력 항목</a>
-    </nav>
-    <div class="gnb-right">
-      <span class="org-label">기획처 기획조정팀</span>
-      <span class="user-label">홍길동</span>
-      <span class="role-badge">담당자</span>
-    </div>
-  </div>
+  <div id="gnb"></div>
 
   <div class="body">
     <div class="content">
       <div class="feedback-box">
         <div class="fb-icon">✓</div>
         <div class="fb-title">저장되었습니다</div>
-        <div class="fb-sub">v1 프로토타입 기준으로 입력 후 즉시 반영되는 흐름을 표현했습니다.</div>
+        <div class="fb-sub">입력 후 즉시 반영되는 흐름을 표현했습니다.</div>
 
         <div class="feedback-judgment">
           <div class="fj-label">자동판정 결과</div>
@@ -45,11 +33,18 @@
           </div>
         </div>
 
-        <a href="items.html"><button class="btn">목록으로</button></a>
-        <a href="input-quant.html"><button class="btn btn-dark">다음 항목 입력</button></a>
+        <a href="items.html?tab=items"><button class="btn">목록으로</button></a>
+        <a href="items.html?tab=pending"><button class="btn btn-dark">다음 미입력 항목 →</button></a>
       </div>
     </div>
   </div>
 </div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+window.PAGE_CONFIG = { role: 'usr', gnbActive: 'programs', sidebar: 'programs', tabActive: 'items' };
+initLayout();
+</script>
 </body>
 </html>

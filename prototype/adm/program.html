@@ -3,111 +3,491 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Program 기본 정보 설정 - 성과관리 플랫폼</title>
+<title>사업 설정 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
+<style>
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* 분류 체계 트리 */
+.schema-step { margin-bottom:24px; }
+.schema-step h3 { font-size:13px; font-weight:600; color:#555; margin-bottom:12px; }
+.level-cards { display:flex; gap:10px; margin-bottom:16px; }
+.level-card { flex:1; max-width:160px; padding:14px 16px; border:2px solid #e0e0e0; border-radius:6px; cursor:pointer; text-align:center; transition:.15s; }
+.level-card:hover { border-color:#aaa; }
+.level-card.selected { border-color:#111; background:#111; color:#fff; }
+.level-card .lc-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+.level-card .lc-sub { font-size:11px; opacity:.7; }
+.tree-builder { border:1px solid #e8e8e8; border-radius:6px; overflow:hidden; }
+.tree-row { display:flex; align-items:center; padding:8px 12px; border-bottom:1px solid #f0f0f0; gap:8px; }
+.tree-row:last-child { border-bottom:none; }
+.tree-row.l1 { background:#fafafa; font-weight:600; font-size:13px; }
+.tree-row.l2 { padding-left:32px; font-size:12px; }
+.tree-row.l3 { padding-left:52px; font-size:12px; color:#555; }
+.tree-row .node-code { font-size:11px; color:#999; width:36px; flex-shrink:0; }
+.tree-row .node-name { flex:1; }
+.tree-row .node-actions { display:none; gap:4px; }
+.tree-row:hover .node-actions { display:flex; }
+.tree-collapse { font-size:11px; color:#999; cursor:pointer; width:16px; flex-shrink:0; }
+
+/* 지표 관리 */
+.items-toolbar { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
+.items-toolbar input { flex:1; max-width:220px; font-size:12px; padding:6px 10px; border:1px solid #d0d0d0; border-radius:3px; }
+.items-toolbar select { font-size:12px; padding:6px 9px; border:1px solid #d0d0d0; border-radius:3px; }
+
+/* 권한 배당 */
+.dept-chip { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:#f0f0f0; border-radius:20px; font-size:12px; margin:3px; }
+.dept-chip .rm { cursor:pointer; color:#999; font-size:14px; line-height:1; }
+.dept-chip .rm:hover { color:#e00; }
+.perm-section { margin-bottom:20px; }
+.perm-section h4 { font-size:12px; font-weight:600; color:#555; margin-bottom:8px; }
+</style>
 </head>
 <body>
 <div class="shell">
-  <div class="gnb">
-    <span class="brand">성과관리</span>
-    <nav>
-      <a href="home.html">대시보드</a>
-      <a href="programs.html" class="active">사업 관리</a>
-      <a href="home.html">입력 현황</a>
-      <a href="upload.html">업로드 이력</a>
-      <a href="confirm.html">활동 로그</a>
-    </nav>
-    <div class="gnb-right">
-      <span class="org-label">기획처 기획조정팀</span>
-      <span class="user-label">홍길동</span>
-      <span class="role-badge admin">관리자</span>
-    </div>
-  </div>
+  <div id="gnb"></div>
 
   <div class="ctx-banner">
-    <a href="home.html" style="color:#888">사업 관리</a>
+    <a href="programs.html" style="color:#888">사업 관리</a>
     <span class="sep">›</span>
-    <span class="ctx-current">2026 중장기발전계획</span>
-    <span class="sep">›</span>
-    <span>기본 정보</span>
+    <span class="ctx-current" id="ctx-progname"></span>
+    <span class="sep" id="ctx-sep2">›</span>
+    <span id="ctx-tabname"></span>
   </div>
 
   <div class="body">
-    <nav class="sidebar">
-      <div class="sidebar-section-label">사업 설정</div>
-      <a href="program.html" class="active">기본 정보</a>
-      <a href="version.html">운영본 관리</a>
-      <a href="schema.html">분류 체계</a>
-      <a href="statusset.html">상태 코드셋</a>
-      <a href="items.html">지표 관리</a>
-      <a href="formbuilder.html">입력폼 구성</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
-
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">구조 원칙</div>
-      <div class="sidebar-note">사업 관리 안에서는 좌측 메뉴가 항상 같은 순서로 유지됩니다. 전역 이동은 상단 GNB에서만 합니다.</div>
-    </nav>
+    <nav class="sidebar" id="sidebar"></nav>
 
     <div class="content">
       <div class="page-header">
-        <h2>Program 기본 정보 설정</h2>
-        <div class="header-actions">
-          <span class="sb s-going"><span class="dot"></span>운영 중 (active)</span>
+        <h2 id="page-title">사업 설정</h2>
+        <span class="page-sub" id="page-sub"></span>
+        <div class="header-actions" id="page-actions"></div>
+      </div>
+
+      <!-- ── 기본 정보 ── -->
+      <div class="tab-panel" id="panel-info">
+        <div class="info-banner" style="margin-bottom:16px">새 사업을 만드는 경우: 기본 정보 저장 후 운영본을 생성하세요.</div>
+        <div style="max-width:600px">
+          <div class="form-grid">
+            <div class="fg-label">사업 ID</div>
+            <div class="fg-input">
+              <input type="text" value="prog_2026_roadmap" readonly style="background:#f5f5f5;color:#888">
+              <div class="hint">생성 후 변경 불가. 모든 레코드에서 영구 참조됩니다.</div>
+            </div>
+            <div class="fg-label">사업명 <span class="req">*</span></div>
+            <div class="fg-input"><input type="text" value="2026 중장기발전계획"></div>
+            <div class="fg-label">설명</div>
+            <div class="fg-input"><textarea>2026년 중장기발전계획 성과관리 운영 사업. 기획처 주관.</textarea></div>
+            <div class="fg-label">생성 부서</div>
+            <div class="fg-input">
+              <input type="text" id="info-orgfield" readonly style="background:#f5f5f5;color:#888">
+              <div class="hint">로그인 계정의 소속 부서로 자동 설정됩니다.</div>
+            </div>
+            <div class="fg-label">운영 주관 부서 <span class="req">*</span></div>
+            <div class="fg-input">
+              <input type="text" value="기획처 기획조정팀" placeholder="부서명 검색">
+              <div class="hint">이 부서에 program_admin 권한이 기본 부여됩니다.</div>
+            </div>
+            <div class="fg-label">상태 <span class="req">*</span></div>
+            <div class="fg-input">
+              <select><option selected>active - 운영 중</option><option>inactive - 비활성</option></select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-dark" onclick="alert('저장되었습니다. (프로토타입)')">저장</button>
+            <button class="btn btn-ghost" onclick="history.back()">취소</button>
+            <a href="program.html?tab=version" style="margin-left:auto"><button class="btn">운영본 관리 →</button></a>
+          </div>
         </div>
       </div>
-      <div class="page-caption">관리자 상세 설정의 시작점입니다. 여기서 저장한 뒤 운영본, 분류 체계, 지표 설정으로 이어집니다.</div>
 
-      <div class="info-banner">새 사업을 만드는 경우: 기본 정보 저장 후 운영본(ProgramVersion)을 생성하세요.</div>
+      <!-- ── 운영본 관리 ── -->
+      <div class="tab-panel" id="panel-version">
+        <div class="info-banner" style="margin-bottom:16px">운영본(ProgramVersion)은 연도·회차별 독립 설정 단위입니다. 분류 체계와 지표는 운영본마다 독립적으로 관리됩니다.</div>
+        <div class="header-actions" style="margin-bottom:14px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 운영본 생성 (프로토타입)')">+ 새 운영본 만들기</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>운영본 명칭</th>
+              <th>상태</th>
+              <th>기간 수</th>
+              <th>지표 수</th>
+              <th>생성일</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">2026 운영본</td>
+              <td><span class="sb s-going"><span class="dot"></span>운영 중</span></td>
+              <td>2</td><td>58</td><td>2026-01-05</td>
+              <td><button class="btn btn-sm btn-dark">설정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">2025 운영본</td>
+              <td><span class="sb s-done"><span class="dot"></span>완료</span></td>
+              <td>2</td><td>54</td><td>2025-01-10</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">2024 운영본</td>
+              <td><span class="sb s-done"><span class="dot"></span>완료</span></td>
+              <td>2</td><td>50</td><td>2024-01-08</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div style="max-width:600px">
-        <div class="form-grid">
-          <div class="fg-label">사업 ID</div>
-          <div class="fg-input">
-            <input type="text" value="prog_2026_roadmap" readonly style="background:#f5f5f5;color:#888">
-            <div class="hint">생성 후 변경 불가. 모든 레코드에서 영구 참조됩니다.</div>
-          </div>
-
-          <div class="fg-label">사업명 <span class="req">*</span></div>
-          <div class="fg-input">
-            <input type="text" value="2026 중장기발전계획">
-          </div>
-
-          <div class="fg-label">설명</div>
-          <div class="fg-input">
-            <textarea>2026년 중장기발전계획 성과관리 운영 사업. 기획처 주관.</textarea>
-          </div>
-
-          <div class="fg-label">생성 부서</div>
-          <div class="fg-input">
-            <input type="text" value="기획처 기획조정팀" readonly style="background:#f5f5f5;color:#888">
-            <div class="hint">로그인 계정의 소속 부서로 자동 설정됩니다.</div>
-          </div>
-
-          <div class="fg-label">운영 주관 부서 <span class="req">*</span></div>
-          <div class="fg-input">
-            <input type="text" value="기획처 기획조정팀" placeholder="부서명 검색">
-            <div class="hint">ownerOrgId. 이 부서에 `program_admin` 권한이 기본 부여됩니다.</div>
-          </div>
-
-          <div class="fg-label">상태 <span class="req">*</span></div>
-          <div class="fg-input">
-            <select>
-              <option selected>active - 운영 중</option>
-              <option>inactive - 비활성</option>
-            </select>
+      <!-- ── 분류 체계 ── -->
+      <div class="tab-panel" id="panel-schema">
+        <div class="schema-step">
+          <h3>Step 1 · 레벨 구조 선택</h3>
+          <div class="level-cards">
+            <div class="level-card" onclick="selectLevel(0,this)">
+              <div class="lc-title">레벨 없음</div>
+              <div class="lc-sub">분류 없이 지표만</div>
+            </div>
+            <div class="level-card" onclick="selectLevel(2,this)">
+              <div class="lc-title">2단계</div>
+              <div class="lc-sub">영역 › 지표</div>
+            </div>
+            <div class="level-card selected" onclick="selectLevel(3,this)">
+              <div class="lc-title">3단계</div>
+              <div class="lc-sub">영역 › 전략 › 지표</div>
+            </div>
           </div>
         </div>
-
+        <div class="schema-step" id="schema-names">
+          <h3>Step 2 · 레벨 명칭</h3>
+          <div class="form-grid" style="max-width:480px">
+            <div class="fg-label">레벨 1 명칭</div>
+            <div class="fg-input"><input type="text" value="영역"></div>
+            <div class="fg-label">레벨 2 명칭</div>
+            <div class="fg-input"><input type="text" value="전략목표"></div>
+          </div>
+        </div>
+        <div class="schema-step">
+          <h3>Step 3 · 분류 항목 편집</h3>
+          <div class="tree-builder" id="schema-tree">
+            <div class="tree-row l1">
+              <span class="tree-collapse">▼</span>
+              <span class="node-code">A1</span>
+              <span class="node-name">영역 1. 교육혁신</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+            <div class="tree-row l2">
+              <span class="tree-collapse">▼</span>
+              <span class="node-code">A1-1</span>
+              <span class="node-name">전략 1-1. 교육과정 혁신</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+            <div class="tree-row l2">
+              <span class="tree-collapse">▶</span>
+              <span class="node-code">A1-2</span>
+              <span class="node-name">전략 1-2. 학생 지원 강화</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+            <div class="tree-row l1">
+              <span class="tree-collapse">▼</span>
+              <span class="node-code">A2</span>
+              <span class="node-name">영역 2. 연구역량 강화</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+            <div class="tree-row l2">
+              <span class="tree-collapse"></span>
+              <span class="node-code">A2-1</span>
+              <span class="node-name">전략 2-1. 연구 인프라 확충</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+            <div class="tree-row l1">
+              <span class="tree-collapse">▶</span>
+              <span class="node-code">A3</span>
+              <span class="node-name">영역 3. 대외협력</span>
+              <div class="node-actions">
+                <button class="btn btn-sm">+하위 추가</button>
+                <button class="btn btn-sm">수정</button>
+                <button class="btn btn-sm btn-ghost">삭제</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn btn-sm btn-dark" onclick="alert('최상위 항목 추가 (프로토타입)')">+ 영역 추가</button>
+            <button class="btn btn-sm btn-ghost" onclick="alert('Excel 업로드 (프로토타입)')">Excel 업로드</button>
+          </div>
+        </div>
         <div class="form-actions">
-          <button class="btn btn-dark">저장</button>
-          <button class="btn" onclick="history.back()">취소</button>
-          <span class="action-note">저장 후 운영본(ProgramVersion)을 생성하세요.</span>
-          <a href="version.html" style="margin-left:auto"><button class="btn">운영본 관리 →</button></a>
+          <button class="btn btn-dark" onclick="alert('저장되었습니다. (프로토타입)')">저장</button>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+
+      <!-- ── 상태 코드셋 ── -->
+      <div class="tab-panel" id="panel-statusset">
+        <div class="info-banner" style="margin-bottom:16px">지표 실적 입력 시 사용할 상태 코드를 정의합니다. 코드는 지표별로 선택 적용합니다.</div>
+        <div style="margin-bottom:12px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 코드셋 추가 (프로토타입)')">+ 코드셋 추가</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>코드셋 명</th><th>코드 목록</th><th>사용 지표 수</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">기본 달성 상태</td>
+              <td style="font-size:12px">달성 · 부분달성 · 미달성 · 해당없음</td>
+              <td>24</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">추진 단계</td>
+              <td style="font-size:12px">계획 · 진행중 · 완료 · 보류</td>
+              <td>18</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">정성 등급</td>
+              <td style="font-size:12px">우수 · 보통 · 미흡</td>
+              <td>16</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── 지표 관리 ── -->
+      <div class="tab-panel" id="panel-items">
+        <div class="items-toolbar">
+          <input type="text" placeholder="지표명 · 코드 검색">
+          <select><option>전체 유형</option><option>정량</option><option>정성</option></select>
+          <select><option>전체 영역</option><option>영역 1. 교육혁신</option><option>영역 2. 연구역량</option><option>영역 3. 대외협력</option></select>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 지표 추가 (프로토타입)')">+ 지표 추가</button>
+          <button class="btn btn-sm btn-ghost" onclick="alert('Excel 업로드 (프로토타입)')">Excel 업로드</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:80px">코드</th>
+              <th>지표명</th>
+              <th>유형</th>
+              <th>분류</th>
+              <th>코드셋</th>
+              <th>가중치</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;color:#888">01-01</td>
+              <td class="td-name">학부 정원 충원율</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td style="font-size:12px">영역 1 › 전략 1-1</td>
+              <td style="font-size:12px">기본 달성 상태</td>
+              <td style="font-size:12px">5%</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">01-02</td>
+              <td class="td-name">신입생 충원율</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td style="font-size:12px">영역 1 › 전략 1-1</td>
+              <td style="font-size:12px">기본 달성 상태</td>
+              <td style="font-size:12px">5%</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">01-03</td>
+              <td class="td-name">교육과정 개선 추진 현황</td>
+              <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
+              <td style="font-size:12px">영역 1 › 전략 1-1</td>
+              <td style="font-size:12px">추진 단계</td>
+              <td style="font-size:12px">3%</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">02-01</td>
+              <td class="td-name">취업률</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td style="font-size:12px">영역 1 › 전략 1-2</td>
+              <td style="font-size:12px">기본 달성 상태</td>
+              <td style="font-size:12px">8%</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:8px;font-size:12px;color:#999">전체 58개 지표 중 4개 표시</div>
+      </div>
+
+      <!-- ── 입력폼 구성 ── -->
+      <div class="tab-panel" id="panel-formbuilder">
+        <div class="info-banner" style="margin-bottom:16px">지표 유형별 입력 필드를 구성합니다. 담당자가 실적을 입력할 때 표시되는 폼입니다.</div>
+        <div style="display:flex;gap:16px">
+          <div style="flex:0 0 220px">
+            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">지표 유형</div>
+            <div style="border:1px solid #e0e0e0;border-radius:4px;overflow:hidden">
+              <div style="padding:10px 14px;background:#111;color:#fff;font-size:13px;cursor:pointer">정량 지표 (quant)</div>
+              <div style="padding:10px 14px;font-size:13px;cursor:pointer;border-top:1px solid #e0e0e0">정성 지표 (qual)</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">필드 구성 — 정량 지표</div>
+            <table class="data-table">
+              <thead><tr><th>필드명</th><th>필드 유형</th><th>필수</th><th>표시 순서</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>계획값</td><td style="font-size:12px">숫자 입력</td><td>필수</td><td>1</td><td><button class="btn btn-sm">수정</button></td></tr>
+                <tr><td>실적값</td><td style="font-size:12px">숫자 입력</td><td>필수</td><td>2</td><td><button class="btn btn-sm">수정</button></td></tr>
+                <tr><td>달성률</td><td style="font-size:12px">자동 계산</td><td>-</td><td>3</td><td><button class="btn btn-sm btn-ghost">자동</button></td></tr>
+                <tr><td>상태</td><td style="font-size:12px">코드셋 선택</td><td>필수</td><td>4</td><td><button class="btn btn-sm">수정</button></td></tr>
+                <tr><td>비고</td><td style="font-size:12px">텍스트 (선택)</td><td>-</td><td>5</td><td><button class="btn btn-sm">수정</button></td></tr>
+              </tbody>
+            </table>
+            <button class="btn btn-sm btn-dark" style="margin-top:8px" onclick="alert('필드 추가 (프로토타입)')">+ 필드 추가</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 기간 관리 ── -->
+      <div class="tab-panel" id="panel-periods">
+        <div class="info-banner" style="margin-bottom:16px">점검 기간을 설정합니다. 기간별로 담당자 배당과 실적 입력이 독립적으로 운영됩니다.</div>
+        <div style="margin-bottom:12px">
+          <button class="btn btn-sm btn-dark" onclick="alert('새 기간 추가 (프로토타입)')">+ 기간 추가</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>기간명</th><th>시작일</th><th>마감일</th><th>상태</th><th>입력률</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">2026년 1차 점검</td>
+              <td style="font-size:12px">2026-03-01</td>
+              <td style="font-size:12px">2026-04-12</td>
+              <td><span class="sb s-going"><span class="dot"></span>진행 중</span></td>
+              <td>
+                83.8%
+                <div class="pbar"><div class="pbar-fill" style="width:83.8%"></div></div>
+              </td>
+              <td><button class="btn btn-sm btn-dark">설정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">2026년 2차 점검</td>
+              <td style="font-size:12px">2026-09-01</td>
+              <td style="font-size:12px">2026-10-15</td>
+              <td><span class="sb s-empty"><span class="dot"></span>예정</span></td>
+              <td style="color:#bbb">-</td>
+              <td><button class="btn btn-sm">설정</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── 권한 배당 ── -->
+      <div class="tab-panel" id="panel-permissions">
+        <div class="info-banner" style="margin-bottom:16px">부서·사용자별로 사업 접근 권한을 배당합니다. program_admin은 설정 전체에 접근 가능합니다.</div>
+        <div class="perm-section">
+          <h4>program_admin (설정 관리)</h4>
+          <div id="perm-admin-chips">
+            <span class="dept-chip">기획처 기획조정팀 <span class="rm" onclick="removeChip(this)">×</span></span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <input type="text" placeholder="부서명 검색" style="font-size:12px;padding:6px 10px;border:1px solid #d0d0d0;border-radius:3px;width:180px">
+            <button class="btn btn-sm btn-dark" onclick="alert('추가 (프로토타입)')">추가</button>
+          </div>
+        </div>
+        <div class="perm-section">
+          <h4>data_entry (실적 입력)</h4>
+          <div id="perm-entry-chips">
+            <span class="dept-chip">교무처 <span class="rm" onclick="removeChip(this)">×</span></span>
+            <span class="dept-chip">학생처 <span class="rm" onclick="removeChip(this)">×</span></span>
+            <span class="dept-chip">연구처 <span class="rm" onclick="removeChip(this)">×</span></span>
+            <span class="dept-chip">대외협력처 <span class="rm" onclick="removeChip(this)">×</span></span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <input type="text" placeholder="부서명 검색" style="font-size:12px;padding:6px 10px;border:1px solid #d0d0d0;border-radius:3px;width:180px">
+            <button class="btn btn-sm btn-dark" onclick="alert('추가 (프로토타입)')">추가</button>
+          </div>
+        </div>
+        <div class="perm-section">
+          <h4>viewer (조회 전용)</h4>
+          <div id="perm-view-chips">
+            <span class="dept-chip">총장실 <span class="rm" onclick="removeChip(this)">×</span></span>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:6px">
+            <input type="text" placeholder="부서명 검색" style="font-size:12px;padding:6px 10px;border:1px solid #d0d0d0;border-radius:3px;width:180px">
+            <button class="btn btn-sm btn-dark" onclick="alert('추가 (프로토타입)')">추가</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /body -->
+</div><!-- /shell -->
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+const TAB = new URLSearchParams(location.search).get('tab') || 'info';
+const TAB_LABELS = {
+  info: '기본 정보', version: '운영본 관리', schema: '분류 체계',
+  statusset: '상태 코드셋', items: '지표 관리', formbuilder: '입력폼 구성',
+  periods: '기간 관리', permissions: '권한 배당'
+};
+
+window.PAGE_CONFIG = {
+  role: 'adm',
+  gnbActive: 'programs',
+  sidebar: 'program-setting',
+  tabActive: TAB
+};
+initLayout();
+
+// ctx-banner
+document.getElementById('ctx-progname').textContent = APP.currentProgram.name;
+document.getElementById('ctx-tabname').textContent = TAB_LABELS[TAB] || TAB;
+
+// page title
+document.getElementById('page-title').textContent = TAB_LABELS[TAB] || '사업 설정';
+document.getElementById('page-sub').textContent = APP.currentProgram.name + ' · ' + APP.currentProgram.version;
+
+// activate tab panel
+document.getElementById('panel-' + TAB)?.classList.add('active');
+
+// fill org field
+const orgField = document.getElementById('info-orgfield');
+if (orgField) orgField.value = APP.user.org;
+
+// schema level card selection
+function selectLevel(n, el) {
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('schema-names').style.display = n === 0 ? 'none' : '';
+}
+
+// dept chip removal
+function removeChip(el) {
+  el.closest('.dept-chip').remove();
+}
+</script>
 </body>
 </html>

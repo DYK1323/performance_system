@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>담당자 홈 - 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="shell">
+  <div id="gnb"></div>
+
+  <div class="ctx-banner">
+    <span class="ctx-current">홈</span>
+    <span class="sep">›</span>
+    <span id="ctx-period"></span>
+    <span class="ctx-due" id="ctx-due"></span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>내 현황</h2>
+        <span class="page-sub" id="page-sub"></span>
+      </div>
+
+      <div class="stat-row" id="stat-row"></div>
+
+      <div class="page-header" style="margin-top:4px;margin-bottom:12px">
+        <h2 style="font-size:14px;font-weight:600;color:#555">담당 사업</h2>
+        <div class="header-actions">
+          <a href="items.html" style="font-size:12px;color:#1565C0">전체 보기 →</a>
+        </div>
+      </div>
+
+      <table class="data-table" id="prog-table">
+        <thead>
+          <tr>
+            <th style="width:260px">사업명</th>
+            <th>운영본</th>
+            <th>기간</th>
+            <th class="td-r">배당</th>
+            <th class="td-r">완료</th>
+            <th class="td-r" style="color:#E65100">미입력</th>
+            <th style="width:140px">입력률</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="prog-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+window.PAGE_CONFIG = { role: 'usr', gnbActive: 'home', sidebar: 'home' };
+initLayout();
+
+const s = APP.usrStats;
+document.getElementById('ctx-period').textContent = APP.currentProgram.period;
+document.getElementById('ctx-due').textContent = `마감 ${s.dDay} · ${s.dueDate} 18:00`;
+document.getElementById('page-sub').textContent =
+  `${new Date().toISOString().slice(0,10)} 기준 · ${APP.user.org}`;
+
+document.getElementById('stat-row').innerHTML = `
+  <div class="stat-item critical">
+    <div class="stat-label">미입력 항목</div>
+    <div class="stat-value">${s.pendingItems}</div>
+    <div class="stat-sub"><a href="items.html?tab=pending" style="color:#E65100;text-decoration:underline">바로가기 →</a></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">배당 항목</div>
+    <div class="stat-value">${s.totalItems}</div>
+    <div class="stat-sub">이번 기간 총계</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">입력 완료</div>
+    <div class="stat-value">${s.doneItems}</div>
+    <div class="stat-sub">입력률 ${(s.doneItems/s.totalItems*100).toFixed(1)}%</div>
+  </div>
+  <div class="stat-item critical">
+    <div class="stat-label">마감 기한</div>
+    <div class="stat-value" style="font-size:18px;padding-top:4px">${s.dueDate}</div>
+    <div class="stat-sub" style="color:#E65100;font-weight:600">${s.dDay} (오후 6시)</div>
+  </div>`;
+
+document.getElementById('prog-tbody').innerHTML = APP.usrPrograms.map(p => {
+  const isDone = p.pending === 0 && p.dDay === null;
+  return `<tr class="${isDone ? 'row-done' : 'row-pend'}">
+    <td class="td-name">${p.name}</td>
+    <td style="font-size:11px;color:#666">${p.version}</td>
+    <td>${p.period}${p.dDay ? ` <span class="due-label">${p.dDay}</span>` : ''}</td>
+    <td class="td-r">${isDone ? '—' : p.total}</td>
+    <td class="td-r">${isDone ? '—' : p.done}</td>
+    <td class="td-r" style="${p.pending > 0 ? 'color:#E65100;font-weight:700' : 'color:#aaa'}">${isDone ? '—' : p.pending}</td>
+    <td>${isDone
+      ? '<span style="color:#2E7D32;font-size:12px;font-weight:600">완료</span>'
+      : `${p.rate}%<div class="pbar"><div class="pbar-fill" style="width:${p.rate}%"></div></div>`}</td>
+    <td><button class="btn btn-sm ${isDone ? 'btn-ghost' : 'btn-dark'}"
+      onclick="location.href='items.html?tab=items'">${isDone ? '조회' : '입력하기'}</button></td>
+  </tr>`;
+}).join('');
+</script>
+</body>
+</html>
