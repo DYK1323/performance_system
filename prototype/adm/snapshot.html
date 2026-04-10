@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ItemGroupSnapshot 관리 — 성과관리 플랫폼</title>
+<title>기준일 집계 확정 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
@@ -11,11 +11,11 @@
   <div class="gnb">
     <span class="brand">성과관리</span>
     <nav>
-      <a href="home.html" class="active">대시보드</a>
+      <a href="home.html">대시보드</a>
       <a href="program.html">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
+      <a href="confirm.html" class="active">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -23,214 +23,55 @@
       <span class="role-badge admin">관리자</span>
     </div>
   </div>
+
   <div class="ctx-banner">
-    <a href="home.html" style="color:#888">대시보드</a>
+    <a href="confirm.html" style="color:#888">운영 확인</a>
     <span class="sep">›</span>
-    <span class="ctx-current">기준일 집계 확정 (ItemGroupSnapshot)</span>
-    <span class="sep">·</span>
-    <span>2026년 1차 점검</span>
+    <span class="ctx-current">기준일 집계 확정</span>
   </div>
 
   <div class="body">
     <nav class="sidebar">
-      <div class="sidebar-section-label">운영</div>
+      <div class="sidebar-section-label">운영 확인</div>
       <a href="home.html">부서별 현황</a>
-      <a href="confirm.html">값 확정 · 최종화</a>
+      <a href="confirm.html">값 확정 · 상태 확인</a>
       <a href="snapshot.html" class="active">기준일 집계 확정</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="#">활동 로그</a>
-      <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">항목 묶음</div>
-      <a href="#" class="active">전체</a>
-      <a href="#">영역 1. 교육혁신</a>
-      <a href="#">영역 2. 연구역량</a>
-      <a href="#">영역 3. 대외협력</a>
     </nav>
 
     <div class="content">
       <div class="page-header">
         <h2>기준일 집계 확정</h2>
-        <span class="page-sub">ItemGroupSnapshot — 2026년 1차 점검</span>
-        <div class="header-actions">
-          <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-snap').classList.add('open')">+ 스냅샷 생성</button>
-        </div>
-      </div>
-
-      <div class="info-banner">
-        기준일 도달 시 초안(draft) 스냅샷이 자동 생성됩니다. 관리자가 내용을 확인한 후 <strong>확정</strong>해야 공식 값으로 인정됩니다.
+        <span class="page-sub">ItemGroupSnapshot</span>
       </div>
 
       <table class="data-table">
         <thead>
           <tr>
-            <th style="width:200px">항목 묶음</th>
-            <th>기간</th>
+            <th>묶음명</th>
             <th>기준일</th>
-            <th>집계 방식</th>
-            <th>집계값</th>
             <th>집계 상태</th>
-            <th>스냅샷 상태</th>
-            <th>생성자</th>
+            <th>집계값</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <!-- 확정 대기 -->
-          <tr style="background:#FFFDE7">
-            <td class="td-name">영역 1. 교육혁신 <span class="due-label">확정 필요</span></td>
-            <td style="font-size:11px;color:#555">2026년 1차 점검</td>
-            <td style="font-size:11px;font-weight:600">2026-04-10</td>
-            <td style="font-size:11px;color:#555">average</td>
-            <td style="font-size:13px;font-weight:600">87.4%</td>
-            <td><span class="sb s-going"><span class="dot"></span>달성예상</span></td>
-            <td><span class="sb s-draft"><span class="dot"></span>초안 (draft)</span></td>
-            <td style="font-size:11px;color:#888">시스템 자동</td>
-            <td>
-              <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-confirm-snap').classList.add('open')">확정</button>
-            </td>
+          <tr>
+            <td class="td-name">교육혁신 지표 묶음</td>
+            <td>2026-04-12</td>
+            <td><span class="sb s-warn"><span class="dot"></span>draft</span></td>
+            <td>달성률 92.4%</td>
+            <td><button class="btn btn-sm btn-dark">확정</button></td>
           </tr>
-          <tr style="background:#FFFDE7">
-            <td class="td-name">영역 2. 연구역량 <span class="due-label">확정 필요</span></td>
-            <td style="font-size:11px;color:#555">2026년 1차 점검</td>
-            <td style="font-size:11px;font-weight:600">2026-04-10</td>
-            <td style="font-size:11px;color:#555">sum</td>
-            <td style="font-size:13px;font-weight:600">98편</td>
-            <td><span class="sb s-going"><span class="dot"></span>달성예상</span></td>
-            <td><span class="sb s-draft"><span class="dot"></span>초안 (draft)</span></td>
-            <td style="font-size:11px;color:#888">시스템 자동</td>
-            <td>
-              <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-confirm-snap').classList.add('open')">확정</button>
-            </td>
-          </tr>
-          <!-- 확정 완료 -->
-          <tr class="row-done">
-            <td class="td-name">영역 3. 대외협력</td>
-            <td style="font-size:11px;color:#aaa">2026년 1차 점검</td>
-            <td style="font-size:11px;color:#aaa">2026-04-05</td>
-            <td style="font-size:11px;color:#aaa">average</td>
-            <td style="font-size:13px;color:#aaa">92.1%</td>
-            <td><span class="sb s-done"><span class="dot"></span>달성완료</span></td>
-            <td><span class="sb s-done"><span class="dot"></span>확정 (confirmed)</span></td>
-            <td style="font-size:11px;color:#aaa">홍길동</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">이력</button>
-            </td>
+          <tr>
+            <td class="td-name">연구역량 지표 묶음</td>
+            <td>2026-04-12</td>
+            <td><span class="sb s-done"><span class="dot"></span>confirmed</span></td>
+            <td>달성률 88.1%</td>
+            <td><button class="btn btn-sm btn-ghost">조회</button></td>
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-
-<!-- 스냅샷 생성 모달 -->
-<div class="modal-overlay" id="modal-snap">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>스냅샷 생성</h3>
-      <button class="modal-close" onclick="document.getElementById('modal-snap').classList.remove('open')">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="fg-label">항목 묶음 <span class="req">*</span></div>
-        <div class="fg-input">
-          <select>
-            <option>영역 1. 교육혁신</option>
-            <option>영역 2. 연구역량</option>
-            <option>영역 3. 대외협력</option>
-          </select>
-        </div>
-        <div class="fg-label">기간 <span class="req">*</span></div>
-        <div class="fg-input">
-          <select><option>2026년 1차 점검</option></select>
-        </div>
-        <div class="fg-label">기준일 <span class="req">*</span></div>
-        <div class="fg-input">
-          <input type="date" value="2026-04-10">
-          <div class="hint">이 날짜 기준의 입력값으로 집계됩니다.</div>
-        </div>
-        <div class="fg-label">집계 방식</div>
-        <div class="fg-input">
-          <select>
-            <option>average — 평균</option>
-            <option>sum — 합계</option>
-            <option>min — 최솟값</option>
-            <option>max — 최댓값</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="document.getElementById('modal-snap').classList.remove('open')">취소</button>
-      <button class="btn btn-dark" onclick="document.getElementById('modal-snap').classList.remove('open');alert('초안 스냅샷 생성됨. 확정 버튼으로 공식 확정하세요.')">초안 생성</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL-05: 스냅샷 확정 모달 -->
-<div class="modal-overlay" id="modal-confirm-snap">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>스냅샷 확정 — 영역 1. 교육혁신</h3>
-      <button class="modal-close" onclick="document.getElementById('modal-confirm-snap').classList.remove('open')">×</button>
-    </div>
-    <div class="modal-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-        <div style="padding:12px;border:1px solid #e8e8e8;border-radius:3px">
-          <div style="font-size:11px;color:#888;margin-bottom:4px">기준일</div>
-          <div style="font-size:15px;font-weight:700">2026-04-10</div>
-        </div>
-        <div style="padding:12px;border:1px solid #e8e8e8;border-radius:3px">
-          <div style="font-size:11px;color:#888;margin-bottom:4px">집계 방식</div>
-          <div style="font-size:15px;font-weight:700">average (평균)</div>
-        </div>
-        <div style="padding:12px;border:1px solid #e8e8e8;border-radius:3px">
-          <div style="font-size:11px;color:#888;margin-bottom:4px">집계값</div>
-          <div style="font-size:22px;font-weight:700;color:#111">87.4%</div>
-        </div>
-        <div style="padding:12px;border:1px solid #e8e8e8;border-radius:3px">
-          <div style="font-size:11px;color:#888;margin-bottom:4px">집계 상태</div>
-          <span class="sb s-going"><span class="dot"></span>달성예상</span>
-        </div>
-      </div>
-
-      <div style="font-size:12px;color:#555;margin-bottom:8px;font-weight:600">포함 항목 (24개)</div>
-      <table class="data-table" style="font-size:11px">
-        <thead>
-          <tr>
-            <th>항목명</th>
-            <th class="td-r">실적값</th>
-            <th>상태</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>재학생 충원율</td>
-            <td class="td-r">96.2%</td>
-            <td><span class="sb s-done" style="font-size:10px;padding:2px 5px"><span class="dot"></span>달성완료</span></td>
-          </tr>
-          <tr>
-            <td>신입생 충원율</td>
-            <td class="td-r">98.0%</td>
-            <td><span class="sb s-done" style="font-size:10px;padding:2px 5px"><span class="dot"></span>달성완료</span></td>
-          </tr>
-          <tr>
-            <td>학부 정원 충원율</td>
-            <td class="td-r">87.3%</td>
-            <td><span class="sb s-going" style="font-size:10px;padding:2px 5px"><span class="dot"></span>달성예상</span></td>
-          </tr>
-          <tr>
-            <td style="color:#aaa">... 21개 더</td>
-            <td class="td-r" style="color:#aaa">—</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="inline-banner" style="margin-top:14px">확정 후에는 이 스냅샷 값을 수정할 수 없습니다. 신중하게 확인하세요.</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="document.getElementById('modal-confirm-snap').classList.remove('open')">취소</button>
-      <button class="btn btn-dark" onclick="document.getElementById('modal-confirm-snap').classList.remove('open');alert('스냅샷 확정 완료. 공식 집계값으로 등록되었습니다.')">확정</button>
     </div>
   </div>
 </div>

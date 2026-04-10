@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>권한 배당 관리 — 성과관리 플랫폼</title>
+<title>권한 배당 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
@@ -12,10 +12,10 @@
     <span class="brand">성과관리</span>
     <nav>
       <a href="home.html">대시보드</a>
-      <a href="program.html">사업 관리</a>
+      <a href="program.html" class="active">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html" class="active">권한 배당</a>
+      <a href="confirm.html">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -23,10 +23,11 @@
       <span class="role-badge admin">관리자</span>
     </div>
   </div>
+
   <div class="ctx-banner">
     <a href="program.html" style="color:#888">2026 중장기발전계획</a>
     <span class="sep">›</span>
-    <span class="ctx-current">권한 배당 관리</span>
+    <span class="ctx-current">권한 배당</span>
   </div>
 
   <div class="body">
@@ -44,146 +45,43 @@
 
     <div class="content">
       <div class="page-header">
-        <h2>권한 배당 관리</h2>
-        <span class="page-sub">ProgramRoleBinding — 부서 단위 권한</span>
+        <h2>권한 배당</h2>
+        <span class="page-sub">ProgramRoleBinding</span>
         <div class="header-actions">
-          <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-perm').classList.add('open')">+ 권한 배당</button>
+          <button class="btn btn-sm btn-dark">+ 권한 배당</button>
         </div>
-      </div>
-
-      <div class="info-banner">
-        기본 권한은 <strong>부서 단위</strong>로 부여합니다.
-        외부 검토자(external_reviewer)만 개인 단위로 예외 허용되며, Program 전체 조회만 가능합니다.
       </div>
 
       <table class="data-table">
         <thead>
           <tr>
-            <th>대상</th>
-            <th>부서 / 사용자</th>
+            <th>부서명</th>
             <th>역할</th>
-            <th>권한 범위</th>
-            <th>범위 상세</th>
-            <th>배당일</th>
-            <th></th>
+            <th>범위</th>
+            <th>비고</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-size:11px;color:#555">부서</td>
             <td class="td-name">기획처 기획조정팀</td>
-            <td><span class="sb s-done"><span class="dot"></span>program_admin</span></td>
-            <td style="font-size:11px">program</td>
-            <td style="font-size:11px;color:#888">전체</td>
-            <td style="font-size:11px;color:#888">2025-12-01</td>
-            <td style="color:#aaa;font-size:11px">ownerOrgId — 변경 불가</td>
+            <td><span class="sb s-going"><span class="dot"></span>program_admin</span></td>
+            <td>프로그램 전체</td>
+            <td style="font-size:11px;color:#666">운영 주관 부서 기본 권한</td>
           </tr>
           <tr>
-            <td style="font-size:11px;color:#555">부서</td>
             <td class="td-name">교무처</td>
-            <td><span class="sb s-going"><span class="dot"></span>department_editor</span></td>
-            <td style="font-size:11px">classification_node</td>
-            <td style="font-size:11px;color:#555">영역 1. 교육혁신</td>
-            <td style="font-size:11px;color:#888">2026-01-05</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">편집</button>
-              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-            </td>
+            <td><span class="sb s-empty"><span class="dot"></span>department_editor</span></td>
+            <td>영역 1 전체</td>
+            <td style="font-size:11px;color:#666">입력 가능</td>
           </tr>
           <tr>
-            <td style="font-size:11px;color:#555">부서</td>
-            <td class="td-name">학생처</td>
-            <td><span class="sb s-going"><span class="dot"></span>department_editor</span></td>
-            <td style="font-size:11px">classification_node</td>
-            <td style="font-size:11px;color:#555">전략 1-2. 학생지원 외 2개</td>
-            <td style="font-size:11px;color:#888">2026-01-05</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">편집</button>
-              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-            </td>
-          </tr>
-          <tr>
-            <td style="font-size:11px;color:#555">부서</td>
             <td class="td-name">연구처</td>
-            <td><span class="sb s-going"><span class="dot"></span>department_editor</span></td>
-            <td style="font-size:11px">classification_node</td>
-            <td style="font-size:11px;color:#555">영역 2. 연구역량</td>
-            <td style="font-size:11px;color:#888">2026-01-05</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">편집</button>
-              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-            </td>
-          </tr>
-          <tr>
-            <td style="font-size:11px;color:#555">부서</td>
-            <td class="td-name">대외협력처</td>
-            <td><span class="sb s-going"><span class="dot"></span>department_editor</span></td>
-            <td style="font-size:11px">classification_node</td>
-            <td style="font-size:11px;color:#555">영역 3. 대외협력</td>
-            <td style="font-size:11px;color:#888">2026-01-05</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">편집</button>
-              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-            </td>
-          </tr>
-          <!-- external_reviewer: 개인 단위 예외 -->
-          <tr style="background:#FFFDE7">
-            <td style="font-size:11px;color:#555">개인 <span style="font-size:10px;color:#E65100">(예외)</span></td>
-            <td class="td-name">김평가위원 (kim.eval)</td>
-            <td><span class="sb s-warn"><span class="dot"></span>external_reviewer</span></td>
-            <td style="font-size:11px">program</td>
-            <td style="font-size:11px;color:#888">전체 조회만 (입력 불가)</td>
-            <td style="font-size:11px;color:#888">2026-03-01</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">편집</button>
-              <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-            </td>
+            <td><span class="sb s-empty"><span class="dot"></span>department_editor</span></td>
+            <td>영역 2 전체</td>
+            <td style="font-size:11px;color:#666">입력 가능</td>
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-
-<!-- 권한 배당 모달 -->
-<div class="modal-overlay" id="modal-perm">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>권한 배당</h3>
-      <button class="modal-close" onclick="document.getElementById('modal-perm').classList.remove('open')">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="fg-label">대상 유형 <span class="req">*</span></div>
-        <div class="fg-input">
-          <select id="principal-type" onchange="toggleExtReviewer(this.value)">
-            <option value="org">부서</option>
-            <option value="user">개인 (external_reviewer 전용)</option>
-          </select>
-        </div>
-        <div class="fg-label">부서 검색 <span class="req">*</span></div>
-        <div class="fg-input"><input type="text" placeholder="부서명 입력 후 검색..."></div>
-        <div class="fg-label">역할 <span class="req">*</span></div>
-        <div class="fg-input">
-          <select>
-            <option>department_editor — 입력/조회</option>
-            <option>department_viewer — 조회 전용</option>
-            <option>external_reviewer — 전체 조회 (개인 전용)</option>
-          </select>
-        </div>
-        <div class="fg-label">권한 범위 <span class="req">*</span></div>
-        <div class="fg-input">
-          <select>
-            <option>program — 전체</option>
-            <option>classification_node — 특정 분류 노드</option>
-          </select>
-          <div class="hint">external_reviewer는 program 전체 조회만 허용됩니다.</div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="document.getElementById('modal-perm').classList.remove('open')">취소</button>
-      <button class="btn btn-dark">배당</button>
     </div>
   </div>
 </div>

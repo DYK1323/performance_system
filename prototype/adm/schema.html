@@ -3,40 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>분류 체계 구성 — 성과관리 플랫폼</title>
+<title>분류 체계 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
-<style>
-  .tree-editor { border: 1px solid #e8e8e8; border-radius: 3px; overflow: hidden; }
-  .tree-editor-header {
-    padding: 10px 14px;
-    background: #fafafa;
-    border-bottom: 1px solid #e8e8e8;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #555;
-  }
-  .tree-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 14px;
-    border-bottom: 1px solid #f5f5f5;
-    gap: 8px;
-    font-size: 12px;
-  }
-  .tree-item:hover { background: #fafafa; }
-  .tree-item:last-child { border-bottom: none; }
-  .tree-item.l2 { padding-left: 32px; }
-  .tree-item.l3 { padding-left: 50px; }
-  .ti-code { color: #aaa; font-family: monospace; width: 56px; flex-shrink: 0; font-size: 11px; }
-  .ti-name { flex: 1; font-weight: 500; color: #111; }
-  .ti-level { font-size: 10px; color: #bbb; width: 48px; }
-  .ti-actions { display: flex; gap: 4px; }
-  .ti-add { color: #1565C0; font-size: 11px; cursor: pointer; }
-  .ti-add:hover { text-decoration: underline; }
-</style>
 </head>
 <body>
 <div class="shell">
@@ -45,9 +13,9 @@
     <nav>
       <a href="home.html">대시보드</a>
       <a href="program.html" class="active">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
+      <a href="confirm.html">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -55,10 +23,11 @@
       <span class="role-badge admin">관리자</span>
     </div>
   </div>
+
   <div class="ctx-banner">
     <a href="program.html" style="color:#888">2026 중장기발전계획</a>
     <span class="sep">›</span>
-    <span class="ctx-current">분류 체계 구성</span>
+    <span class="ctx-current">분류 체계</span>
   </div>
 
   <div class="body">
@@ -76,122 +45,35 @@
 
     <div class="content">
       <div class="page-header">
-        <h2>분류 체계 구성</h2>
-        <span class="page-sub">ClassificationSchema</span>
+        <h2>분류 체계</h2>
+        <span class="page-sub">영역 > 전략 > [지표]</span>
         <div class="header-actions">
-          <button class="btn btn-sm" onclick="alert('엑셀 업로드 (P1)')">엑셀 업로드</button>
+          <button class="btn btn-sm">엑셀 업로드</button>
           <button class="btn btn-sm btn-dark">+ 노드 추가</button>
         </div>
       </div>
 
-      <div style="display:flex;gap:20px;align-items:flex-start">
-        <!-- 레벨 구성 -->
-        <div style="width:220px;flex-shrink:0">
-          <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;text-transform:uppercase;letter-spacing:.04em">레벨 구성</div>
-          <div style="font-size:11px;color:#888;margin-bottom:10px">현재 2단계 분류체계</div>
-          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
-            <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e8e8e8;border-radius:3px;font-size:12px">
-              <span style="color:#aaa;font-size:11px">L1</span>
-              <input type="text" value="영역" style="flex:1;border:none;outline:none;font:inherit;font-size:12px;background:transparent">
-              <button class="btn-ghost btn btn-sm" style="padding:2px 6px">✕</button>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e8e8e8;border-radius:3px;font-size:12px">
-              <span style="color:#aaa;font-size:11px">L2</span>
-              <input type="text" value="전략" style="flex:1;border:none;outline:none;font:inherit;font-size:12px;background:transparent">
-              <button class="btn-ghost btn btn-sm" style="padding:2px 6px">✕</button>
-            </div>
+      <div class="neutral-banner">분류 체계와 지표 업로드는 분리하는 것이 현재 문서 기준 원칙입니다. 이 화면은 구조 설계만 다룹니다.</div>
+
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:24px">
+        <div>
+          <div class="input-section-title">레벨 설정</div>
+          <div class="field-wrap">
+            <select>
+              <option selected>레벨 2: 영역 > 전략 > [지표]</option>
+              <option>레벨 3: 영역 > 전략 > 과제 > [지표]</option>
+              <option>레벨 없음</option>
+            </select>
           </div>
-          <button class="btn btn-sm" style="width:100%">+ 레벨 추가</button>
-          <div style="font-size:11px;color:#aaa;margin-top:8px">최소관리단위(지표)는 최하위 레벨 아래에 배치됩니다.</div>
         </div>
-
-        <!-- 트리 편집기 -->
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;text-transform:uppercase;letter-spacing:.04em">트리 구조</div>
-          <div class="tree-editor">
-            <div class="tree-editor-header">
-              <span style="width:56px;color:#aaa;font-size:11px">코드</span>
-              <span style="flex:1">노드명</span>
-              <span style="width:48px;color:#aaa;font-size:10px">레벨</span>
-              <span style="width:120px"></span>
-            </div>
-
-            <!-- L1 -->
-            <div class="tree-item">
-              <span class="ti-code">01</span>
-              <span class="ti-name">영역 1. 교육혁신</span>
-              <span class="ti-level">L1</span>
-              <div class="ti-actions">
-                <span class="ti-add" onclick="alert('하위 노드 추가')">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <!-- L2 -->
-            <div class="tree-item l2">
-              <span class="ti-code">01-01</span>
-              <span class="ti-name">전략 1-1. 교육과정 혁신</span>
-              <span class="ti-level">L2</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <div class="tree-item l2">
-              <span class="ti-code">01-02</span>
-              <span class="ti-name">전략 1-2. 학생지원 강화</span>
-              <span class="ti-level">L2</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <!-- L1 -->
-            <div class="tree-item">
-              <span class="ti-code">02</span>
-              <span class="ti-name">영역 2. 연구역량 강화</span>
-              <span class="ti-level">L1</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <div class="tree-item l2">
-              <span class="ti-code">02-01</span>
-              <span class="ti-name">전략 2-1. 연구 지원</span>
-              <span class="ti-level">L2</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <div class="tree-item l2">
-              <span class="ti-code">02-02</span>
-              <span class="ti-name">전략 2-2. 산학협력</span>
-              <span class="ti-level">L2</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-            <!-- L1 -->
-            <div class="tree-item">
-              <span class="ti-code">03</span>
-              <span class="ti-name">영역 3. 대외협력</span>
-              <span class="ti-level">L1</span>
-              <div class="ti-actions">
-                <span class="ti-add">+ 하위</span>
-                <button class="btn btn-sm btn-ghost">편집</button>
-                <button class="btn btn-sm btn-ghost" style="color:#B71C1C">삭제</button>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top:10px;font-size:11px;color:#aaa">노드 삭제 시 하위 노드와 연결된 지표도 영향을 받습니다. 삭제 전 영향 범위를 확인하세요.</div>
+        <div>
+          <div class="input-section-title">노드 구조</div>
+          <div class="tree-node active">영역 1. 교육혁신</div>
+          <div class="tree-node l2">전략 1-1. 교육과정 고도화</div>
+          <div class="tree-node l2">전략 1-2. 학생지원 강화</div>
+          <div class="tree-node">영역 2. 연구역량</div>
+          <div class="tree-node l2">전략 2-1. 연구지원 체계</div>
+          <div class="tree-node">영역 3. 대외협력</div>
         </div>
       </div>
     </div>

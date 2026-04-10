@@ -122,6 +122,35 @@ button { cursor: pointer; font: inherit; }
 }
 .sidebar a:hover { background: #f5f5f5; color: #111; }
 .sidebar a.active { background: #f0f0f0; color: #111; font-weight: 600; }
+.sidebar a.sidebar-disabled,
+.sidebar .sidebar-static {
+  display: block;
+  font-size: 12.5px;
+  padding: 6px 16px;
+  color: #b0b0b0;
+  cursor: default;
+}
+.sidebar a.sidebar-disabled:hover,
+.sidebar .sidebar-static:hover {
+  background: transparent;
+  color: #b0b0b0;
+}
+.sidebar a.sidebar-current,
+.sidebar .sidebar-current {
+  display: block;
+  padding: 8px 16px;
+  background: #fff8ef;
+  color: #9a4d00;
+  font-size: 12px;
+  font-weight: 600;
+  border-left: 3px solid #E65100;
+}
+.sidebar-note {
+  padding: 8px 16px 10px;
+  font-size: 11px;
+  color: #999;
+  line-height: 1.45;
+}
 .sidebar a .badge {
   float: right;
   font-size: 10px;
@@ -133,6 +162,10 @@ button { cursor: pointer; font: inherit; }
   margin-top: 1px;
 }
 .sidebar-divider { height: 1px; background: #f0f0f0; margin: 8px 0; }
+.badge-muted {
+  background: #e0e0e0 !important;
+  color: #666 !important;
+}
 
 /* 트리 */
 .tree-node {
@@ -169,6 +202,22 @@ button { cursor: pointer; font: inherit; }
   display: flex;
   gap: 8px;
   align-items: center;
+}
+.page-caption {
+  margin: -8px 0 18px;
+  font-size: 12px;
+  color: #777;
+}
+.page-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 /* ── 버튼 ── */
@@ -301,6 +350,16 @@ button { cursor: pointer; font: inherit; }
 }
 .tab-btn:hover { color: #111; }
 .tab-btn.active { color: #111; font-weight: 700; border-bottom-color: #111; }
+.tab-btn[disabled] {
+  color: #bbb;
+  cursor: default;
+}
+.tab-btn[disabled]:hover { color: #bbb; }
+.tabs-caption {
+  margin: -8px 0 14px;
+  font-size: 11px;
+  color: #999;
+}
 
 /* ── 입력 폼 ── */
 .input-form { max-width: 700px; }
@@ -466,6 +525,15 @@ button { cursor: pointer; font: inherit; }
   border-radius: 0 3px 3px 0;
   font-size: 12px;
   color: #1565C0;
+  margin-bottom: 14px;
+}
+.neutral-banner {
+  padding: 10px 14px;
+  background: #f7f7f7;
+  border-left: 3px solid #cfcfcf;
+  border-radius: 0 3px 3px 0;
+  font-size: 12px;
+  color: #666;
   margin-bottom: 14px;
 }
 

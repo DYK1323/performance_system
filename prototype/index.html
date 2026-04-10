@@ -3,42 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>로그인 — 성과관리 플랫폼</title>
+<title>로그인 - 성과관리 플랫폼 프로토타입</title>
 <link rel="stylesheet" href="shared/style.css">
 <style>
   body { display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: auto; }
-  .login-wrap { width: 360px; padding: 48px 40px; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; }
-  .sys-name { font-size: 12px; color: #aaa; margin-bottom: 4px; }
-  h1 { font-size: 22px; font-weight: 700; margin-bottom: 30px; }
+  .login-wrap { width: 420px; padding: 40px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; }
+  .sys-name { font-size: 12px; color: #999; margin-bottom: 6px; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+  .intro { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 24px; }
   .form-field { margin-bottom: 14px; }
-  .form-field label { display: block; font-size: 12px; color: #555; font-weight: 500; margin-bottom: 5px; }
+  .form-field label { display: block; font-size: 12px; color: #555; font-weight: 600; margin-bottom: 6px; }
   .form-field input {
-    width: 100%; padding: 9px 12px;
-    border: 1px solid #d0d0d0; border-radius: 3px;
-    font: inherit; font-size: 13px; outline: none;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 13px;
+    outline: none;
   }
   .form-field input:focus { border-color: #111; }
-  .btn-login {
-    width: 100%; padding: 10px;
-    background: #111; color: #fff; border: none; border-radius: 3px;
-    font-size: 13px; font-weight: 600; margin-top: 6px; cursor: pointer;
+  .proto-box {
+    margin: 18px 0 22px;
+    padding: 14px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background: #fafafa;
   }
-  .btn-login:hover { background: #333; }
-  .login-divider { height: 1px; background: #f0f0f0; margin: 20px 0; }
-  .role-select { display: flex; gap: 8px; }
+  .proto-box strong { display: block; font-size: 12px; margin-bottom: 4px; }
+  .proto-box p { font-size: 12px; color: #666; line-height: 1.55; }
+  .role-select { display: flex; gap: 10px; margin-top: 12px; }
   .role-btn {
-    flex: 1; padding: 8px; border: 1px solid #d0d0d0; border-radius: 3px;
-    font: inherit; font-size: 12px; background: #fff; color: #555; cursor: pointer; text-align: center;
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 13px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
   }
-  .role-btn:hover { border-color: #888; color: #111; }
-  .role-btn.active { border-color: #111; background: #111; color: #fff; font-weight: 600; }
-  .login-footer { margin-top: 20px; font-size: 11px; color: #bbb; text-align: center; }
+  .role-btn strong { display: block; margin-bottom: 4px; }
+  .role-btn span { display: block; font-size: 11px; color: #888; line-height: 1.45; }
+  .role-btn:hover { border-color: #111; background: #f8f8f8; }
+  .login-footer { margin-top: 18px; font-size: 11px; color: #aaa; text-align: center; }
 </style>
 </head>
 <body>
 <div class="login-wrap">
   <div class="sys-name">성과관리 플랫폼</div>
   <h1>로그인</h1>
+  <p class="intro">이 화면은 역할별 프로토타입 진입용입니다. 실제 인증 대신 관리자 화면과 부서 담당자 화면으로 바로 이동할 수 있습니다.</p>
 
   <div class="form-field">
     <label>아이디</label>
@@ -49,14 +66,24 @@
     <input type="password" value="password" placeholder="비밀번호">
   </div>
 
-  <!-- 프로토타입용 역할 선택 -->
-  <div style="font-size:11px; color:#aaa; margin-bottom:6px; margin-top:14px;">프로토타입 — 역할 선택 후 진입</div>
-  <div class="role-select">
-    <button class="role-btn" onclick="location.href='usr/home.html'">담당자로 진입</button>
-    <button class="role-btn" onclick="location.href='adm/home.html'">관리자로 진입</button>
+  <div class="proto-box">
+    <strong>프로토타입 안내</strong>
+    <p>상단 메뉴는 전역 이동, 좌측 메뉴는 현재 문맥 이동으로 정리했습니다. 비활성 항목은 실제 링크 대신 준비 중 상태로 표시됩니다.</p>
   </div>
 
-  <div class="login-footer">SSO 인증 사용 시 계정 관리자에게 문의하세요.</div>
+  <div style="font-size:12px;font-weight:600;color:#555;">역할별 화면으로 진입</div>
+  <div class="role-select">
+    <button class="role-btn" onclick="location.href='usr/home.html'">
+      <strong>부서 담당자</strong>
+      <span>할 일 확인, 담당 사업 선택, 지표 입력 흐름</span>
+    </button>
+    <button class="role-btn" onclick="location.href='adm/home.html'">
+      <strong>관리자</strong>
+      <span>사업 구조 설정, 운영 현황 확인, 업로드/확정 흐름</span>
+    </button>
+  </div>
+
+  <div class="login-footer">SSO 인증이 필요한 실제 환경에서는 계정 관리자에게 문의하세요.</div>
 </div>
 </body>
 </html>

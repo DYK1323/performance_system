@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>지표 관리 — 성과관리 플랫폼</title>
+<title>지표 관리 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
@@ -13,9 +13,9 @@
     <nav>
       <a href="home.html">대시보드</a>
       <a href="program.html" class="active">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
+      <a href="confirm.html">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -23,6 +23,7 @@
       <span class="role-badge admin">관리자</span>
     </div>
   </div>
+
   <div class="ctx-banner">
     <a href="program.html" style="color:#888">2026 중장기발전계획</a>
     <span class="sep">›</span>
@@ -42,8 +43,9 @@
       <a href="formbuilder.html">입력폼 구성</a>
       <a href="periods.html">기간 관리</a>
       <a href="permissions.html">권한 배당</a>
+
       <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">분류체계</div>
+      <div class="sidebar-section-label">분류 필터</div>
       <div class="tree-node active">전체 (58)</div>
       <div class="tree-node">영역 1. 교육혁신 (24)</div>
       <div class="tree-node l2">전략 1-1. 교육과정 (12)</div>
@@ -57,18 +59,19 @@
         <h2>지표 관리</h2>
         <span class="page-sub">2026 운영본 · 전체 58개</span>
         <div class="header-actions">
-          <button class="btn btn-sm" onclick="alert('지표 일괄 업로드 (P1)\n분류 체계 업로드와 지표 업로드는 분리 운영')">일괄 업로드</button>
+          <button class="btn btn-sm" onclick="alert('지표 일괄 업로드\n분류 체계 업로드와 지표 업로드는 분리 운영')">일괄 업로드</button>
           <button class="btn btn-sm btn-dark">+ 지표 추가</button>
         </div>
       </div>
 
-      <div class="info-banner">v1: collectionMode는 <strong>manual(수기 입력)만 지원</strong>합니다. API / hybrid 연계는 v2+에서 추가됩니다.</div>
+      <div class="info-banner">v1에서는 collectionMode가 <strong>manual</strong>인 지표 중심으로 검토합니다. API, hybrid는 후속 확장 화면으로 분리하는 편이 자연스럽습니다.</div>
 
       <div class="tabs">
         <button class="tab-btn active">전체 (58)</button>
-        <button class="tab-btn">정량 (42)</button>
-        <button class="tab-btn">정성 (16)</button>
+        <button class="tab-btn" disabled>정량 (42)</button>
+        <button class="tab-btn" disabled>정성 (16)</button>
       </div>
+      <div class="tabs-caption">탭 버튼은 아직 필터 동작이 연결되지 않아 비활성 처리했습니다. 현재는 전체 목록을 기준으로 화면만 검토합니다.</div>
 
       <div class="filter-bar">
         <input type="text" placeholder="항목명 또는 코드" style="width:180px">
@@ -92,9 +95,7 @@
             <th style="width:56px">코드</th>
             <th style="width:220px">항목명</th>
             <th>유형</th>
-            <th>측정방식</th>
-            <th>판정방식</th>
-            <th>단위</th>
+            <th>측정 방식</th>
             <th>담당 부서</th>
             <th>주기</th>
             <th>상태</th>
@@ -106,73 +107,31 @@
             <td style="color:#999;font-size:11px">01-01</td>
             <td class="td-name">학부 정원 충원율</td>
             <td><span class="chip chip-quant">정량</span></td>
-            <td style="font-size:11px;color:#555">ratio</td>
-            <td style="font-size:11px;color:#555">higher_better</td>
-            <td style="font-size:11px">%</td>
+            <td style="font-size:11px;color:#555">ratio · manual</td>
             <td style="font-size:11px;color:#555">기획처</td>
             <td style="font-size:11px;color:#555">분기별</td>
-            <td><span class="sb s-done"><span class="dot"></span>활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
+            <td><span class="sb s-going"><span class="dot"></span>활성</span></td>
+            <td><button class="btn btn-sm">편집</button></td>
           </tr>
           <tr>
             <td style="color:#999;font-size:11px">01-02</td>
-            <td class="td-name">신입생 충원율</td>
-            <td><span class="chip chip-quant">정량</span></td>
-            <td style="font-size:11px;color:#555">ratio</td>
-            <td style="font-size:11px;color:#555">higher_better</td>
-            <td style="font-size:11px">%</td>
-            <td style="font-size:11px;color:#555">기획처</td>
-            <td style="font-size:11px;color:#555">분기별</td>
-            <td><span class="sb s-done"><span class="dot"></span>활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
-          </tr>
-          <tr>
-            <td style="color:#999;font-size:11px">01-03</td>
             <td class="td-name">교육과정 개선 추진 현황</td>
             <td><span class="chip chip-qual">정성</span></td>
-            <td style="font-size:11px;color:#aaa">—</td>
-            <td style="font-size:11px;color:#555">manual_only</td>
-            <td style="font-size:11px;color:#aaa">—</td>
+            <td style="font-size:11px;color:#555">서술형</td>
             <td style="font-size:11px;color:#555">교무처</td>
-            <td style="font-size:11px;color:#555">분기별</td>
-            <td><span class="sb s-done"><span class="dot"></span>활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
+            <td style="font-size:11px;color:#555">학기별</td>
+            <td><span class="sb s-going"><span class="dot"></span>활성</span></td>
+            <td><button class="btn btn-sm">편집</button></td>
           </tr>
-          <tr>
+          <tr class="row-done">
             <td style="color:#999;font-size:11px">02-01</td>
-            <td class="td-name">취업률</td>
-            <td><span class="chip chip-quant">정량</span></td>
-            <td style="font-size:11px;color:#555">ratio</td>
-            <td style="font-size:11px;color:#555">higher_better</td>
-            <td style="font-size:11px">%</td>
-            <td style="font-size:11px;color:#555">학생처</td>
-            <td style="font-size:11px;color:#555">연도별</td>
-            <td><span class="sb s-done"><span class="dot"></span>활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
-          </tr>
-          <tr>
-            <td style="color:#999;font-size:11px">02-02</td>
             <td class="td-name">논문 게재 수</td>
             <td><span class="chip chip-quant">정량</span></td>
-            <td style="font-size:11px;color:#555">number</td>
-            <td style="font-size:11px;color:#555">higher_better</td>
-            <td style="font-size:11px">편</td>
-            <td style="font-size:11px;color:#555">연구처</td>
-            <td style="font-size:11px;color:#555">연도별</td>
-            <td><span class="sb s-done"><span class="dot"></span>활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
-          </tr>
-          <tr style="opacity:.5">
-            <td style="color:#ccc;font-size:11px">99-01</td>
-            <td class="td-name" style="color:#aaa">구 취업률 (통합 전)</td>
-            <td><span class="chip" style="background:#f5f5f5;color:#ccc">정량</span></td>
-            <td style="font-size:11px;color:#ccc">ratio</td>
-            <td style="font-size:11px;color:#ccc">higher_better</td>
-            <td style="font-size:11px;color:#ccc">%</td>
-            <td style="font-size:11px;color:#ccc">학생처</td>
-            <td style="font-size:11px;color:#ccc">—</td>
+            <td style="font-size:11px;color:#999">number · manual</td>
+            <td style="font-size:11px;color:#999">연구처</td>
+            <td style="font-size:11px;color:#999">분기별</td>
             <td><span class="sb s-empty"><span class="dot"></span>비활성</span></td>
-            <td><button class="btn btn-sm btn-ghost">편집</button></td>
+            <td><button class="btn btn-sm btn-ghost">조회</button></td>
           </tr>
         </tbody>
       </table>

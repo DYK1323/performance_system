@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>관리자 대시보드 — 성과관리 플랫폼</title>
+<title>관리자 대시보드 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
@@ -13,9 +13,9 @@
     <nav>
       <a href="home.html" class="active">대시보드</a>
       <a href="program.html">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
+      <a href="confirm.html">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -24,25 +24,30 @@
     </div>
   </div>
 
+  <div class="ctx-banner">
+    <span class="ctx-current">전역 대시보드</span>
+    <span class="sep">›</span>
+    <span>ownerOrgId 기준 내 사업 현황</span>
+    <span class="ctx-due">현재 기간 2026년 1차 점검 · D-2</span>
+  </div>
+
   <div class="body">
     <nav class="sidebar">
-      <div class="sidebar-section-label">사업 목록</div>
+      <div class="sidebar-section-label">선택된 Program</div>
       <a href="home.html" class="active">2026 중장기발전계획</a>
-      <a href="#">2026 자체평가</a>
-      <a href="#">2025 중장기발전계획</a>
+      <span class="sidebar-static">2026 자체평가 <span class="badge badge-muted">예시</span></span>
+      <span class="sidebar-static">2025 중장기발전계획 <span class="badge badge-muted">완료</span></span>
+
       <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">운영</div>
-      <a href="#">미입력 모니터링 <span class="badge">23</span></a>
+      <div class="sidebar-section-label">전역 바로가기</div>
+      <a href="program.html">사업 설정 열기</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="#">활동 로그</a>
+      <a href="confirm.html">값 확정 / 상태 확인</a>
+      <span class="sidebar-static">미입력 모니터링 <span class="badge">23</span></span>
+
       <div class="sidebar-divider"></div>
-      <div class="sidebar-section-label">설정</div>
-      <a href="program.html">Program 설정</a>
-      <a href="version.html">운영본 관리</a>
-      <a href="schema.html">분류 체계</a>
-      <a href="statusset.html">상태 코드셋</a>
-      <a href="items.html">지표 관리</a>
-      <a href="formbuilder.html">입력폼 구성</a>
+      <div class="sidebar-section-label">안내</div>
+      <div class="sidebar-note">이 화면의 좌측 메뉴는 대시보드용 빠른 이동입니다. 세부 설정 메뉴는 상단의 <strong>사업 관리</strong>로 들어가면 고정된 구조로 보입니다.</div>
     </nav>
 
     <div class="content">
@@ -50,12 +55,14 @@
         <h2>관리자 대시보드</h2>
         <span class="page-sub">2026 중장기발전계획 · 2026년 1차 점검</span>
         <div class="header-actions">
-          <button class="btn btn-sm" onclick="alert('담당자 뷰 미리보기 (P6)')">담당자 뷰 미리보기</button>
-          <a href="program.html"><button class="btn btn-sm btn-dark">+ 새 사업 만들기</button></a>
+          <span class="page-chip">전역 메뉴: 상단 GNB</span>
+          <span class="page-chip">현재 문맥: 대시보드 빠른 이동</span>
+          <a href="program.html"><button class="btn btn-sm btn-dark">사업 설정 열기</button></a>
         </div>
       </div>
 
-      <!-- 요약 -->
+      <div class="neutral-banner">혼란을 줄이기 위해 대시보드에서는 사업 구조 설정 메뉴를 최소화했습니다. 구조 편집은 사업 관리 영역에서만 이어집니다.</div>
+
       <div class="stat-row">
         <div class="stat-item">
           <div class="stat-label">전체 배당 항목</div>
@@ -79,7 +86,6 @@
         </div>
       </div>
 
-      <!-- 부서별 현황 (ADM-01 핵심) -->
       <div class="page-header" style="margin-bottom:12px">
         <h2 style="font-size:14px;font-weight:600;color:#555">부서별 입력 현황</h2>
         <div class="header-actions">
@@ -87,8 +93,10 @@
             <option>기간: 2026년 1차 점검</option>
             <option>기간: 2026년 2차 점검</option>
           </select>
+          <button class="btn btn-sm">담당자 뷰 미리보기</button>
         </div>
       </div>
+
       <table class="data-table">
         <thead>
           <tr>

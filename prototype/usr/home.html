@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>홈 대시보드 — 성과관리 플랫폼</title>
+<title>홈 대시보드 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
 <div class="shell">
-  <!-- GNB (USR) -->
   <div class="gnb">
     <span class="brand">성과관리</span>
     <nav>
-      <a href="home.html" class="active">내 현황</a>
+      <a href="home.html" class="active">홈</a>
       <a href="programs.html">담당 사업</a>
       <a href="pending.html">미입력 항목</a>
     </nav>
@@ -23,25 +22,39 @@
     </div>
   </div>
 
+  <div class="ctx-banner">
+    <span class="ctx-current">할 일 중심 홈</span>
+    <span class="sep">›</span>
+    <span>현재 기간 2026년 1차 점검</span>
+    <span class="ctx-due">마감 D-2 · 04/12 18:00</span>
+  </div>
+
   <div class="body">
-    <!-- 사이드바 -->
     <nav class="sidebar">
       <div class="sidebar-section-label">빠른 접근</div>
       <a href="home.html" class="active">홈 대시보드</a>
       <a href="pending.html">미입력 항목 <span class="badge">7</span></a>
       <a href="programs.html">담당 사업 목록</a>
+
       <div class="sidebar-divider"></div>
       <div class="sidebar-section-label">현재 기간</div>
-      <a href="#" style="color:#E65100; font-weight:600">2026년 1차 점검 <span class="badge">D-2</span></a>
+      <div class="sidebar-current">2026년 1차 점검 <span class="badge">D-2</span></div>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">안내</div>
+      <div class="sidebar-note">상단 메뉴는 전역 이동, 좌측은 현재 홈 화면의 빠른 접근입니다. 기간 배너는 정보 표시용이므로 클릭되지 않습니다.</div>
     </nav>
 
     <div class="content">
       <div class="page-header">
         <h2>내 현황</h2>
         <span class="page-sub">2026-04-10 기준 · 기획처 기획조정팀</span>
+        <div class="header-actions">
+          <span class="page-chip">전역 메뉴: 상단 GNB</span>
+          <span class="page-chip">현재 문맥: 홈 빠른 접근</span>
+        </div>
       </div>
 
-      <!-- 요약 통계 (P3 - 미입력 우선) -->
       <div class="usr-stat-row">
         <div class="usr-stat urgent">
           <div class="stat-label">미입력 항목</div>
@@ -65,13 +78,13 @@
         </div>
       </div>
 
-      <!-- 담당 사업 (사업 단위 행) -->
       <div class="page-header" style="margin-top:4px;margin-bottom:12px">
         <h2 style="font-size:14px;font-weight:600;color:#555">담당 사업</h2>
         <div class="header-actions">
           <a href="programs.html" style="font-size:12px;color:#1565C0">전체 보기 →</a>
         </div>
       </div>
+
       <table class="data-table">
         <thead>
           <tr>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>운영본 관리 — 성과관리 플랫폼</title>
+<title>운영본 관리 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
 </head>
 <body>
@@ -13,9 +13,9 @@
     <nav>
       <a href="home.html">대시보드</a>
       <a href="program.html" class="active">사업 관리</a>
+      <a href="home.html">입력 현황</a>
       <a href="upload.html">업로드 이력</a>
-      <a href="periods.html">기간 관리</a>
-      <a href="permissions.html">권한 배당</a>
+      <a href="confirm.html">활동 로그</a>
     </nav>
     <div class="gnb-right">
       <span class="org-label">기획처 기획조정팀</span>
@@ -23,6 +23,7 @@
       <span class="role-badge admin">관리자</span>
     </div>
   </div>
+
   <div class="ctx-banner">
     <a href="program.html" style="color:#888">2026 중장기발전계획</a>
     <span class="sep">›</span>
@@ -45,11 +46,14 @@
     <div class="content">
       <div class="page-header">
         <h2>운영본 관리</h2>
-        <span class="page-sub">ProgramVersion</span>
+        <span class="page-sub">ProgramVersion 목록</span>
         <div class="header-actions">
+          <span class="page-chip">상세 설정 메뉴는 좌측 고정</span>
           <button class="btn btn-sm btn-dark" onclick="document.getElementById('modal-create').classList.add('open')">+ 새 운영본 생성</button>
         </div>
       </div>
+
+      <div class="neutral-banner">사업 관리 안에서는 같은 좌측 메뉴를 유지하고, 현재 선택된 설정 화면만 바뀌도록 정리했습니다.</div>
 
       <table class="data-table">
         <thead>
@@ -57,7 +61,7 @@
             <th>운영본명</th>
             <th>연도</th>
             <th>유형</th>
-            <th>원본</th>
+            <th>생성 방식</th>
             <th>상태</th>
             <th>확정 일시</th>
             <th>생성일</th>
@@ -71,11 +75,11 @@
             <td style="font-size:11px;color:#555">annual</td>
             <td style="font-size:11px;color:#555">2025 운영본 복사</td>
             <td><span class="sb s-going"><span class="dot"></span>운영 중 (active)</span></td>
-            <td style="color:#aaa;font-size:11px">—</td>
+            <td style="color:#aaa;font-size:11px">-</td>
             <td style="font-size:11px;color:#888">2025-12-01</td>
             <td>
-              <button class="btn btn-sm" onclick="alert('편집 가능 — 미확정 상태')">편집</button>
-              <button class="btn btn-sm" onclick="alert('최종 확정 시 편집 불가')">최종 확정</button>
+              <button class="btn btn-sm" onclick="alert('편집 가능 - 미확정 상태')">편집</button>
+              <button class="btn btn-sm" onclick="alert('최종 확정 시 일반 편집은 불가합니다.')">최종 확정</button>
             </td>
           </tr>
           <tr class="row-done">
@@ -86,82 +90,39 @@
             <td><span class="sb s-lock"><span class="dot"></span>최종 확정 (locked)</span></td>
             <td style="font-size:11px;color:#888">2026-01-15 10:00</td>
             <td style="font-size:11px;color:#aaa">2024-12-01</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">조회</button>
-            </td>
-          </tr>
-          <tr class="row-done">
-            <td class="td-name">2024 운영본</td>
-            <td>2024</td>
-            <td style="font-size:11px;color:#aaa">annual</td>
-            <td style="font-size:11px;color:#aaa">빈 운영본</td>
-            <td><span class="sb s-lock"><span class="dot"></span>보관 (archived)</span></td>
-            <td style="font-size:11px;color:#888">2025-01-10 09:30</td>
-            <td style="font-size:11px;color:#aaa">2023-12-01</td>
-            <td>
-              <button class="btn btn-sm btn-ghost">조회</button>
-            </td>
+            <td><button class="btn btn-sm btn-ghost">조회</button></td>
           </tr>
         </tbody>
       </table>
 
-      <div class="info-banner" style="margin-top:16px">최종 확정(confirmed_locked) 상태의 운영본은 지표·분류·산식 구조를 변경할 수 없습니다. 실적 입력은 계속 가능합니다.</div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL-07: ProgramVersion 생성 모달 -->
-<div class="modal-overlay" id="modal-create">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>새 운영본 생성</h3>
-      <button class="modal-close" onclick="document.getElementById('modal-create').classList.remove('open')">×</button>
-    </div>
-    <div class="modal-body">
-      <div style="margin-bottom:16px">
-        <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">생성 방식</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer">
-            <input type="radio" name="create-type" value="empty" style="margin-top:3px;accent-color:#111">
-            <div>
-              <div style="font-size:13px;font-weight:500">빈 운영본</div>
-              <div style="font-size:11px;color:#888;margin-top:2px">지표와 분류체계를 처음부터 직접 구성합니다.</div>
+      <div id="modal-create" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>새 운영본 생성</h3>
+            <button class="modal-close" onclick="document.getElementById('modal-create').classList.remove('open')">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-grid" style="margin-bottom:0">
+              <div class="fg-label">운영본명</div>
+              <div class="fg-input"><input type="text" value="2027 운영본"></div>
+              <div class="fg-label">연도</div>
+              <div class="fg-input"><input type="text" value="2027"></div>
+              <div class="fg-label">생성 방식</div>
+              <div class="fg-input">
+                <select>
+                  <option>전년도 운영본 불러오기</option>
+                  <option>빈 운영본 생성</option>
+                  <option>템플릿에서 생성</option>
+                </select>
+              </div>
             </div>
-          </label>
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2px solid #111;border-radius:3px;cursor:pointer">
-            <input type="radio" name="create-type" value="prev" checked style="margin-top:3px;accent-color:#111">
-            <div>
-              <div style="font-size:13px;font-weight:500">전년도 운영본 복사</div>
-              <div style="font-size:11px;color:#888;margin-top:2px">2025 운영본의 지표·분류 구조를 복사해 시작합니다. 실적은 복사되지 않습니다.</div>
-            </div>
-          </label>
-          <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer">
-            <input type="radio" name="create-type" value="template" style="margin-top:3px;accent-color:#111">
-            <div>
-              <div style="font-size:13px;font-weight:500">템플릿 적용</div>
-              <div style="font-size:11px;color:#888;margin-top:2px">ItemTemplate에서 기본 구성을 불러옵니다.</div>
-            </div>
-          </label>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" onclick="document.getElementById('modal-create').classList.remove('open')">취소</button>
+            <button class="btn btn-dark" onclick="document.getElementById('modal-create').classList.remove('open')">생성</button>
+          </div>
         </div>
       </div>
-      <div class="form-grid" style="margin-bottom:0">
-        <div class="fg-label">운영본명 <span class="req">*</span></div>
-        <div class="fg-input"><input type="text" value="2027 운영본"></div>
-        <div class="fg-label">연도 <span class="req">*</span></div>
-        <div class="fg-input"><input type="text" value="2027" style="width:100px"></div>
-        <div class="fg-label">유형</div>
-        <div class="fg-input">
-          <select>
-            <option>annual — 연도별 정기</option>
-            <option>special — 특별 차수</option>
-            <option>revision — 수정본</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="document.getElementById('modal-create').classList.remove('open')">취소</button>
-      <button class="btn btn-dark">생성</button>
     </div>
   </div>
 </div>
