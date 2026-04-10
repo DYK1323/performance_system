@@ -95,7 +95,7 @@
         </div>
 
         <div class="form-actions">
-          <button class="btn">임시 저장</button>
+          <button class="btn" onclick="tmpSave()">임시 저장</button>
           <button class="btn btn-dark" onclick="location.href='saved.html'">최종 저장</button>
           <button class="btn btn-ghost" style="margin-left:auto" onclick="history.back()">← 목록으로</button>
         </div>
@@ -103,5 +103,11 @@
     </div>
   </div>
 </div>
+
+<script>
+function tmpSave() {
+  alert('임시 저장되었습니다. 실제 데이터 저장은 연결되지 않은 프로토타입입니다.');
+}
+</script>
 </body>
 </html>
