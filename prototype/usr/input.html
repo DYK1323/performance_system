@@ -5,6 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>실적 입력 - 성과관리 플랫폼</title>
 <link rel="stylesheet" href="../shared/style.css">
+<style>
+.phase-banner {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #555;
+}
+.readonly-block {
+  padding: 12px 14px;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  background: #f7f7f7;
+}
+.readonly-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #777;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.readonly-value {
+  font-size: 13px;
+  color: #222;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.readonly-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #888;
+}
+.is-disabled {
+  opacity: .5;
+}
+.is-disabled input,
+.is-disabled textarea,
+.is-disabled select,
+.is-disabled button,
+.is-disabled .evidence-zone {
+  pointer-events: none;
+}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -21,6 +67,7 @@
 
   <div class="body">
     <div class="content">
+      <div class="phase-banner" id="phase-banner"></div>
 
       <!-- 정량 입력 폼 -->
       <div class="input-form" id="form-quant">
@@ -47,7 +94,12 @@
           <div class="field-row">
             <label>계획값 <span class="req">*</span></label>
             <div class="field-wrap">
-              <div class="num-wrap">
+              <div class="readonly-block" id="quant-plan-readonly" style="display:none">
+                <div class="readonly-label">계획 입력값</div>
+                <div class="readonly-value">98%</div>
+                <div class="readonly-meta">같은 부서 입력 · 최종 수정 2026-03-12 14:20 · 김담당</div>
+              </div>
+              <div class="num-wrap" id="quant-plan-edit">
                 <input type="number" value="98" min="0" max="200" step="0.1">
                 <span class="num-unit">%</span>
               </div>
@@ -57,7 +109,7 @@
 
         <div class="input-section">
           <div class="input-section-title">실적</div>
-          <div class="field-row">
+          <div class="field-row" id="quant-actual-row">
             <label>실적값 <span class="req">*</span></label>
             <div class="field-wrap">
               <div class="num-wrap">
@@ -124,12 +176,17 @@
           <div class="field-row">
             <label style="padding-top:8px">추진 계획 <span class="req">*</span></label>
             <div class="field-wrap">
-              <textarea style="min-height:100px">교육과정위원회 협의를 통한 전공 교육과정 개편안 확정 및 2027학년도 적용 준비</textarea>
+              <div class="readonly-block" id="qual-plan-readonly" style="display:none">
+                <div class="readonly-label">계획 입력내용</div>
+                <div class="readonly-value">교육과정위원회 협의를 통한 전공 교육과정 개편안 확정 및 2027학년도 적용 준비</div>
+                <div class="readonly-meta">같은 부서 입력 · 최종 수정 2026-03-10 09:40 · 박주무관</div>
+              </div>
+              <textarea id="qual-plan-edit" style="min-height:100px">교육과정위원회 협의를 통한 전공 교육과정 개편안 확정 및 2027학년도 적용 준비</textarea>
             </div>
           </div>
         </div>
 
-        <div class="input-section">
+        <div class="input-section" id="qual-actual-section">
           <div class="input-section-title">실적</div>
           <div class="field-row">
             <label style="padding-top:8px">추진 현황 <span class="req">*</span></label>
@@ -182,6 +239,7 @@
 const params = new URLSearchParams(location.search);
 const TYPE = params.get('type') || 'quant';
 const CODE = params.get('code') || '';
+const ENTRY_PHASE = params.get('phase') || 'actual';
 
 window.PAGE_CONFIG = { role: 'usr', gnbActive: 'programs', sidebar: 'programs', tabActive: 'items' };
 initLayout();
@@ -206,6 +264,8 @@ if (TYPE === 'qual') {
   if (item) document.getElementById('quant-title').textContent = item.name;
   document.getElementById('quant-org').textContent = APP.user.org;
 }
+
+applyPhaseRules();
 
 // 달성률 계산 (정량)
 function calcRate(value) {
@@ -232,6 +292,38 @@ function calcRate(value) {
 
 function tmpSave() {
   alert('임시 저장되었습니다. 실제 데이터 저장은 연결되지 않은 프로토타입입니다.');
+}
+
+function applyPhaseRules() {
+  const banner = document.getElementById('phase-banner');
+  const isActual = ENTRY_PHASE === 'actual';
+
+  banner.innerHTML = isActual
+    ? '현재는 <strong>실적 입력 기간</strong>입니다. 계획 영역은 읽기 전용으로 보이고, 실적 영역만 편집할 수 있습니다. 실적 입력 시 같은 부서가 기존에 입력한 계획 내용이 함께 표시됩니다.'
+    : '현재는 <strong>계획 입력 기간</strong>입니다. 계획 영역은 편집 가능하고, 실적 영역은 비활성 상태로 보입니다.';
+
+  const quantPlanReadonly = document.getElementById('quant-plan-readonly');
+  const quantPlanEdit = document.getElementById('quant-plan-edit');
+  const quantActualRow = document.getElementById('quant-actual-row');
+  const qualPlanReadonly = document.getElementById('qual-plan-readonly');
+  const qualPlanEdit = document.getElementById('qual-plan-edit');
+  const qualActualSection = document.getElementById('qual-actual-section');
+
+  if (isActual) {
+    if (quantPlanReadonly) quantPlanReadonly.style.display = '';
+    if (quantPlanEdit) quantPlanEdit.style.display = 'none';
+    if (quantActualRow) quantActualRow.classList.remove('is-disabled');
+    if (qualPlanReadonly) qualPlanReadonly.style.display = '';
+    if (qualPlanEdit) qualPlanEdit.style.display = 'none';
+    if (qualActualSection) qualActualSection.classList.remove('is-disabled');
+  } else {
+    if (quantPlanReadonly) quantPlanReadonly.style.display = 'none';
+    if (quantPlanEdit) quantPlanEdit.style.display = '';
+    if (quantActualRow) quantActualRow.classList.add('is-disabled');
+    if (qualPlanReadonly) qualPlanReadonly.style.display = 'none';
+    if (qualPlanEdit) qualPlanEdit.style.display = '';
+    if (qualActualSection) qualActualSection.classList.add('is-disabled');
+  }
 }
 </script>
 </body>

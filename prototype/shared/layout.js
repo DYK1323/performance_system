@@ -25,6 +25,7 @@ function renderAdmGNB(cfg) {
   const items = [
     { id: 'dashboard', label: '대시보드',   href: 'dashboard.html' },
     { id: 'programs',  label: '사업 관리',  href: 'programs.html'  },
+    { id: 'system',    label: '시스템 관리', href: 'system.html'   },
     { id: 'upload',    label: '업로드 이력', href: 'upload.html'   },
     { id: 'activity',  label: '활동 로그',  href: 'activity.html'  },
   ];
@@ -82,21 +83,34 @@ function renderAdmSidebar(cfg) {
     case 'programs':
       return `
         <div class="sidebar-section-label">사업 관리</div>
-        <a href="programs.html" class="active">전체 사업 목록</a>`;
+        <a href="programs.html" class="active">전체 사업 목록</a>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">바로 가기</div>
+        <a href="system.html?tab=library">지표 라이브러리</a>
+        <a href="system.html?tab=api">API 관리</a>
+        <a href="system.html?tab=statusset">상태 코드셋</a>`;
+
+    case 'system':
+      return `
+        <div class="sidebar-section-label">시스템 관리</div>
+        <a href="system.html?tab=library"${cfg.tabActive === 'library' || !cfg.tabActive ? ' class="active"' : ''}>지표 라이브러리</a>
+        <a href="system.html?tab=api"${cfg.tabActive === 'api' ? ' class="active"' : ''}>API 관리</a>
+        <a href="system.html?tab=statusset"${cfg.tabActive === 'statusset' ? ' class="active"' : ''}>상태 코드셋</a>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">안내</div>
+        <div class="sidebar-current">여러 사업 공통 자산</div>
+        <div class="sidebar-note">사업 안에서는 운영 지표만 다루고, 공통 지표와 API 소스, 상태 코드셋은 여기서 관리합니다.</div>`;
 
     case 'program-setting':
       const tabs = [
         { id: 'info',        label: '기본 정보'    },
         { id: 'version',     label: '운영본 관리'  },
         { id: 'schema',      label: '분류 체계'    },
+        { id: 'templates',   label: '사업 전용 템플릿' },
         { id: 'cycles',      label: '점검 주기'    },
-        { id: 'statusset',   label: '상태 코드셋'  },
-        { id: 'managed',     label: '기준 항목 풀' },
-        { id: 'items',       label: '운영 항목'    },
-        { id: 'groups',      label: '항목 묶음'    },
+        { id: 'items',       label: '운영 지표'    },
         { id: 'formbuilder', label: '입력폼 구성'  },
         { id: 'periods',     label: '기간 관리'    },
-        { id: 'integrations', label: '연계 · 산식' },
         { id: 'permissions', label: '권한 배당'    },
       ];
       return `
@@ -112,7 +126,12 @@ function renderAdmSidebar(cfg) {
         <div class="tree-node l2">전략 1-1. 교육과정 (12)</div>
         <div class="tree-node l2">전략 1-2. 학생지원 (12)</div>
         <div class="tree-node">영역 2. 연구역량 (18)</div>
-        <div class="tree-node">영역 3. 대외협력 (16)</div>` : ''}`;
+        <div class="tree-node">영역 3. 대외협력 (16)</div>` : ''}
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">공통 자산</div>
+        <a href="system.html?tab=library">지표 라이브러리</a>
+        <a href="system.html?tab=api">API 관리</a>
+        <a href="system.html?tab=statusset">상태 코드셋</a>`;
 
     case 'upload':
       return `
@@ -124,8 +143,7 @@ function renderAdmSidebar(cfg) {
     case 'activity':
       return `
         <div class="sidebar-section-label">활동 로그</div>
-        <a href="activity.html" ${cfg.tabActive !== 'snapshot' ? 'class="active"' : ''}>값 확정 · 상태 확인</a>
-        <a href="activity.html?tab=snapshot" ${cfg.tabActive === 'snapshot' ? 'class="active"' : ''}>기준일 집계 확정</a>
+        <a href="activity.html" class="active">값 확정 · 상태 확인</a>
         <span class="sidebar-static">상세 활동 로그 <span style="float:right;font-size:10px;padding:1px 6px;background:#e0e0e0;color:#666;border-radius:10px;">준비 중</span></span>`;
 
     default: return '';

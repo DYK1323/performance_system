@@ -12,18 +12,26 @@
 /* 분류 체계 트리 */
 .schema-step { margin-bottom:24px; }
 .schema-step h3 { font-size:13px; font-weight:600; color:#555; margin-bottom:12px; }
-.level-cards { display:flex; gap:10px; margin-bottom:16px; }
-.level-card { flex:1; max-width:160px; padding:14px 16px; border:2px solid #e0e0e0; border-radius:6px; cursor:pointer; text-align:center; transition:.15s; }
-.level-card:hover { border-color:#aaa; }
-.level-card.selected { border-color:#111; background:#111; color:#fff; }
-.level-card .lc-title { font-size:13px; font-weight:600; margin-bottom:4px; }
-.level-card .lc-sub { font-size:11px; opacity:.7; }
+.schema-config { border:1px solid #e8e8e8; border-radius:6px; background:#fff; padding:16px; }
+.schema-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.schema-count { font-size:12px; color:#666; }
+.schema-level-list { display:flex; flex-direction:column; gap:8px; }
+.schema-level-row { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #e8e8e8; border-radius:6px; cursor:pointer; background:#fafafa; }
+.schema-level-row.selected { border-color:#111; background:#f3f3f3; }
+.schema-badge { width:58px; flex-shrink:0; font-size:11px; font-weight:700; color:#666; }
+.schema-name { flex:1; }
+.schema-name input { width:100%; border:1px solid #d0d0d0; border-radius:4px; padding:8px 10px; font:inherit; font-size:13px; background:#fff; }
+.schema-level-actions { display:flex; gap:6px; }
+.schema-helper { font-size:12px; color:#666; line-height:1.6; margin-bottom:12px; }
 .tree-builder { border:1px solid #e8e8e8; border-radius:6px; overflow:hidden; }
 .tree-row { display:flex; align-items:center; padding:8px 12px; border-bottom:1px solid #f0f0f0; gap:8px; }
 .tree-row:last-child { border-bottom:none; }
 .tree-row.l1 { background:#fafafa; font-weight:600; font-size:13px; }
 .tree-row.l2 { padding-left:32px; font-size:12px; }
 .tree-row.l3 { padding-left:52px; font-size:12px; color:#555; }
+.tree-row.l4 { padding-left:72px; font-size:12px; color:#555; }
+.tree-row.l5 { padding-left:92px; font-size:12px; color:#666; }
+.tree-row.l6 { padding-left:112px; font-size:12px; color:#666; }
 .tree-row .node-code { font-size:11px; color:#999; width:36px; flex-shrink:0; }
 .tree-row .node-name { flex:1; }
 .tree-row .node-actions { display:none; gap:4px; }
@@ -55,6 +63,8 @@
 }
 .fb-type-btn:first-child { border-top:0; }
 .fb-type-btn.active { background:#111; color:#fff; }
+.fb-type-head { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+.fb-type-note { font-size:11px; color:#888; line-height:1.5; margin-top:8px; }
 .fb-panel { border:1px solid #e8e8e8; border-radius:6px; background:#fff; padding:16px; }
 .fb-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
 .fb-toolbar-left { display:flex; flex-wrap:wrap; gap:8px; }
@@ -85,6 +95,19 @@
 .fb-modal-grid textarea { min-height:84px; resize:vertical; }
 .fb-inline-check { display:flex; align-items:center; gap:8px; font-size:12px; color:#555; padding-top:8px; }
 .fb-inline-check input { width:auto; }
+.fb-option-mode { display:flex; gap:14px; flex-wrap:wrap; padding-top:6px; }
+.fb-option-mode label { display:flex; align-items:center; gap:6px; font-size:12px; color:#555; padding-top:0; }
+.fb-option-mode input { width:auto; }
+.fb-system-note {
+  margin-top:8px;
+  padding:10px 12px;
+  border:1px solid #e8e8e8;
+  border-radius:6px;
+  background:#fafafa;
+  font-size:11px;
+  color:#666;
+  line-height:1.55;
+}
 @media (max-width: 980px) {
   .fb-layout { flex-direction:column; }
   .fb-type-list { display:flex; width:100%; }
@@ -194,95 +217,30 @@
       <!-- ── 분류 체계 ── -->
       <div class="tab-panel" id="panel-schema">
         <div class="schema-step">
-          <h3>Step 1 · 레벨 구조 선택</h3>
-          <div class="level-cards">
-            <div class="level-card" onclick="selectLevel(0,this)">
-              <div class="lc-title">레벨 없음</div>
-              <div class="lc-sub">분류 없이 지표만</div>
+          <h3>Step 1 · 레벨 구조 설계</h3>
+          <div class="schema-config">
+            <div class="schema-toolbar">
+              <div class="schema-count" id="schema-level-count"></div>
+              <div class="header-actions">
+                <button class="btn btn-sm" type="button" onclick="insertSchemaLevel()">선택 위치 뒤에 삽입</button>
+                <button class="btn btn-sm btn-dark" type="button" onclick="appendSchemaLevel()">끝에 레벨 추가</button>
+              </div>
             </div>
-            <div class="level-card" onclick="selectLevel(2,this)">
-              <div class="lc-title">2단계</div>
-              <div class="lc-sub">영역 › 지표</div>
+            <div class="schema-helper">
+              분류 레벨 수는 고정하지 않습니다. 관리자가 현재 구조의 중간에도 새 레벨을 끼워 넣을 수 있고, 끝에도 계속 확장할 수 있습니다.
             </div>
-            <div class="level-card selected" onclick="selectLevel(3,this)">
-              <div class="lc-title">3단계</div>
-              <div class="lc-sub">영역 › 전략 › 지표</div>
-            </div>
+            <div class="schema-level-list" id="schema-level-list"></div>
           </div>
         </div>
         <div class="schema-step" id="schema-names">
           <h3>Step 2 · 레벨 명칭</h3>
-          <div class="form-grid" style="max-width:480px">
-            <div class="fg-label">레벨 1 명칭</div>
-            <div class="fg-input"><input type="text" value="영역"></div>
-            <div class="fg-label">레벨 2 명칭</div>
-            <div class="fg-input"><input type="text" value="전략목표"></div>
-          </div>
+          <div class="info-banner" style="margin-bottom:12px">각 레벨은 불변 ID를 가지며, 중간 삽입 시에도 기존 노드 참조는 유지되고 표시 순서만 재정렬되는 구조를 전제로 합니다.</div>
+          <div id="schema-level-fields"></div>
         </div>
         <div class="schema-step">
           <h3>Step 3 · 분류 항목 편집</h3>
-          <div class="tree-builder" id="schema-tree">
-            <div class="tree-row l1">
-              <span class="tree-collapse">▼</span>
-              <span class="node-code">A1</span>
-              <span class="node-name">영역 1. 교육혁신</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-            <div class="tree-row l2">
-              <span class="tree-collapse">▼</span>
-              <span class="node-code">A1-1</span>
-              <span class="node-name">전략 1-1. 교육과정 혁신</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-            <div class="tree-row l2">
-              <span class="tree-collapse">▶</span>
-              <span class="node-code">A1-2</span>
-              <span class="node-name">전략 1-2. 학생 지원 강화</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-            <div class="tree-row l1">
-              <span class="tree-collapse">▼</span>
-              <span class="node-code">A2</span>
-              <span class="node-name">영역 2. 연구역량 강화</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-            <div class="tree-row l2">
-              <span class="tree-collapse"></span>
-              <span class="node-code">A2-1</span>
-              <span class="node-name">전략 2-1. 연구 인프라 확충</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-            <div class="tree-row l1">
-              <span class="tree-collapse">▶</span>
-              <span class="node-code">A3</span>
-              <span class="node-name">영역 3. 대외협력</span>
-              <div class="node-actions">
-                <button class="btn btn-sm">+하위 추가</button>
-                <button class="btn btn-sm">수정</button>
-                <button class="btn btn-sm btn-ghost">삭제</button>
-              </div>
-            </div>
-          </div>
+          <div class="info-banner" style="margin-bottom:12px">아래 예시는 중간 레벨을 삽입한 뒤에도 기존 트리를 그대로 확장하는 모습을 보여줍니다.</div>
+          <div class="tree-builder" id="schema-tree"></div>
           <div style="margin-top:10px;display:flex;gap:8px">
             <button class="btn btn-sm btn-dark" onclick="alert('최상위 항목 추가 (프로토타입)')">+ 영역 추가</button>
             <button class="btn btn-sm btn-ghost" onclick="alert('Excel 업로드 (프로토타입)')">Excel 업로드</button>
@@ -332,114 +290,56 @@
         </table>
       </div>
 
-      <!-- ── 상태 코드셋 ── -->
-      <div class="tab-panel" id="panel-statusset">
-        <div class="info-banner" style="margin-bottom:16px">StatusSet은 프로그램 기본값 또는 기간 유형(typeCode)별로 둘 수 있습니다. 운영 항목은 자신이 참조할 코드셋을 별도로 선택합니다.</div>
-        <div style="margin-bottom:12px">
-          <button class="btn btn-sm btn-dark" onclick="alert('새 코드셋 추가 (프로토타입)')">+ 코드셋 추가</button>
+      <!-- ── 사업 전용 템플릿 ── -->
+      <div class="tab-panel" id="panel-templates">
+        <div class="info-banner" style="margin-bottom:16px">운영본 구성이 정리되면 사업 전용 템플릿으로 저장해 다음 연도 운영본의 시작점으로 재사용할 수 있습니다. 공통 지표 원형은 시스템관리의 지표 라이브러리에서 관리합니다.</div>
+        <div class="header-actions" style="margin-bottom:14px">
+          <button class="btn btn-sm btn-dark" onclick="alert('현재 운영본을 템플릿으로 저장 (프로토타입)')">현재 운영본 저장</button>
+          <button class="btn btn-sm" onclick="alert('전년도 운영본 불러오기 (프로토타입)')">전년도 운영본 불러오기</button>
         </div>
         <table class="data-table">
           <thead>
-            <tr><th>코드셋 명</th><th>적용 범위</th><th>코드 목록</th><th>사용 항목 수</th><th></th></tr>
+            <tr><th>템플릿명</th><th>기준 운영본</th><th>구성 지표</th><th>최근 사용</th><th>설명</th><th></th></tr>
           </thead>
           <tbody>
             <tr>
-              <td class="td-name">기본 달성 상태</td>
-              <td style="font-size:12px">Program 기본값</td>
-              <td style="font-size:12px">달성 · 부분달성 · 미달성 · 해당없음</td>
-              <td>24</td>
+              <td class="td-name">중장기발전계획 기본 템플릿</td>
+              <td style="font-size:12px">2025 운영본</td>
+              <td style="font-size:12px">54개 운영 지표</td>
+              <td style="font-size:12px">2026 운영본 생성 시 사용</td>
+              <td style="font-size:12px">가장 최근 확정된 분류 체계와 권한 배정 포함</td>
               <td><button class="btn btn-sm">수정</button></td>
             </tr>
             <tr>
-              <td class="td-name">추진 단계</td>
-              <td style="font-size:12px">typeCode = interim</td>
-              <td style="font-size:12px">계획 · 진행중 · 완료 · 보류</td>
-              <td>18</td>
-              <td><button class="btn btn-sm">수정</button></td>
-            </tr>
-            <tr>
-              <td class="td-name">정성 등급</td>
-              <td style="font-size:12px">typeCode = final</td>
-              <td style="font-size:12px">우수 · 보통 · 미흡</td>
-              <td>16</td>
-              <td><button class="btn btn-sm">수정</button></td>
+              <td class="td-name">평가 대응 간소형 템플릿</td>
+              <td style="font-size:12px">2024 운영본</td>
+              <td style="font-size:12px">31개 운영 지표</td>
+              <td style="font-size:12px">미사용</td>
+              <td style="font-size:12px">핵심 보고용 지표만 포함한 간소형 구성</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- ── 기준 항목 풀 ── -->
-      <div class="tab-panel" id="panel-managed">
-        <div class="info-banner" style="margin-bottom:16px">ManagedItem은 재사용 가능한 기준 항목 풀입니다. 실제 운영본에 반영되면 ProgramVersionItem으로 고정됩니다.</div>
-        <div class="items-toolbar">
-          <input type="text" placeholder="기준 항목명 · 코드 검색">
-          <select><option>전체 유형</option><option>정량</option><option>정성</option></select>
-          <select><option>전체 수집 방식</option><option>manual</option><option>api</option><option>hybrid</option></select>
-          <button class="btn btn-sm btn-dark" onclick="alert('새 기준 항목 추가 (프로토타입)')">+ 기준 항목 추가</button>
-          <button class="btn btn-sm btn-ghost" onclick="alert('템플릿 기반 생성 (프로토타입)')">템플릿 적용</button>
-        </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:90px">원형 코드</th>
-              <th>기준 항목명</th>
-              <th>유형</th>
-              <th>주기</th>
-              <th>수집 방식</th>
-              <th>재사용 운영본</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-size:12px;color:#888">MI-001</td>
-              <td class="td-name">학부 정원 충원율</td>
-              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
-              <td style="font-size:12px">분기별 점검</td>
-              <td style="font-size:12px">manual</td>
-              <td style="font-size:12px">2024, 2025, 2026</td>
-              <td><button class="btn btn-sm">수정</button></td>
-            </tr>
-            <tr>
-              <td style="font-size:12px;color:#888">MI-014</td>
-              <td class="td-name">취업률</td>
-              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
-              <td style="font-size:12px">연도말 확정</td>
-              <td style="font-size:12px">hybrid</td>
-              <td style="font-size:12px">2025, 2026</td>
-              <td><button class="btn btn-sm">수정</button></td>
-            </tr>
-            <tr>
-              <td style="font-size:12px;color:#888">MI-021</td>
-              <td class="td-name">교육과정 개선 추진 현황</td>
-              <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
-              <td style="font-size:12px">분기별 점검</td>
-              <td style="font-size:12px">manual</td>
-              <td style="font-size:12px">2026</td>
-              <td><button class="btn btn-sm">수정</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- ── 운영 항목 ── -->
+      <!-- ── 운영 지표 ── -->
       <div class="tab-panel" id="panel-items">
-        <div class="info-banner" style="margin-bottom:16px">ProgramVersionItem은 선택한 운영본에서 실제로 사용하는 항목 스냅샷입니다. 소속 분류, 담당 부서, 상태셋, 산식은 연도별로 달라질 수 있습니다.</div>
+        <div class="info-banner" style="margin-bottom:16px">사업 안에서는 운영 지표만 관리합니다. 지표는 시스템관리의 라이브러리에서 가져오거나, 여기서 새로 만든 뒤 출처 정보와 함께 라이브러리에 다시 추가할 수 있습니다.</div>
         <div class="items-toolbar">
-          <input type="text" placeholder="운영 항목명 · 코드 검색">
-          <select><option>전체 유형</option><option>정량</option><option>정성</option></select>
+          <input type="text" placeholder="운영 지표명 · 코드 검색">
+          <select><option>전체 유형</option><option>정성</option><option>단일 정량</option><option>합성 정량</option></select>
           <select><option>전체 영역</option><option>영역 1. 교육혁신</option><option>영역 2. 연구역량</option><option>영역 3. 대외협력</option></select>
-          <button class="btn btn-sm btn-dark" onclick="alert('새 운영 항목 추가 (프로토타입)')">+ 운영 항목 추가</button>
-          <button class="btn btn-sm btn-ghost" onclick="alert('기준 항목에서 불러오기 (프로토타입)')">기준 항목 불러오기</button>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 운영 지표 만들기 (프로토타입)')">+ 새 운영 지표</button>
+          <a href="system.html?tab=library"><button class="btn btn-sm btn-ghost" type="button">라이브러리에서 가져오기</button></a>
         </div>
         <table class="data-table">
           <thead>
             <tr>
               <th style="width:80px">코드</th>
-              <th>운영 항목명</th>
+              <th>운영 지표명</th>
               <th>유형</th>
               <th>분류</th>
-              <th>기준 항목</th>
+              <th>출처</th>
               <th>담당 부서</th>
               <th>주기</th>
               <th>수집 방식</th>
@@ -450,9 +350,9 @@
             <tr>
               <td style="font-size:12px;color:#888">01-01</td>
               <td class="td-name">학부 정원 충원율</td>
-              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>단일 정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">MI-001</td>
+              <td style="font-size:12px">라이브러리 · LIB-Q-001</td>
               <td style="font-size:12px">교무처</td>
               <td style="font-size:12px">분기별 점검</td>
               <td style="font-size:12px">manual</td>
@@ -461,9 +361,9 @@
             <tr>
               <td style="font-size:12px;color:#888">01-02</td>
               <td class="td-name">신입생 충원율</td>
-              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>단일 정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">MI-002</td>
+              <td style="font-size:12px">이번 사업에서 생성 후 라이브러리 등록</td>
               <td style="font-size:12px">입학처</td>
               <td style="font-size:12px">분기별 점검</td>
               <td style="font-size:12px">manual</td>
@@ -474,7 +374,7 @@
               <td class="td-name">교육과정 개선 추진 현황</td>
               <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-1</td>
-              <td style="font-size:12px">MI-021</td>
+              <td style="font-size:12px">라이브러리 · LIB-QL-021</td>
               <td style="font-size:12px">교무처</td>
               <td style="font-size:12px">분기별 점검</td>
               <td style="font-size:12px">manual</td>
@@ -482,10 +382,10 @@
             </tr>
             <tr>
               <td style="font-size:12px;color:#888">02-01</td>
-              <td class="td-name">취업률</td>
-              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>정량</span></td>
+              <td class="td-name">전체 취업률</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>합성 정량</span></td>
               <td style="font-size:12px">영역 1 › 전략 1-2</td>
-              <td style="font-size:12px">MI-014</td>
+              <td style="font-size:12px">라이브러리 · LIB-C-014</td>
               <td style="font-size:12px">학생처</td>
               <td style="font-size:12px">연도말 확정</td>
               <td style="font-size:12px">hybrid</td>
@@ -493,64 +393,20 @@
             </tr>
           </tbody>
         </table>
-        <div style="margin-top:8px;font-size:12px;color:#999">전체 58개 운영 항목 중 4개 표시 · 현재 운영본: 2026 운영본</div>
-      </div>
-
-      <!-- ── 항목 묶음 ── -->
-      <div class="tab-panel" id="panel-groups">
-        <div class="info-banner" style="margin-bottom:16px">복수 지표형은 별도 타입을 만들지 않고 ItemGroup으로 묶습니다. 묶음은 기준일 스냅샷과 집계 로직의 기준이 됩니다.</div>
-        <div style="margin-bottom:12px">
-          <button class="btn btn-sm btn-dark" onclick="alert('새 항목 묶음 추가 (프로토타입)')">+ 항목 묶음 추가</button>
-        </div>
-        <table class="data-table">
-          <thead>
-            <tr><th>묶음명</th><th>소속 분류</th><th>집계 방식</th><th>구성 항목</th><th>기준일 스냅샷</th><th></th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="td-name">취업률 세부지표</td>
-              <td style="font-size:12px">영역 1 › 전략 1-2</td>
-              <td style="font-size:12px">weighted_avg</td>
-              <td style="font-size:12px">전체 · 남 · 여 · 학과별</td>
-              <td style="font-size:12px">2건</td>
-              <td><button class="btn btn-sm">수정</button></td>
-            </tr>
-            <tr>
-              <td class="td-name">교육혁신 핵심성과</td>
-              <td style="font-size:12px">영역 1</td>
-              <td style="font-size:12px">status_rollup</td>
-              <td style="font-size:12px">12개 항목</td>
-              <td style="font-size:12px">1건</td>
-              <td><button class="btn btn-sm btn-ghost">조회</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <div style="margin-top:8px;font-size:12px;color:#999">전체 58개 운영 지표 중 4개 표시 · 현재 운영본: 2026 운영본</div>
       </div>
 
       <!-- ── 입력폼 구성 ── -->
       <div class="tab-panel" id="panel-formbuilder">
-        <div class="info-banner" style="margin-bottom:16px">지표 유형별 입력 필드를 구성합니다. 담당자가 실적을 입력할 때 표시되는 폼입니다.</div>
+        <div class="info-banner" style="margin-bottom:16px">입력 유형과 필드 구성을 불러오는 중입니다.</div>
         <div style="display:flex;gap:16px">
           <div style="flex:0 0 220px">
-            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">지표 유형</div>
-            <div style="border:1px solid #e0e0e0;border-radius:4px;overflow:hidden">
-              <div style="padding:10px 14px;background:#111;color:#fff;font-size:13px;cursor:pointer">정량 지표 (quant)</div>
-              <div style="padding:10px 14px;font-size:13px;cursor:pointer;border-top:1px solid #e0e0e0">정성 지표 (qual)</div>
-            </div>
+            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">입력 유형</div>
+            <div style="border:1px solid #e0e0e0;border-radius:4px;padding:12px;font-size:12px;color:#777">동적 렌더링 영역</div>
           </div>
           <div style="flex:1">
-            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">필드 구성 — 정량 지표</div>
-            <table class="data-table">
-              <thead><tr><th>필드명</th><th>필드 유형</th><th>필수</th><th>표시 순서</th><th></th></tr></thead>
-              <tbody>
-                <tr><td>계획값</td><td style="font-size:12px">숫자 입력</td><td>필수</td><td>1</td><td><button class="btn btn-sm">수정</button></td></tr>
-                <tr><td>실적값</td><td style="font-size:12px">숫자 입력</td><td>필수</td><td>2</td><td><button class="btn btn-sm">수정</button></td></tr>
-                <tr><td>달성률</td><td style="font-size:12px">자동 계산</td><td>-</td><td>3</td><td><button class="btn btn-sm btn-ghost">자동</button></td></tr>
-                <tr><td>상태</td><td style="font-size:12px">코드셋 선택</td><td>필수</td><td>4</td><td><button class="btn btn-sm">수정</button></td></tr>
-                <tr><td>비고</td><td style="font-size:12px">텍스트 (선택)</td><td>-</td><td>5</td><td><button class="btn btn-sm">수정</button></td></tr>
-              </tbody>
-            </table>
-            <button class="btn btn-sm btn-dark" style="margin-top:8px" onclick="alert('필드 추가 (프로토타입)')">+ 필드 추가</button>
+            <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">유형별 필드 및 안내 블록 구성</div>
+            <div class="info-banner">초기 로딩 후 JavaScript가 실제 편집 UI로 교체합니다.</div>
           </div>
         </div>
       </div>
@@ -591,52 +447,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <!-- ── 연계 · 산식 ── -->
-      <div class="tab-panel" id="panel-integrations">
-        <div class="info-banner" style="margin-bottom:16px">v1은 manual 중심이지만, v2 확장을 위해 DataSource, MetricMapping, MetricFormula, finalValue 결정 구조를 미리 분리합니다.</div>
-        <div class="perm-section">
-          <h4>데이터 소스</h4>
-          <table class="data-table">
-            <thead>
-              <tr><th>시스템명</th><th>상태</th><th>연결 항목</th><th>최근 동기화</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="td-name">학생정보시스템</td>
-                <td><span class="sb s-empty"><span class="dot"></span>준비 중</span></td>
-                <td style="font-size:12px">취업률, 재학생 충원율</td>
-                <td style="font-size:12px">미연결</td>
-                <td><button class="btn btn-sm">설정</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="perm-section">
-          <h4>산식 · 최종값 결정</h4>
-          <table class="data-table">
-            <thead>
-              <tr><th>운영 항목</th><th>collectionMode</th><th>산식</th><th>최종 반영값</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="td-name">학부 정원 충원율</td>
-                <td style="font-size:12px">manual</td>
-                <td style="font-size:12px">(actual / goal) * 100</td>
-                <td style="font-size:12px">manualValue → finalValue</td>
-                <td><button class="btn btn-sm">수정</button></td>
-              </tr>
-              <tr>
-                <td class="td-name">취업률</td>
-                <td style="font-size:12px">hybrid</td>
-                <td style="font-size:12px">apiValue와 manualValue 비교 후 선택</td>
-                <td style="font-size:12px">관리자 확인 후 finalValue 확정</td>
-                <td><button class="btn btn-sm">수정</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
 
       <!-- ── 권한 배당 ── -->
@@ -712,7 +522,7 @@
   </div><!-- /body -->
 </div><!-- /shell -->
 
-<div class="modal-backdrop" id="formbuilder-modal" style="display:none">
+<div class="modal-overlay" id="formbuilder-modal">
   <div class="modal modal-lg">
     <div class="modal-header">
       <h3 id="formbuilder-modal-title">블록 수정</h3>
@@ -726,6 +536,18 @@
         <div id="fb-field-type-row"><select id="fb-block-type"></select></div>
         <label for="fb-block-description">설명</label>
         <div><textarea id="fb-block-description"></textarea></div>
+        <label for="fb-option-source-mode" id="fb-option-source-label">선택값 구성</label>
+        <div id="fb-option-source-row">
+          <div class="fb-option-mode">
+            <label><input type="radio" name="fb-option-source" value="codeset" checked> 기존 코드셋 선택</label>
+            <label><input type="radio" name="fb-option-source" value="custom"> 직접 옵션 입력</label>
+          </div>
+        </div>
+        <label for="fb-block-codeset" id="fb-codeset-label">코드셋 선택</label>
+        <div id="fb-codeset-row">
+          <select id="fb-block-codeset"></select>
+          <div class="fb-system-note">시스템 관리에서 만들어 둔 상태 코드셋이나 공통 코드셋을 그대로 사용할 수 있습니다.</div>
+        </div>
         <label for="fb-block-options">선택 옵션</label>
         <div id="fb-block-options-row"><input id="fb-block-options" type="text" placeholder="쉼표로 구분"></div>
         <label>필수 여부</label>
@@ -741,6 +563,36 @@
     </div>
   </div>
 </div>
+<div class="modal-overlay" id="codeset-confirm-modal">
+  <div class="modal" style="width:520px">
+    <div class="modal-header">
+      <h3>공통 코드셋 저장</h3>
+      <button class="modal-close" type="button" onclick="closeCodesetConfirmModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:13px;color:#333;line-height:1.7;margin-bottom:14px">
+        이 코드셋을 공통 코드셋으로 저장하시겠습니까?
+      </div>
+      <div style="font-size:12px;color:#666;line-height:1.6;margin-bottom:16px">
+        공통 코드셋으로 저장하면 시스템 관리의 상태 코드셋에서 다시 선택해 여러 입력폼에서 재사용할 수 있습니다.
+      </div>
+      <div class="form-grid" style="margin-bottom:0">
+        <div class="fg-label">코드셋 이름</div>
+        <div class="fg-input">
+          <input id="codeset-confirm-name" type="text" placeholder="예: 현장 점검 상태">
+        </div>
+        <div class="fg-label">선택 옵션</div>
+        <div class="fg-input">
+          <div id="codeset-confirm-options" class="fb-system-note" style="margin-top:0"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" type="button" onclick="saveFieldWithoutSharedCodeset()">아니요, 필드에만 저장</button>
+      <button class="btn btn-dark" type="button" onclick="saveFieldWithSharedCodeset()">네, 공통 코드셋으로 저장</button>
+    </div>
+  </div>
+</div>
 <script src="../shared/data.js"></script>
 <script src="../shared/layout.js"></script>
 <script>
@@ -749,14 +601,11 @@ const TAB_LABELS = {
   info: '기본 정보',
   version: '운영본 관리',
   schema: '분류 체계',
+  templates: '사업 전용 템플릿',
   cycles: '점검 주기',
-  statusset: '상태 코드셋',
-  managed: '기준 항목 풀',
-  items: '운영 항목',
-  groups: '항목 묶음',
+  items: '운영 지표',
   formbuilder: '입력폼 구성',
   periods: '기간 관리',
-  integrations: '연계 · 산식',
   permissions: '권한 배당'
 };
 
@@ -777,29 +626,67 @@ const FIELD_TYPE_LABELS = {
   calculated: '자동 계산'
 };
 
+const FORM_TYPE_BASES = {
+  quant: '정량',
+  qual: '정성'
+};
+
+const SYSTEM_CODESETS = [
+  {
+    id: 'status_default',
+    label: '기본 달성 상태',
+    options: ['달성', '부분달성', '미달성', '해당없음']
+  },
+  {
+    id: 'status_progress',
+    label: '추진 단계',
+    options: ['계획', '진행 중', '완료', '보류']
+  },
+  {
+    id: 'status_review',
+    label: '검토 의견',
+    options: ['정상', '지연', '보완 필요']
+  }
+];
+
 const FORM_LAYOUTS = {
   quant: {
-    label: '정량 지표 (quant)',
+    label: '정량 기본형',
+    baseType: 'quant',
     description: '계획값, 실적값, 상태 등을 함께 입력하는 기본 레이아웃',
     blocks: [
       { id: 'quant-field-plan', type: 'field', label: '계획값', fieldType: 'number', required: true, description: '해당 기간의 목표값을 입력합니다.' },
       { id: 'quant-field-actual', type: 'field', label: '실적값', fieldType: 'number', required: true, description: '확정된 실적 수치를 입력합니다.' },
       { id: 'quant-info-guide', type: 'info_card', label: '입력 안내', description: '실적값은 증빙 자료와 동일한 기준으로 작성합니다.' },
       { id: 'quant-field-rate', type: 'field', label: '달성률', fieldType: 'calculated', required: false, description: '계획값과 실적값으로 자동 계산됩니다.' },
-      { id: 'quant-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, options: ['정상', '지연', '보완 필요'], description: '상태 코드셋을 선택합니다.' },
+      { id: 'quant-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, optionSource: 'codeset', codesetId: 'status_review', options: ['정상', '지연', '보완 필요'], description: '상태 코드셋을 선택합니다.' },
       { id: 'quant-field-note', type: 'field', label: '비고', fieldType: 'textarea', required: false, description: '특이사항을 필요 시 입력합니다.' }
     ]
   },
   qual: {
-    label: '정성 지표 (qual)',
+    label: '정성 기본형',
+    baseType: 'qual',
     description: '서술형 설명과 근거 중심의 입력 레이아웃',
     blocks: [
       { id: 'qual-section-overview', type: 'section_title', label: '실적 요약' },
       { id: 'qual-text-summary', type: 'field', label: '주요 실적', fieldType: 'textarea', required: true, description: '핵심 성과와 추진 내용을 서술합니다.' },
       { id: 'qual-warning-lock', type: 'warning_card', label: '확정 전 점검', description: '최종 확정 후에는 수정이 제한되므로 제출 전에 근거 자료를 확인해 주세요.' },
-      { id: 'qual-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, options: ['계획', '진행 중', '완료', '보류'], description: '진행 단계를 선택합니다.' },
+      { id: 'qual-field-status', type: 'field', label: '상태', fieldType: 'select', required: true, optionSource: 'codeset', codesetId: 'status_progress', options: ['계획', '진행 중', '완료', '보류'], description: '진행 단계를 선택합니다.' },
       { id: 'qual-divider-1', type: 'divider', label: '' },
       { id: 'qual-field-evidence', type: 'field', label: '증빙 링크', fieldType: 'text', required: false, description: '공유 문서 또는 첨부 위치를 적습니다.' }
+    ]
+  },
+  quant_review: {
+    label: '정량 검토형',
+    baseType: 'quant',
+    description: '정량 수치와 함께 근거, 검토 의견, 후속 조치를 함께 받는 확장형 레이아웃',
+    blocks: [
+      { id: 'qreview-section-metric', type: 'section_title', label: '핵심 수치' },
+      { id: 'qreview-plan', type: 'field', label: '계획값', fieldType: 'number', required: true, description: '해당 기간 목표값입니다.' },
+      { id: 'qreview-actual', type: 'field', label: '실적값', fieldType: 'number', required: true, description: '실제 달성 수치를 입력합니다.' },
+      { id: 'qreview-status', type: 'field', label: '검토 상태', fieldType: 'select', required: true, optionSource: 'codeset', codesetId: 'status_review', options: ['정상', '지연', '보완 필요'], description: '검토 상태 코드셋을 선택합니다.' },
+      { id: 'qreview-proof', type: 'field', label: '산출 근거', fieldType: 'textarea', required: true, description: '수치 산출 근거와 기준일을 기록합니다.' },
+      { id: 'qreview-next', type: 'field', label: '후속 조치', fieldType: 'textarea', required: false, description: '미달 시 대응 계획을 기록합니다.' }
     ]
   }
 };
@@ -807,6 +694,23 @@ const FORM_LAYOUTS = {
 let activeFormType = 'quant';
 let editingBlockRef = null;
 let draggingBlockId = null;
+let pendingFieldSave = null;
+let schemaSelectedLevelId = 'level_2';
+let schemaLevels = [
+  { id: 'level_1', name: '영역' },
+  { id: 'level_2', name: '전략목표' },
+  { id: 'level_3', name: '세부과제' }
+];
+const SCHEMA_TREE_ROWS = [
+  { level: 1, code: 'A1', name: '교육혁신' },
+  { level: 2, code: 'A1-1', name: '학생경험 개선' },
+  { level: 3, code: 'A1-1-1', name: '교과과정 고도화' },
+  { level: 4, code: 'A1-1-1-a', name: '전공별 개선 실행과제' },
+  { level: 2, code: 'A1-2', name: '학생지원 체계' },
+  { level: 1, code: 'A2', name: '연구역량 강화' },
+  { level: 2, code: 'A2-1', name: '연구 인프라' },
+  { level: 3, code: 'A2-1-1', name: '장비 현대화' }
+];
 
 window.PAGE_CONFIG = {
   role: 'adm',
@@ -825,14 +729,108 @@ document.getElementById('panel-' + TAB)?.classList.add('active');
 const orgField = document.getElementById('info-orgfield');
 if (orgField) orgField.value = APP.user.org;
 
-function selectLevel(n, el) {
-  document.querySelectorAll('.level-card').forEach(card => card.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('schema-names').style.display = n === 0 ? 'none' : '';
+function selectLevel(levelId) {
+  schemaSelectedLevelId = levelId;
+  renderSchemaBuilder();
 }
 
 function removeChip(el) {
   el.closest('.dept-chip').remove();
+}
+
+function renderSchemaBuilder() {
+  const listEl = document.getElementById('schema-level-list');
+  const fieldsEl = document.getElementById('schema-level-fields');
+  const treeEl = document.getElementById('schema-tree');
+  const countEl = document.getElementById('schema-level-count');
+  if (!listEl || !fieldsEl || !treeEl || !countEl) return;
+
+  countEl.textContent = `현재 ${schemaLevels.length}개 레벨 · 선택된 위치 뒤에 중간 삽입 가능`;
+  listEl.innerHTML = schemaLevels.map((level, index) => `
+    <div class="schema-level-row${level.id === schemaSelectedLevelId ? ' selected' : ''}" onclick="selectLevel('${level.id}')">
+      <div class="schema-badge">LEVEL ${index + 1}</div>
+      <div class="schema-name">
+        <input type="text" value="${escapeHtml(level.name)}" onclick="event.stopPropagation()" oninput="renameSchemaLevel('${level.id}', this.value)">
+      </div>
+      <div class="schema-level-actions">
+        <button class="btn btn-sm btn-ghost" type="button" onclick="event.stopPropagation(); moveSchemaLevel('${level.id}', -1)">↑</button>
+        <button class="btn btn-sm btn-ghost" type="button" onclick="event.stopPropagation(); moveSchemaLevel('${level.id}', 1)">↓</button>
+        <button class="btn btn-sm btn-ghost" type="button" onclick="event.stopPropagation(); removeSchemaLevel('${level.id}')">삭제</button>
+      </div>
+    </div>
+  `).join('');
+
+  fieldsEl.innerHTML = `
+    <div class="form-grid" style="max-width:620px">
+      ${schemaLevels.map((level, index) => `
+        <div class="fg-label">레벨 ${index + 1} 명칭</div>
+        <div class="fg-input">
+          <input type="text" value="${escapeHtml(level.name)}" oninput="renameSchemaLevel('${level.id}', this.value)">
+          <div class="hint">ID: ${level.id} · 표시 순서 ${index + 1}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  treeEl.innerHTML = SCHEMA_TREE_ROWS.map((row, index) => {
+    const fallbackName = `레벨 ${row.level}`;
+    const levelName = schemaLevels[row.level - 1]?.name || fallbackName;
+    const hasChild = index < SCHEMA_TREE_ROWS.length - 1 && SCHEMA_TREE_ROWS[index + 1].level > row.level;
+    const collapse = hasChild ? '▼' : '';
+    return `
+      <div class="tree-row l${Math.min(row.level, 6)}">
+        <span class="tree-collapse">${collapse}</span>
+        <span class="node-code">${row.code}</span>
+        <span class="node-name">${escapeHtml(levelName)} · ${escapeHtml(row.name)}</span>
+        <div class="node-actions">
+          <button class="btn btn-sm" type="button">+하위 추가</button>
+          <button class="btn btn-sm" type="button">수정</button>
+          <button class="btn btn-sm btn-ghost" type="button">삭제</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renameSchemaLevel(levelId, value) {
+  const level = schemaLevels.find(item => item.id === levelId);
+  if (!level) return;
+  level.name = value.trim() || '새 레벨';
+  renderSchemaBuilder();
+}
+
+function appendSchemaLevel() {
+  const next = schemaLevels.length + 1;
+  const id = `level_${next}_${Date.now()}`;
+  schemaLevels.push({ id, name: `레벨 ${next}` });
+  schemaSelectedLevelId = id;
+  renderSchemaBuilder();
+}
+
+function insertSchemaLevel() {
+  const index = schemaLevels.findIndex(item => item.id === schemaSelectedLevelId);
+  const next = index >= 0 ? index + 2 : schemaLevels.length + 1;
+  const id = `level_mid_${Date.now()}`;
+  const insertAt = index >= 0 ? index + 1 : schemaLevels.length;
+  schemaLevels.splice(insertAt, 0, { id, name: `삽입 레벨 ${next}` });
+  schemaSelectedLevelId = id;
+  renderSchemaBuilder();
+}
+
+function moveSchemaLevel(levelId, direction) {
+  const index = schemaLevels.findIndex(item => item.id === levelId);
+  const nextIndex = index + direction;
+  if (index < 0 || nextIndex < 0 || nextIndex >= schemaLevels.length) return;
+  const moved = schemaLevels.splice(index, 1)[0];
+  schemaLevels.splice(nextIndex, 0, moved);
+  renderSchemaBuilder();
+}
+
+function removeSchemaLevel(levelId) {
+  if (schemaLevels.length === 1) return;
+  schemaLevels = schemaLevels.filter(item => item.id !== levelId);
+  schemaSelectedLevelId = schemaLevels[Math.min(schemaLevels.length - 1, 1)]?.id || schemaLevels[0].id;
+  renderSchemaBuilder();
 }
 
 function initFormbuilder() {
@@ -840,11 +838,15 @@ function initFormbuilder() {
   if (!panel) return;
 
   panel.innerHTML = `
-    <div class="info-banner" style="margin-bottom:16px">지표 유형별 입력 필드를 구성합니다. 담당자가 실적을 입력할 때 실제로 보게 되는 입력폼입니다.</div>
+    <div class="info-banner" style="margin-bottom:16px">입력폼은 정량/정성 2개에 고정하지 않습니다. 기본 판단 속성은 유지하되, 관리자가 사용자 정의 입력 유형을 추가해 별도 폼을 설계할 수 있습니다.</div>
     <div class="fb-layout">
       <div style="flex:0 0 220px">
-        <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px">지표 유형</div>
+        <div class="fb-type-head">
+          <div style="font-size:12px;font-weight:600;color:#555">입력 유형</div>
+          <button class="btn btn-sm btn-dark" type="button" onclick="addFormType()">+ 유형 추가</button>
+        </div>
         <div class="fb-type-list" id="formbuilder-type-list"></div>
+        <div class="fb-type-note">예: 정량-복합형, 정량-검토형, 정성-회의록형처럼 운영 목적에 맞는 입력 유형을 계속 추가할 수 있습니다.</div>
       </div>
       <div style="flex:1">
         <div class="fb-panel">
@@ -872,10 +874,13 @@ function initFormbuilder() {
   renderFormbuilder();
 
   document.getElementById('fb-block-type')?.addEventListener('change', event => {
-    const showOptions = event.target.value === 'select';
-    const optionLabel = document.querySelector('label[for="fb-block-options"]');
-    document.getElementById('fb-block-options-row').style.display = showOptions ? '' : 'none';
-    if (optionLabel) optionLabel.style.display = showOptions ? '' : 'none';
+    updateFieldOptionControls(event.target.value, getSelectedOptionSourceMode());
+  });
+
+  document.querySelectorAll('input[name="fb-option-source"]').forEach(input => {
+    input.addEventListener('change', () => {
+      updateFieldOptionControls(document.getElementById('fb-block-type')?.value, getSelectedOptionSourceMode());
+    });
   });
 }
 
@@ -883,7 +888,7 @@ function renderFormbuilderTypes() {
   const el = document.getElementById('formbuilder-type-list');
   if (!el) return;
   el.innerHTML = Object.entries(FORM_LAYOUTS).map(([key, layout]) => `
-    <button type="button" class="fb-type-btn${key === activeFormType ? ' active' : ''}" onclick="setFormType('${key}')">${layout.label}</button>
+    <button type="button" class="fb-type-btn${key === activeFormType ? ' active' : ''}" onclick="setFormType('${key}')">${layout.label} <span style="float:right;opacity:.7">${FORM_TYPE_BASES[layout.baseType] || layout.baseType}</span></button>
   `).join('');
 }
 
@@ -905,7 +910,7 @@ function renderFormbuilderList() {
 
   const layout = FORM_LAYOUTS[activeFormType];
   const blocks = layout.blocks;
-  summaryEl.textContent = `${layout.label} · 블록 ${blocks.length}개`;
+  summaryEl.textContent = `${layout.label} · 기본 속성 ${FORM_TYPE_BASES[layout.baseType] || layout.baseType} · 블록 ${blocks.length}개`;
 
   if (!blocks.length) {
     listEl.innerHTML = '<div class="fb-empty">아직 배치된 블록이 없습니다. 위 버튼으로 필드나 안내 블록을 추가해 주세요.</div>';
@@ -964,7 +969,7 @@ function renderFieldPreviewInput(block) {
     case 'textarea':
       return '<textarea class="fb-preview-textarea" placeholder="입력 예시"></textarea>';
     case 'select':
-      return `<select class="fb-preview-select"><option>선택하세요</option>${(block.options || []).map(option => `<option>${escapeHtml(option)}</option>`).join('')}</select>`;
+      return `<select class="fb-preview-select"><option>선택하세요</option>${getBlockOptions(block).map(option => `<option>${escapeHtml(option)}</option>`).join('')}</select>`;
     case 'calculated':
       return '<input class="fb-preview-input" type="text" value="자동 계산" readonly>';
     case 'number':
@@ -982,6 +987,8 @@ function addFieldBlock() {
     label: '새 필드',
     fieldType: 'text',
     required: false,
+    optionSource: 'custom',
+    codesetId: '',
     description: ''
   });
   renderFormbuilder();
@@ -1013,23 +1020,33 @@ function openEditBlock(blockId) {
     <option value="${value}"${block.fieldType === value ? ' selected' : ''}>${label}</option>
   `).join('');
   document.getElementById('fb-block-options').value = (block.options || []).join(', ');
+  document.getElementById('fb-block-codeset').innerHTML = SYSTEM_CODESETS.map(codeset => `
+    <option value="${codeset.id}"${block.codesetId === codeset.id ? ' selected' : ''}>${codeset.label}</option>
+  `).join('');
+  const optionSource = block.optionSource || (block.codesetId ? 'codeset' : 'custom');
+  document.querySelectorAll('input[name="fb-option-source"]').forEach(input => {
+    input.checked = input.value === optionSource;
+  });
 
   const typeLabel = document.querySelector('label[for="fb-block-type"]');
   const optionLabel = document.querySelector('label[for="fb-block-options"]');
+  const optionSourceLabel = document.getElementById('fb-option-source-label');
+  const codesetLabel = document.getElementById('fb-codeset-label');
   const isField = block.type === 'field';
-  const showOptions = isField && block.fieldType === 'select';
 
   document.getElementById('fb-field-type-row').style.display = isField ? '' : 'none';
   document.getElementById('fb-required-row').style.display = isField ? 'flex' : 'none';
-  document.getElementById('fb-block-options-row').style.display = showOptions ? '' : 'none';
   if (typeLabel) typeLabel.style.display = isField ? '' : 'none';
-  if (optionLabel) optionLabel.style.display = showOptions ? '' : 'none';
+  if (optionLabel) optionLabel.style.display = isField ? '' : 'none';
+  if (optionSourceLabel) optionSourceLabel.style.display = isField ? '' : 'none';
+  if (codesetLabel) codesetLabel.style.display = isField ? '' : 'none';
+  updateFieldOptionControls(block.fieldType, optionSource, isField);
 
-  document.getElementById('formbuilder-modal').style.display = 'flex';
+  document.getElementById('formbuilder-modal').classList.add('open');
 }
 
 function closeFormbuilderModal() {
-  document.getElementById('formbuilder-modal').style.display = 'none';
+  document.getElementById('formbuilder-modal').classList.remove('open');
   editingBlockRef = null;
 }
 
@@ -1038,17 +1055,37 @@ function saveFormbuilderBlock() {
   const block = FORM_LAYOUTS[editingBlockRef.type].blocks.find(item => item.id === editingBlockRef.id);
   if (!block) return;
 
-  block.label = document.getElementById('fb-block-label').value.trim();
-  block.description = document.getElementById('fb-block-description').value.trim();
+  const nextState = {
+    label: document.getElementById('fb-block-label').value.trim(),
+    description: document.getElementById('fb-block-description').value.trim()
+  };
 
   if (block.type === 'field') {
-    block.fieldType = document.getElementById('fb-block-type').value;
-    block.required = document.getElementById('fb-block-required').checked;
-    block.options = block.fieldType === 'select'
-      ? document.getElementById('fb-block-options').value.split(',').map(item => item.trim()).filter(Boolean)
-      : [];
+    nextState.fieldType = document.getElementById('fb-block-type').value;
+    nextState.required = document.getElementById('fb-block-required').checked;
+    if (nextState.fieldType === 'select') {
+      nextState.optionSource = getSelectedOptionSourceMode();
+      nextState.codesetId = nextState.optionSource === 'codeset' ? document.getElementById('fb-block-codeset').value : '';
+      nextState.options = nextState.optionSource === 'custom'
+        ? document.getElementById('fb-block-options').value.split(',').map(item => item.trim()).filter(Boolean)
+        : getCodesetOptions(nextState.codesetId);
+    } else {
+      nextState.optionSource = 'custom';
+      nextState.codesetId = '';
+      nextState.options = [];
+    }
   }
 
+  if (block.type === 'field' && nextState.fieldType === 'select' && nextState.optionSource === 'custom' && nextState.options.length) {
+    pendingFieldSave = {
+      ref: editingBlockRef,
+      state: nextState
+    };
+    openCodesetConfirmModal(nextState);
+    return;
+  }
+
+  applyFieldState(block, nextState);
   closeFormbuilderModal();
   renderFormbuilder();
 }
@@ -1088,6 +1125,26 @@ function createBlockId(type) {
   return `${activeFormType}-${type}-${Date.now()}`;
 }
 
+function addFormType() {
+  const label = prompt('새 입력 유형 이름을 입력하세요.', '정량-근거첨부형');
+  if (!label) return;
+  const baseType = prompt('기본 판단 속성을 입력하세요. quant 또는 qual', 'quant');
+  if (!baseType || !FORM_TYPE_BASES[baseType]) return;
+
+  const key = `custom_${Date.now()}`;
+  FORM_LAYOUTS[key] = {
+    label: label.trim(),
+    baseType,
+    description: `${FORM_TYPE_BASES[baseType]} 기본 속성을 기반으로 만든 사용자 정의 입력 유형`,
+    blocks: [
+      { id: `${key}-section-1`, type: 'section_title', label: '입력 기본 정보' },
+      { id: `${key}-field-1`, type: 'field', label: '핵심 값', fieldType: baseType === 'quant' ? 'number' : 'textarea', required: true, description: '운영 목적에 맞게 필드 이름과 형식을 바꿔 사용합니다.' }
+    ]
+  };
+  activeFormType = key;
+  renderFormbuilder();
+}
+
 function getDefaultLabel(type) {
   switch (type) {
     case 'info_card': return '안내 카드';
@@ -1113,12 +1170,21 @@ function getBlockTitle(block) {
 function getBlockSummary(block) {
   if (block.type === 'field') {
     const parts = [FIELD_TYPE_LABELS[block.fieldType] || block.fieldType];
+    if (block.fieldType === 'select') {
+      parts.push(block.optionSource === 'codeset'
+        ? `${getCodesetLabel(block.codesetId)} 사용`
+        : `직접 옵션 ${getBlockOptions(block).length}개`);
+    }
     parts.push(block.required ? '필수' : '선택');
     if (block.description) parts.push(block.description);
     return parts.join(' · ');
   }
   if (block.type === 'divider') return '폼 구간을 시각적으로 구분합니다.';
   return block.description || `${getBlockTitle(block)} 블록입니다.`;
+}
+
+function applyFieldState(block, nextState) {
+  Object.assign(block, nextState);
 }
 
 function escapeHtml(value) {
@@ -1130,7 +1196,86 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function getSelectedOptionSourceMode() {
+  return document.querySelector('input[name="fb-option-source"]:checked')?.value || 'codeset';
+}
+
+function updateFieldOptionControls(fieldType, optionSource, isField = true) {
+  const isSelectField = isField && fieldType === 'select';
+  const optionLabel = document.querySelector('label[for="fb-block-options"]');
+  const optionSourceLabel = document.getElementById('fb-option-source-label');
+  const codesetLabel = document.getElementById('fb-codeset-label');
+  document.getElementById('fb-option-source-row').style.display = isSelectField ? '' : 'none';
+  document.getElementById('fb-codeset-row').style.display = isSelectField && optionSource === 'codeset' ? '' : 'none';
+  document.getElementById('fb-block-options-row').style.display = isSelectField && optionSource === 'custom' ? '' : 'none';
+  if (optionLabel) optionLabel.style.display = isSelectField && optionSource === 'custom' ? '' : 'none';
+  if (optionSourceLabel) optionSourceLabel.style.display = isSelectField ? '' : 'none';
+  if (codesetLabel) codesetLabel.style.display = isSelectField && optionSource === 'codeset' ? '' : 'none';
+}
+
+function getCodesetOptions(codesetId) {
+  return SYSTEM_CODESETS.find(item => item.id === codesetId)?.options || [];
+}
+
+function getCodesetLabel(codesetId) {
+  return SYSTEM_CODESETS.find(item => item.id === codesetId)?.label || '코드셋';
+}
+
+function getBlockOptions(block) {
+  if (block.fieldType !== 'select') return block.options || [];
+  return block.optionSource === 'codeset' ? getCodesetOptions(block.codesetId) : (block.options || []);
+}
+
+function openCodesetConfirmModal(nextState) {
+  document.getElementById('codeset-confirm-name').value = nextState.label ? `${nextState.label} 코드셋` : '';
+  document.getElementById('codeset-confirm-options').textContent = nextState.options.join(', ');
+  document.getElementById('codeset-confirm-modal').classList.add('open');
+}
+
+function closeCodesetConfirmModal() {
+  document.getElementById('codeset-confirm-modal').classList.remove('open');
+  pendingFieldSave = null;
+}
+
+function saveFieldWithoutSharedCodeset() {
+  if (!pendingFieldSave) return;
+  const block = FORM_LAYOUTS[pendingFieldSave.ref.type].blocks.find(item => item.id === pendingFieldSave.ref.id);
+  if (!block) return;
+  applyFieldState(block, pendingFieldSave.state);
+  document.getElementById('codeset-confirm-modal').classList.remove('open');
+  closeFormbuilderModal();
+  pendingFieldSave = null;
+  renderFormbuilder();
+}
+
+function saveFieldWithSharedCodeset() {
+  if (!pendingFieldSave) return;
+  const block = FORM_LAYOUTS[pendingFieldSave.ref.type].blocks.find(item => item.id === pendingFieldSave.ref.id);
+  if (!block) return;
+
+  const codesetName = document.getElementById('codeset-confirm-name').value.trim() || `${pendingFieldSave.state.label || '새'} 코드셋`;
+  const newCodesetId = `custom_codeset_${Date.now()}`;
+  SYSTEM_CODESETS.push({
+    id: newCodesetId,
+    label: codesetName,
+    options: [...pendingFieldSave.state.options]
+  });
+
+  applyFieldState(block, {
+    ...pendingFieldSave.state,
+    optionSource: 'codeset',
+    codesetId: newCodesetId,
+    options: [...pendingFieldSave.state.options]
+  });
+
+  document.getElementById('codeset-confirm-modal').classList.remove('open');
+  closeFormbuilderModal();
+  pendingFieldSave = null;
+  renderFormbuilder();
+}
+
 initFormbuilder();
+renderSchemaBuilder();
 </script>
 </body>
 </html>

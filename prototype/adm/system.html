@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시스템 관리 - 성과관리 플랫폼</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+.library-hero {
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:16px;
+  margin-bottom:18px;
+}
+.hero-card,
+.side-card {
+  border:1px solid #e8e8e8;
+  border-radius:8px;
+  background:#fff;
+  padding:18px;
+}
+.hero-card h3,
+.side-card h3 { font-size:14px; margin-bottom:8px; }
+.hero-card p,
+.side-card p { font-size:12px; color:#666; line-height:1.65; }
+.mini-stats { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:14px; }
+.mini-stat { border:1px solid #efefef; border-radius:6px; background:#fafafa; padding:12px; }
+.mini-stat .label { font-size:11px; color:#777; margin-bottom:4px; }
+.mini-stat .value { font-size:20px; font-weight:700; }
+.source-chip {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#f5f5f5;
+  font-size:11px;
+  color:#666;
+  margin-right:6px;
+}
+@media (max-width: 980px) {
+  .library-hero { grid-template-columns:1fr; }
+  .mini-stats { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div id="gnb"></div>
+
+  <div class="ctx-banner">
+    <span class="ctx-current">시스템 관리</span>
+    <span class="sep">›</span>
+    <span id="ctx-tabname"></span>
+  </div>
+
+  <div class="body">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 id="page-title">시스템 관리</h2>
+        <span class="page-sub" id="page-sub"></span>
+        <div class="header-actions" id="page-actions"></div>
+      </div>
+
+      <div class="tab-panel" id="panel-library">
+        <div class="library-hero">
+          <div class="hero-card">
+            <h3>지표 라이브러리</h3>
+            <p>여러 사업에서 공통으로 재사용하는 지표 자산입니다. 사업 안에서는 운영 지표만 선택하고, 원형 정의와 기본 API 연결은 여기서 관리합니다. 합성 지표도 별도 메뉴가 아니라 라이브러리의 한 유형으로 다룹니다.</p>
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <div class="label">정성 지표</div>
+                <div class="value">28</div>
+              </div>
+              <div class="mini-stat">
+                <div class="label">단일 정량</div>
+                <div class="value">74</div>
+              </div>
+              <div class="mini-stat">
+                <div class="label">합성 정량</div>
+                <div class="value">11</div>
+              </div>
+            </div>
+          </div>
+          <div class="side-card">
+            <h3>공통 입력 유형</h3>
+            <p>정량/정성은 판단 속성이고, 실제 입력화면 유형은 별도 자산으로 관리합니다. 사업에서는 이 유형을 가져와 기간별로 editable, read_only, hidden 정책을 연결합니다.</p>
+            <div style="margin-top:12px">
+              <span class="source-chip">정량 기본형</span>
+              <span class="source-chip">정량 검토형</span>
+              <span class="source-chip">정성 회의록형</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-toolbar">
+          <input type="text" placeholder="지표명 · 코드 검색">
+          <select><option>전체 유형</option><option>정성</option><option>단일 정량</option><option>합성 정량</option></select>
+          <select><option>공개 범위 전체</option><option>global</option><option>org_shared</option><option>private</option></select>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 라이브러리 지표 생성 (프로토타입)')">+ 새 지표</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>코드</th><th>지표명</th><th>유형</th><th>기본 연결</th><th>공개 범위</th><th>재사용 사업</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;color:#888">LIB-Q-001</td>
+              <td class="td-name">학부 정원 충원율</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>단일 정량</span></td>
+              <td style="font-size:12px">manual</td>
+              <td style="font-size:12px">global</td>
+              <td style="font-size:12px">4개 사업</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">LIB-C-014</td>
+              <td class="td-name">전체 취업률</td>
+              <td><span class="sb s-going" style="font-size:11px"><span class="dot"></span>합성 정량</span></td>
+              <td style="font-size:12px">학생정보시스템 · male_rate/female_rate</td>
+              <td style="font-size:12px">org_shared</td>
+              <td style="font-size:12px">2개 사업</td>
+              <td><button class="btn btn-sm">구성 보기</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;color:#888">LIB-QL-021</td>
+              <td class="td-name">교육과정 개선 추진 현황</td>
+              <td><span class="sb s-empty" style="font-size:11px"><span class="dot"></span>정성</span></td>
+              <td style="font-size:12px">manual</td>
+              <td style="font-size:12px">global</td>
+              <td style="font-size:12px">3개 사업</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="page-header" style="margin-top:22px;margin-bottom:12px">
+          <h2 style="font-size:14px;font-weight:600;color:#555">합성 지표 설계 예시</h2>
+          <span class="page-sub">라이브러리의 하위 설정</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>합성 지표</th><th>구성 지표</th><th>계산 규칙</th><th>결측치 처리</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">전체 취업률</td>
+              <td style="font-size:12px">남 취업률, 여 취업률</td>
+              <td style="font-size:12px">weighted_avg</td>
+              <td style="font-size:12px">하나만 존재하면 단일값 사용</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="panel-api">
+        <div class="info-banner" style="margin-bottom:16px">API 관리는 시스템 연결 자체를 다루는 전역 메뉴입니다. 지표별 기본 연결은 지표 라이브러리에서 설정하고, 여기서는 연결 자산과 인증 상태를 관리합니다.</div>
+
+        <div class="items-toolbar">
+          <input type="text" placeholder="시스템명 · 엔드포인트 검색">
+          <select><option>상태 전체</option><option>연결 가능</option><option>점검 필요</option><option>준비 중</option></select>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 API 소스 등록 (프로토타입)')">+ API 소스 등록</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>시스템명</th><th>인증 방식</th><th>상태</th><th>사용 사업</th><th>최근 동기화</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">학생정보시스템</td>
+              <td style="font-size:12px">OAuth2</td>
+              <td><span class="sb s-going"><span class="dot"></span>연결 가능</span></td>
+              <td style="font-size:12px">중장기발전계획, 자체평가</td>
+              <td style="font-size:12px">2026-04-11 03:10</td>
+              <td><button class="btn btn-sm">관리</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">학사 통계 배치</td>
+              <td style="font-size:12px">Key 인증</td>
+              <td><span class="sb s-warn"><span class="dot"></span>점검 필요</span></td>
+              <td style="font-size:12px">중장기발전계획</td>
+              <td style="font-size:12px">2026-04-08 23:40</td>
+              <td><button class="btn btn-sm">관리</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="page-header" style="margin-top:22px;margin-bottom:12px">
+          <h2 style="font-size:14px;font-weight:600;color:#555">사용 가능 필드 미리보기</h2>
+          <span class="page-sub">학생정보시스템</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>필드명</th><th>설명</th><th>예시값</th><th>사용 지표</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="font-size:12px">male_rate</td><td style="font-size:12px">남학생 취업률</td><td style="font-size:12px">69.1</td><td style="font-size:12px">전체 취업률</td></tr>
+            <tr><td style="font-size:12px">female_rate</td><td style="font-size:12px">여학생 취업률</td><td style="font-size:12px">72.4</td><td style="font-size:12px">전체 취업률</td></tr>
+            <tr><td style="font-size:12px">enrollment_rate</td><td style="font-size:12px">재학생 충원율</td><td style="font-size:12px">96.2</td><td style="font-size:12px">학부 정원 충원율</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="panel-statusset">
+        <div class="info-banner" style="margin-bottom:16px">상태 코드셋은 사업마다 따로 만들기보다 공통 자산으로 관리합니다. 필요한 경우 사용자가 새 코드셋을 추가하고 여러 사업에서 함께 재사용할 수 있습니다.</div>
+
+        <div class="items-toolbar">
+          <input type="text" placeholder="코드셋명 · 코드 검색">
+          <select><option>사용 범위 전체</option><option>global</option><option>org_shared</option></select>
+          <button class="btn btn-sm btn-dark" onclick="alert('새 상태 코드셋 추가 (프로토타입)')">+ 코드셋 추가</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>코드셋명</th><th>코드 목록</th><th>공개 범위</th><th>사용 사업</th><th>비고</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-name">기본 달성 상태</td>
+              <td style="font-size:12px">달성 · 부분달성 · 미달성 · 해당없음</td>
+              <td style="font-size:12px">global</td>
+              <td style="font-size:12px">6개 사업</td>
+              <td style="font-size:12px">정량 지표 기본 상태</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">추진 단계</td>
+              <td style="font-size:12px">계획 · 진행중 · 완료 · 보류</td>
+              <td style="font-size:12px">global</td>
+              <td style="font-size:12px">4개 사업</td>
+              <td style="font-size:12px">정성 입력 및 중간 점검 공통 사용</td>
+              <td><button class="btn btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td class="td-name">정성 등급</td>
+              <td style="font-size:12px">우수 · 보통 · 미흡</td>
+              <td style="font-size:12px">org_shared</td>
+              <td style="font-size:12px">2개 사업</td>
+              <td style="font-size:12px">평가형 사업에서만 사용</td>
+              <td><button class="btn btn-sm btn-ghost">조회</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/layout.js"></script>
+<script>
+const TAB = new URLSearchParams(location.search).get('tab') || 'library';
+const TAB_LABELS = {
+  library: '지표 라이브러리',
+  api: 'API 관리',
+  statusset: '상태 코드셋'
+};
+
+window.PAGE_CONFIG = {
+  role: 'adm',
+  gnbActive: 'system',
+  sidebar: 'system',
+  tabActive: TAB
+};
+initLayout();
+
+document.getElementById('ctx-tabname').textContent = TAB_LABELS[TAB] || TAB;
+document.getElementById('page-title').textContent = TAB_LABELS[TAB] || '시스템 관리';
+document.getElementById('page-sub').textContent = '여러 사업이 함께 쓰는 공통 자산 관리';
+document.getElementById('panel-' + TAB)?.classList.add('active');
+</script>
+</body>
+</html>
